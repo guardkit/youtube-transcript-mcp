@@ -95,44 +95,52 @@ class TranscriptClient:
         self.api = YouTubeTranscriptApi()
     
     async def get_transcript(
-        self, 
-        video_id: str, 
+        self,
+        video_id: str,
         language: str = "en"
     ) -> TranscriptResult:
         """Fetch transcript for a video with language fallback.
-        
+
         Fallback strategy:
         1. Try exact language requested
         2. Try auto-generated version of requested language
         3. Try any English variant
         4. Return first available transcript
-        
+
         Args:
             video_id: YouTube video ID (11 characters)
             language: Preferred language code (default: "en")
-            
+
         Returns:
             TranscriptResult with segments and full text
-            
+
         Raises:
             TranscriptsDisabledError: Transcripts disabled for video
             NoTranscriptFoundError: No transcripts available (includes available languages)
             VideoUnavailableError: Video doesn't exist or is private
         """
-        return await asyncio.to_thread(
-            self._sync_get_transcript, video_id, language
-        )
+        try:
+            return await asyncio.to_thread(
+                self._sync_get_transcript, video_id, language
+            )
+        except asyncio.CancelledError:
+            logger.info(f"Transcript request cancelled for {video_id}")
+            raise  # CRITICAL: Must re-raise CancelledError
     
     async def list_transcripts(self, video_id: str) -> list[dict]:
         """List all available transcripts for a video.
-        
+
         Args:
             video_id: YouTube video ID
-            
+
         Returns:
             List of transcript info dicts with language, language_code, is_generated
         """
-        return await asyncio.to_thread(self._sync_list_transcripts, video_id)
+        try:
+            return await asyncio.to_thread(self._sync_list_transcripts, video_id)
+        except asyncio.CancelledError:
+            logger.info(f"List transcripts request cancelled for {video_id}")
+            raise  # CRITICAL: Must re-raise CancelledError
     
     def _sync_get_transcript(
         self, 
@@ -548,9 +556,9 @@ class TestTranscriptSegment:
 
 ```toml
 dependencies = [
-    "mcp>=1.0.0",
-    "yt-dlp>=2024.1.0",
-    "youtube-transcript-api>=1.0.0",
+    "mcp>=1.0.0",                    # MCP SDK - includes FastMCP via mcp.server.fastmcp
+    "yt-dlp>=2024.1.0",              # YouTube video metadata extraction
+    "youtube-transcript-api>=1.0.0", # Transcript fetching (official API)
 ]
 ```
 
@@ -600,6 +608,68 @@ youtube-transcript-mcp/
 
 ## Implementation Notes
 
+### Critical MCP Patterns
+
+These patterns are REQUIRED for correct MCP server behavior.
+
+| # | Pattern | Why | Example |
+|---|---------|-----|---------|
+| 1 | **stderr logging** | stdout = MCP JSON-RPC protocol | `logging.basicConfig(stream=sys.stderr)` |
+| 2 | **Module-level tools** | Required for Claude Code discovery | `@mcp.tool()` at module level in `__main__.py` |
+| 3 | **String parameters** | MCP sends all params as strings | `count_int = int(count)` |
+| 4 | **Timezone-aware datetime** | `utcnow()` is deprecated | `datetime.now(timezone.utc)` |
+| 5 | **Async wrappers** | Don't block event loop | `await asyncio.to_thread(sync_fn)` |
+| 6 | **CancelledError** | Must re-raise for cleanup | `except CancelledError: logger.info(...); raise` |
+| 7 | **Structured errors** | Consistent error format | `{"error": {"category": "...", "code": "...", "message": "..."}}` |
+
+#### Pattern Details
+
+<details>
+<summary>1. stderr logging (CRITICAL)</summary>
+
+```python
+import sys
+import logging
+
+# CORRECT
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+
+# WRONG - breaks MCP protocol
+print("Debug")  # stdout corrupts JSON-RPC
+logging.basicConfig()  # Defaults to stdout!
+```
+</details>
+
+<details>
+<summary>2. Module-level tool registration</summary>
+
+```python
+# CORRECT - in __main__.py at module level
+@mcp.tool()
+async def my_tool():
+    pass
+
+# WRONG - tools registered in functions won't be discovered
+def setup():
+    @mcp.tool()
+    async def my_tool():
+        pass
+```
+</details>
+
+<details>
+<summary>3. String parameter conversion</summary>
+
+```python
+@mcp.tool()
+async def process(count: str, enabled: str) -> dict:
+    # MCP sends "10" not 10, "true" not True
+    count_int = int(count)
+    enabled_bool = enabled.lower() in ("true", "1", "yes")
+    return {"count": count_int, "enabled": enabled_bool}
+```
+</details>
+
 ### youtube-transcript-api v1.2+ Syntax
 
 The API changed in v1.2. Use the instance method pattern:
@@ -637,3 +707,32 @@ snippet.text      # str, the text
 | `NoTranscriptFound` | Requested language not available |
 | `VideoUnavailable` | Video doesn't exist/private |
 | `NoTranscriptAvailable` | No captions at all |
+
+> **Note**: These error types are imported from `youtube_transcript_api._errors`.
+> The underscore prefix typically indicates a private/internal API that could change
+> without notice. However, the youtube-transcript-api library has kept this interface
+> stable across versions. If a future version changes the import path, update accordingly.
+>
+> **Alternative**: Wrap imports in try/except for version compatibility:
+> ```python
+> try:
+>     from youtube_transcript_api._errors import TranscriptsDisabled
+> except ImportError:
+>     from youtube_transcript_api.errors import TranscriptsDisabled  # Future path?
+> ```
+
+### CancelledError Handling
+
+CRITICAL: Never swallow `asyncio.CancelledError`. When using `asyncio.to_thread()`,
+wrap the call to log cancellation but always re-raise:
+
+```python
+try:
+    result = await asyncio.to_thread(sync_fn, args)
+except asyncio.CancelledError:
+    logger.info("Request cancelled")
+    raise  # Must re-raise!
+```
+
+MCP clients may cancel requests at any time. Swallowing CancelledError prevents
+proper cleanup and can cause resource leaks.

@@ -30,11 +30,52 @@ Part of the Brandon collaboration project for YouTube content digestion. This fe
 python -m venv .venv
 source .venv/bin/activate
 
-# Install FastMCP (stable version)
-pip install 'fastmcp<3'
+# Install MCP SDK (includes FastMCP)
+pip install mcp
+```
 
-# OR for latest beta features
-pip install fastmcp==3.0.0b1
+### Package Choice: mcp vs fastmcp
+
+FastMCP is available from two packages. Choose ONE:
+
+#### Option A: mcp package (Recommended)
+```bash
+pip install mcp
+```
+
+```python
+from mcp.server.fastmcp import FastMCP
+```
+
+**Pros**: Official Anthropic package, includes full MCP SDK, stable API
+**Cons**: Slightly larger install
+
+#### Option B: fastmcp standalone
+```bash
+pip install 'fastmcp<3'
+```
+
+```python
+from fastmcp import FastMCP
+```
+
+**Pros**: Smaller install, latest features in 3.x beta
+**Cons**: Separate from official SDK
+
+#### Recommendation
+
+For this project, use **Option A** (`mcp` package) because:
+- Official support from Anthropic
+- More likely to stay compatible with Claude Desktop
+- Simpler dependency management
+
+Update imports accordingly:
+```python
+# Use this import
+from mcp.server.fastmcp import FastMCP
+
+# NOT this
+from fastmcp import FastMCP
 ```
 
 ### Server Entry Point (`src/__main__.py`)
@@ -53,7 +94,7 @@ import sys
 import logging
 from datetime import datetime, timezone
 
-from fastmcp import FastMCP
+from mcp.server.fastmcp import FastMCP
 
 # CRITICAL: stderr only - stdout breaks MCP protocol
 logging.basicConfig(
@@ -101,8 +142,11 @@ requires-python = ">=3.10"
 readme = "README.md"
 
 dependencies = [
-    "fastmcp>=2.0,<3",
+    "mcp>=1.0.0",        # MCP SDK - includes FastMCP via mcp.server.fastmcp
 ]
+
+# Alternative: standalone fastmcp package (if not using MCP SDK)
+# dependencies = ["fastmcp>=2.0,<3"]
 
 [project.optional-dependencies]
 dev = [
@@ -247,13 +291,65 @@ youtube-transcript-mcp/
 
 ### Critical MCP Patterns
 
-| # | Pattern | Why It Matters |
-|---|---------|----------------|
-| 1 | Use FastMCP, not custom Server classes | Handles full MCP protocol automatically |
-| 2 | Tool registration at module level in `__main__.py` | Required for Claude Code discovery |
-| 3 | All logging to stderr | stdout reserved for JSON-RPC protocol |
-| 4 | Use `datetime.now(timezone.utc)` | `utcnow()` is deprecated, returns naive datetime |
-| 5 | Never swallow CancelledError | Must re-raise for proper async cancellation |
+These patterns are REQUIRED for correct MCP server behavior.
+
+| # | Pattern | Why | Example |
+|---|---------|-----|---------|
+| 1 | **stderr logging** | stdout = MCP JSON-RPC protocol | `logging.basicConfig(stream=sys.stderr)` |
+| 2 | **Module-level tools** | Required for Claude Code discovery | `@mcp.tool()` at module level in `__main__.py` |
+| 3 | **String parameters** | MCP sends all params as strings | `count_int = int(count)` |
+| 4 | **Timezone-aware datetime** | `utcnow()` is deprecated | `datetime.now(timezone.utc)` |
+| 5 | **Async wrappers** | Don't block event loop | `await asyncio.to_thread(sync_fn)` |
+| 6 | **CancelledError** | Must re-raise for cleanup | `except CancelledError: logger.info(...); raise` |
+| 7 | **Structured errors** | Consistent error format | `{"error": {"category": "...", "code": "...", "message": "..."}}` |
+
+#### Pattern Details
+
+<details>
+<summary>1. stderr logging (CRITICAL)</summary>
+
+```python
+import sys
+import logging
+
+# CORRECT
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+
+# WRONG - breaks MCP protocol
+print("Debug")  # stdout corrupts JSON-RPC
+logging.basicConfig()  # Defaults to stdout!
+```
+</details>
+
+<details>
+<summary>2. Module-level tool registration</summary>
+
+```python
+# CORRECT - in __main__.py at module level
+@mcp.tool()
+async def my_tool():
+    pass
+
+# WRONG - tools registered in functions won't be discovered
+def setup():
+    @mcp.tool()
+    async def my_tool():
+        pass
+```
+</details>
+
+<details>
+<summary>3. String parameter conversion</summary>
+
+```python
+@mcp.tool()
+async def process(count: str, enabled: str) -> dict:
+    # MCP sends "10" not 10, "true" not True
+    count_int = int(count)
+    enabled_bool = enabled.lower() in ("true", "1", "yes")
+    return {"count": count_int, "enabled": enabled_bool}
+```
+</details>
 
 ### Common Pitfalls to Avoid
 

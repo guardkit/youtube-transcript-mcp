@@ -1,8 +1,10 @@
 ---
 id: TASK-FSE-002
 title: Add CancelledError handling pattern to specs
-status: backlog
+status: completed
 created: 2026-02-03T22:30:00Z
+updated: 2026-02-03T23:00:00Z
+completed: 2026-02-03T23:05:00Z
 priority: medium
 parent_review: TASK-REV-A1B2
 feature_id: FEAT-FSE
@@ -12,6 +14,7 @@ tags: [documentation, async, error-handling]
 target_files:
   - docs/features/FEAT-SKEL-002-video-info-tool.md
   - docs/features/FEAT-SKEL-003-transcript-tool.md
+completed_location: tasks/completed/TASK-FSE-002/
 ---
 
 # Task: Add CancelledError Handling Pattern
@@ -98,7 +101,24 @@ proper cleanup and can cause resource leaks.
 
 ## Acceptance Criteria
 
-- [ ] FEAT-SKEL-002 shows CancelledError handling in YouTubeClient
-- [ ] FEAT-SKEL-003 shows CancelledError handling in TranscriptClient
-- [ ] Both specs have Implementation Notes explaining why this matters
-- [ ] Pattern shows logging before re-raise
+- [x] FEAT-SKEL-002 shows CancelledError handling in YouTubeClient
+- [x] FEAT-SKEL-003 shows CancelledError handling in TranscriptClient
+- [x] Both specs have Implementation Notes explaining why this matters
+- [x] Pattern shows logging before re-raise
+
+## Implementation Summary
+
+**Completed 2026-02-03**
+
+### Changes Made
+
+1. **FEAT-SKEL-002-video-info-tool.md**:
+   - Updated `get_video_info()` method with try/except for CancelledError
+   - Added "CancelledError Handling" section under Implementation Notes
+
+2. **FEAT-SKEL-003-transcript-tool.md**:
+   - Updated `get_transcript()` method with try/except for CancelledError
+   - Updated `list_transcripts()` method with try/except for CancelledError
+   - Added "CancelledError Handling" section under Implementation Notes
+
+All async methods using `asyncio.to_thread()` now demonstrate proper cancellation handling.

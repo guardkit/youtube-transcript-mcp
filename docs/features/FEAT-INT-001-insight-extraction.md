@@ -255,8 +255,67 @@ Respond with valid JSON matching this structure:
   "summary": "..."
 }}
 ```"""
+```
 
+### Example Output
 
+Here's a concrete example of the expected JSON output when analyzing an entrepreneurial video:
+
+```json
+{
+  "insights": [
+    {
+      "category": "business_strategy",
+      "title": "Start with community building before product development",
+      "summary": "The speaker emphasizes that successful startups build an engaged community first, then create products for that community. This reduces risk and ensures product-market fit from day one.",
+      "quote": "Your community is your moat. Build the audience before you build the product.",
+      "timestamp_hint": "around 5:30",
+      "confidence": 0.92,
+      "actionable": true
+    },
+    {
+      "category": "mistake_to_avoid",
+      "title": "Don't undercharge in early stages to win customers",
+      "summary": "A key lesson learned: initially pricing too low attracted the wrong customers who churned quickly. Premium pricing filters for serious customers who value the offering.",
+      "quote": null,
+      "timestamp_hint": "around 12:45",
+      "confidence": 0.88,
+      "actionable": true
+    },
+    {
+      "category": "growth_tactic",
+      "title": "Use content marketing to build authority before selling",
+      "summary": "The speaker grew from 0 to 10K subscribers by posting valuable content daily for 6 months before ever mentioning their product. Authority-first approach led to 40% conversion on launch.",
+      "quote": "Give away your best stuff for free. The people who want more will pay.",
+      "timestamp_hint": "around 18:20",
+      "confidence": 0.85,
+      "actionable": true
+    }
+  ],
+  "key_quotes": [
+    {
+      "text": "Your community is your moat. Build the audience before you build the product.",
+      "context": "Discussing why community-first approach reduces startup risk",
+      "speaker": null
+    },
+    {
+      "text": "Give away your best stuff for free. The people who want more will pay.",
+      "context": "Explaining content marketing strategy that led to successful launch",
+      "speaker": null
+    }
+  ],
+  "summary": "This video covers community-driven product development, pricing strategies for early-stage startups, and content marketing as a growth lever. Key takeaway: build audience and authority before launching products."
+}
+```
+
+This example shows:
+- 3 insights across different categories
+- Mix of insights with and without direct quotes
+- Confidence scores based on how explicitly stated the insight was
+- Actionability flags for practical advice
+- Overall summary capturing the video's main themes
+
+```python
 def chunk_transcript(
     transcript: str, 
     max_chars: int = 30000,
@@ -669,6 +728,17 @@ class TestInsightModel:
             )
 ```
 
+### Update `pyproject.toml` Dependencies
+
+```toml
+dependencies = [
+    "mcp>=1.0.0",                    # MCP SDK - includes FastMCP via mcp.server.fastmcp
+    "yt-dlp>=2024.1.0",              # YouTube video metadata extraction
+    "youtube-transcript-api>=1.0.0", # Transcript fetching
+    "pydantic>=2.0",                 # Data validation (v2 features: Field, BaseModel)
+]
+```
+
 ## File Structure After Implementation
 
 ```
@@ -690,7 +760,7 @@ youtube-transcript-mcp/
 │       ├── test_video_info.py
 │       ├── test_transcript.py
 │       └── test_insights.py     # NEW: insight tests
-└── pyproject.toml               # + pydantic dependency
+└── pyproject.toml               # Updated with pydantic dependency
 ```
 
 ## Testing Strategy
@@ -709,6 +779,70 @@ youtube-transcript-mcp/
 - [ ] Focus area validation with helpful errors
 - [ ] Unit tests pass
 - [ ] Code passes `ruff check` and `mypy`
+
+## Implementation Notes
+
+### Critical MCP Patterns
+
+These patterns are REQUIRED for correct MCP server behavior.
+
+| # | Pattern | Why | Example |
+|---|---------|-----|---------|
+| 1 | **stderr logging** | stdout = MCP JSON-RPC protocol | `logging.basicConfig(stream=sys.stderr)` |
+| 2 | **Module-level tools** | Required for Claude Code discovery | `@mcp.tool()` at module level in `__main__.py` |
+| 3 | **String parameters** | MCP sends all params as strings | `count_int = int(count)` |
+| 4 | **Timezone-aware datetime** | `utcnow()` is deprecated | `datetime.now(timezone.utc)` |
+| 5 | **Async wrappers** | Don't block event loop | `await asyncio.to_thread(sync_fn)` |
+| 6 | **CancelledError** | Must re-raise for cleanup | `except CancelledError: logger.info(...); raise` |
+| 7 | **Structured errors** | Consistent error format | `{"error": {"category": "...", "code": "...", "message": "..."}}` |
+
+#### Pattern Details
+
+<details>
+<summary>1. stderr logging (CRITICAL)</summary>
+
+```python
+import sys
+import logging
+
+# CORRECT
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+
+# WRONG - breaks MCP protocol
+print("Debug")  # stdout corrupts JSON-RPC
+logging.basicConfig()  # Defaults to stdout!
+```
+</details>
+
+<details>
+<summary>2. Module-level tool registration</summary>
+
+```python
+# CORRECT - in __main__.py at module level
+@mcp.tool()
+async def my_tool():
+    pass
+
+# WRONG - tools registered in functions won't be discovered
+def setup():
+    @mcp.tool()
+    async def my_tool():
+        pass
+```
+</details>
+
+<details>
+<summary>3. String parameter conversion</summary>
+
+```python
+@mcp.tool()
+async def process(count: str, enabled: str) -> dict:
+    # MCP sends "10" not 10, "true" not True
+    count_int = int(count)
+    enabled_bool = enabled.lower() in ("true", "1", "yes")
+    return {"count": count_int, "enabled": enabled_bool}
+```
+</details>
 
 ## Usage Example
 

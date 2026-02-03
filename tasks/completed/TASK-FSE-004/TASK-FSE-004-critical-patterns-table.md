@@ -1,8 +1,11 @@
 ---
 id: TASK-FSE-004
 title: Add Critical MCP Patterns table to all specs
-status: backlog
+status: completed
 created: 2026-02-03T22:30:00Z
+updated: 2026-02-03T23:10:00Z
+completed: 2026-02-03T23:10:00Z
+previous_state: in_review
 priority: medium
 parent_review: TASK-REV-A1B2
 feature_id: FEAT-FSE
@@ -14,6 +17,9 @@ target_files:
   - docs/features/FEAT-SKEL-002-video-info-tool.md
   - docs/features/FEAT-SKEL-003-transcript-tool.md
   - docs/features/FEAT-INT-001-insight-extraction.md
+completed_location: tasks/completed/TASK-FSE-004/
+organized_files:
+  - TASK-FSE-004-critical-patterns-table.md
 ---
 
 # Task: Add Critical MCP Patterns Table to All Specs
@@ -110,7 +116,7 @@ Add the full table. Currently shows string param conversion but not complete pat
 
 ## Acceptance Criteria
 
-- [ ] All 4 specs have identical "Critical MCP Patterns" section
-- [ ] Table includes all 7 patterns
-- [ ] Expandable details with code examples
-- [ ] Positioned consistently in each spec
+- [x] All 4 specs have identical "Critical MCP Patterns" section
+- [x] Table includes all 7 patterns
+- [x] Expandable details with code examples
+- [x] Positioned consistently in each spec (under "## Implementation Notes")

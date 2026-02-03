@@ -120,21 +120,25 @@ class YouTubeClient:
     
     async def get_video_info(self, url_or_id: str) -> VideoInfo:
         """Fetch video metadata from YouTube.
-        
+
         Args:
             url_or_id: YouTube URL or video ID
-            
+
         Returns:
             VideoInfo with metadata
-            
+
         Raises:
             InvalidURLError: If URL format is invalid
             VideoNotFoundError: If video doesn't exist
         """
         video_id = extract_video_id(url_or_id)
         video_url = f"https://www.youtube.com/watch?v={video_id}"
-        
-        return await asyncio.to_thread(self._sync_get_info, video_url, video_id)
+
+        try:
+            return await asyncio.to_thread(self._sync_get_info, video_url, video_id)
+        except asyncio.CancelledError:
+            logger.info(f"Video info request cancelled for {video_id}")
+            raise  # CRITICAL: Must re-raise CancelledError
     
     def _sync_get_info(self, video_url: str, video_id: str) -> VideoInfo:
         """Synchronous video info extraction (runs in thread)."""
@@ -392,8 +396,8 @@ class TestYouTubeClient:
 
 ```toml
 dependencies = [
-    "mcp>=1.0.0",
-    "yt-dlp>=2024.1.0",
+    "mcp>=1.0.0",        # MCP SDK - includes FastMCP via mcp.server.fastmcp
+    "yt-dlp>=2024.1.0",  # YouTube video metadata extraction
 ]
 ```
 
@@ -433,6 +437,68 @@ youtube-transcript-mcp/
 
 ## Implementation Notes
 
+### Critical MCP Patterns
+
+These patterns are REQUIRED for correct MCP server behavior.
+
+| # | Pattern | Why | Example |
+|---|---------|-----|---------|
+| 1 | **stderr logging** | stdout = MCP JSON-RPC protocol | `logging.basicConfig(stream=sys.stderr)` |
+| 2 | **Module-level tools** | Required for Claude Code discovery | `@mcp.tool()` at module level in `__main__.py` |
+| 3 | **String parameters** | MCP sends all params as strings | `count_int = int(count)` |
+| 4 | **Timezone-aware datetime** | `utcnow()` is deprecated | `datetime.now(timezone.utc)` |
+| 5 | **Async wrappers** | Don't block event loop | `await asyncio.to_thread(sync_fn)` |
+| 6 | **CancelledError** | Must re-raise for cleanup | `except CancelledError: logger.info(...); raise` |
+| 7 | **Structured errors** | Consistent error format | `{"error": {"category": "...", "code": "...", "message": "..."}}` |
+
+#### Pattern Details
+
+<details>
+<summary>1. stderr logging (CRITICAL)</summary>
+
+```python
+import sys
+import logging
+
+# CORRECT
+logging.basicConfig(stream=sys.stderr, level=logging.INFO)
+
+# WRONG - breaks MCP protocol
+print("Debug")  # stdout corrupts JSON-RPC
+logging.basicConfig()  # Defaults to stdout!
+```
+</details>
+
+<details>
+<summary>2. Module-level tool registration</summary>
+
+```python
+# CORRECT - in __main__.py at module level
+@mcp.tool()
+async def my_tool():
+    pass
+
+# WRONG - tools registered in functions won't be discovered
+def setup():
+    @mcp.tool()
+    async def my_tool():
+        pass
+```
+</details>
+
+<details>
+<summary>3. String parameter conversion</summary>
+
+```python
+@mcp.tool()
+async def process(count: str, enabled: str) -> dict:
+    # MCP sends "10" not 10, "true" not True
+    count_int = int(count)
+    enabled_bool = enabled.lower() in ("true", "1", "yes")
+    return {"count": count_int, "enabled": enabled_bool}
+```
+</details>
+
 ### Async Pattern for Sync Libraries
 
 yt-dlp is synchronous. Use `asyncio.to_thread()` to avoid blocking:
@@ -458,3 +524,19 @@ return {
     }
 }
 ```
+
+### CancelledError Handling
+
+CRITICAL: Never swallow `asyncio.CancelledError`. When using `asyncio.to_thread()`,
+wrap the call to log cancellation but always re-raise:
+
+```python
+try:
+    result = await asyncio.to_thread(sync_fn, args)
+except asyncio.CancelledError:
+    logger.info("Request cancelled")
+    raise  # Must re-raise!
+```
+
+MCP clients may cancel requests at any time. Swallowing CancelledError prevents
+proper cleanup and can cause resource leaks.

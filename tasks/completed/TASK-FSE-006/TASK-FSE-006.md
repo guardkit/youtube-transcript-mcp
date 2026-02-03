@@ -1,8 +1,10 @@
 ---
 id: TASK-FSE-006
 title: Add concrete JSON output example
-status: backlog
+status: completed
 created: 2026-02-03T22:30:00Z
+updated: 2026-02-03T22:55:00Z
+completed: 2026-02-03T22:55:00Z
 priority: low
 parent_review: TASK-REV-A1B2
 feature_id: FEAT-FSE
@@ -11,6 +13,9 @@ implementation_mode: direct
 tags: [documentation, examples, insight-extraction]
 target_files:
   - docs/features/FEAT-INT-001-insight-extraction.md
+previous_state: in_review
+state_transition_reason: Task completed - all acceptance criteria verified
+completed_location: tasks/completed/TASK-FSE-006/
 ---
 
 # Task: Add Concrete JSON Output Example
@@ -93,7 +98,7 @@ In FEAT-INT-001, add this section after the `build_extraction_prompt` function (
 
 ## Acceptance Criteria
 
-- [ ] Concrete JSON example added with realistic data
-- [ ] Example shows multiple insight categories
-- [ ] Example demonstrates optional fields (quote, timestamp_hint)
-- [ ] Brief explanation of what the example illustrates
+- [x] Concrete JSON example added with realistic data
+- [x] Example shows multiple insight categories
+- [x] Example demonstrates optional fields (quote, timestamp_hint)
+- [x] Brief explanation of what the example illustrates
