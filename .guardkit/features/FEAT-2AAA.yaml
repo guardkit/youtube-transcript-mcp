@@ -1,0 +1,68 @@
+id: FEAT-2AAA
+name: FEAT-SKEL-002 Video Info Tool
+description: Add get_video_info MCP tool using yt-dlp for YouTube video metadata extraction
+created: '2026-03-06T18:18:18.437159'
+status: planned
+complexity: 3
+estimated_tasks: 5
+tasks:
+- id: TASK-VID-001
+  name: Add yt-dlp dependency to pyproject.toml
+  file_path: tasks/backlog/video-info-tool/TASK-VID-001-add-ytdlp-dependency.md
+  complexity: 1
+  dependencies: []
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 15
+- id: TASK-VID-002
+  name: Create YouTubeClient service with URL parser and yt-dlp wrapper
+  file_path: tasks/backlog/video-info-tool/TASK-VID-002-create-youtube-client-service.md
+  complexity: 4
+  dependencies:
+  - TASK-VID-001
+  status: pending
+  description: ''
+  implementation_mode: task-work
+  estimated_minutes: 50
+- id: TASK-VID-003
+  name: Register get_video_info tool in __main__.py
+  file_path: tasks/backlog/video-info-tool/TASK-VID-003-register-get-video-info-tool.md
+  complexity: 2
+  dependencies:
+  - TASK-VID-002
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 22
+- id: TASK-VID-004
+  name: Create unit tests for video info tool and YouTube client
+  file_path: tasks/backlog/video-info-tool/TASK-VID-004-create-unit-tests.md
+  complexity: 3
+  dependencies:
+  - TASK-VID-002
+  - TASK-VID-003
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 33
+- id: TASK-VID-005
+  name: Verify tool in MCP Inspector and run linting
+  file_path: tasks/backlog/video-info-tool/TASK-VID-005-verify-mcp-inspector-linting.md
+  complexity: 1
+  dependencies:
+  - TASK-VID-003
+  - TASK-VID-004
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 15
+orchestration:
+  parallel_groups:
+  - - TASK-VID-001
+  - - TASK-VID-002
+  - - TASK-VID-003
+  - - TASK-VID-004
+  - - TASK-VID-005
+  estimated_duration_minutes: 135
+  recommended_parallel: 1

@@ -1,0 +1,69 @@
+id: FEAT-6F80
+name: Transcript Fetching Tools
+description: Add get_transcript and list_available_transcripts MCP tools with TranscriptClient
+  service, language fallback, and structured error handling
+created: '2026-03-06T18:32:41.141580'
+status: planned
+complexity: 4
+estimated_tasks: 5
+tasks:
+- id: TASK-TRS-001
+  name: Add youtube-transcript-api dependency
+  file_path: tasks/backlog/transcript-tools/TASK-TRS-001-add-youtube-transcript-api-dependency.md
+  complexity: 1
+  dependencies: []
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 15
+- id: TASK-TRS-002
+  name: Create TranscriptClient service
+  file_path: tasks/backlog/transcript-tools/TASK-TRS-002-create-transcript-client-service.md
+  complexity: 5
+  dependencies:
+  - TASK-TRS-001
+  status: pending
+  description: ''
+  implementation_mode: task-work
+  estimated_minutes: 75
+- id: TASK-TRS-003
+  name: Register get_transcript and list_available_transcripts tools
+  file_path: tasks/backlog/transcript-tools/TASK-TRS-003-register-transcript-tools.md
+  complexity: 4
+  dependencies:
+  - TASK-TRS-002
+  status: pending
+  description: ''
+  implementation_mode: task-work
+  estimated_minutes: 50
+- id: TASK-TRS-004
+  name: Create unit tests for transcript tools
+  file_path: tasks/backlog/transcript-tools/TASK-TRS-004-create-unit-tests.md
+  complexity: 4
+  dependencies:
+  - TASK-TRS-002
+  - TASK-TRS-003
+  status: pending
+  description: ''
+  implementation_mode: task-work
+  estimated_minutes: 50
+- id: TASK-TRS-005
+  name: Verify MCP Inspector linting and type checking
+  file_path: tasks/backlog/transcript-tools/TASK-TRS-005-verify-quality-checks.md
+  complexity: 2
+  dependencies:
+  - TASK-TRS-003
+  - TASK-TRS-004
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 22
+orchestration:
+  parallel_groups:
+  - - TASK-TRS-001
+  - - TASK-TRS-002
+  - - TASK-TRS-003
+  - - TASK-TRS-004
+  - - TASK-TRS-005
+  estimated_duration_minutes: 212
+  recommended_parallel: 1

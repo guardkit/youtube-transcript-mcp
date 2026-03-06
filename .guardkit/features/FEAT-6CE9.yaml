@@ -1,0 +1,57 @@
+id: FEAT-6CE9
+name: CLI Wrapper for MCP Tools
+description: Thin CLI wrapper providing command-line access to all MCP tools with
+  JSON stdout output for deep agents and terminal use
+created: '2026-03-06T19:34:05.119201'
+status: planned
+complexity: 3
+estimated_tasks: 4
+tasks:
+- id: TASK-CLI-001
+  name: Create src/cli.py with argparse and command dispatch
+  file_path: tasks/backlog/cli-wrapper/TASK-CLI-001-create-cli-module.md
+  complexity: 3
+  dependencies: []
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 33
+- id: TASK-CLI-002
+  name: Update __main__.py with CLI/MCP mode switching
+  file_path: tasks/backlog/cli-wrapper/TASK-CLI-002-update-main-entry-point.md
+  complexity: 2
+  dependencies:
+  - TASK-CLI-001
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 22
+- id: TASK-CLI-003
+  name: Create unit tests for CLI parser and output format
+  file_path: tasks/backlog/cli-wrapper/TASK-CLI-003-create-unit-tests.md
+  complexity: 2
+  dependencies:
+  - TASK-CLI-001
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 22
+- id: TASK-CLI-004
+  name: Create integration tests with real network calls
+  file_path: tasks/backlog/cli-wrapper/TASK-CLI-004-create-integration-tests.md
+  complexity: 2
+  dependencies:
+  - TASK-CLI-001
+  - TASK-CLI-002
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 22
+orchestration:
+  parallel_groups:
+  - - TASK-CLI-001
+  - - TASK-CLI-002
+    - TASK-CLI-003
+  - - TASK-CLI-004
+  estimated_duration_minutes: 99
+  recommended_parallel: 2

@@ -1,6 +1,6 @@
 ---
 sprint: 1
-start: 2026-02-03
+start: 2026-02-04
 status: planning
 ---
 

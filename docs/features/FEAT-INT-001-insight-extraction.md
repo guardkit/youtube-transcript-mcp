@@ -10,17 +10,29 @@ Add a tool to extract actionable insights from transcripts using Claude-assisted
 
 ## Business Context
 
-The core value proposition for the Brandon collaboration project. Transforms long-form video content into actionable insights focused on entrepreneurial strategies, investment trends, and key takeaways suitable for consumption during commutes, walks, or other activities.
+The core value proposition for the Brandon collaboration project, and increasingly for Rich's own workflow. Transforms long-form video content into actionable insights structured around the user's specific need at the time.
+
+### User Personas and Their Needs
+
+| User | Use Case | Preferred Presets |
+|------|----------|-------------------|
+| Brandon | Entrepreneurial strategy, investment signals for Google Sheets pipeline | `entrepreneurial`, `investment` |
+| Rich (planning) | YouTube channel tips, growth strategy for own channel | `youtube-channel` |
+| Rich (learning) | AI/ML concept videos, tools research | `ai-learning` |
+| Both | General-purpose summarisation | `general` |
+
+The focus preset system is the key mechanism that makes this tool useful across both users and across different types of video content.
 
 ## Acceptance Criteria
 
 1. `extract_insights` tool accepts transcript text and focus area(s)
-2. Supports focus presets: general, entrepreneurial, investment, technical
+2. Supports focus presets: `general`, `entrepreneurial`, `investment`, `technical`, `youtube-channel`, `ai-learning`
 3. Returns structured insights with category, title, summary, optional quote, confidence
 4. Handles long transcripts via chunking strategy
 5. Returns both individual insights and overall summary
 6. Provides actionability flag for each insight
-7. Unit tests cover output structure validation
+7. `list_focus_areas` tool returns all presets with their category definitions
+8. Unit tests cover output structure validation and all presets
 
 ## Technical Specification
 
@@ -40,6 +52,8 @@ class FocusArea(str, Enum):
     ENTREPRENEURIAL = "entrepreneurial"
     INVESTMENT = "investment"
     TECHNICAL = "technical"
+    YOUTUBE_CHANNEL = "youtube-channel"   # Rich: own channel growth & strategy
+    AI_LEARNING = "ai-learning"            # Rich: AI/ML concept & tools videos
 
 
 class InsightCategory(str, Enum):
@@ -66,6 +80,18 @@ class InsightCategory(str, Enum):
     TOOL = "tool"
     BEST_PRACTICE = "best_practice"
     PITFALL = "pitfall"
+
+    # YouTube Channel (Rich)
+    CHANNEL_STRATEGY = "channel_strategy"
+    CONTENT_IDEA = "content_idea"
+    AUDIENCE_GROWTH = "audience_growth"
+    PRODUCTION_TIP = "production_tip"
+
+    # AI Learning (Rich)
+    AI_CONCEPT = "ai_concept"
+    AI_TOOL = "ai_tool"
+    MENTAL_MODEL = "mental_model"
+    PRACTICAL_APPLICATION = "practical_application"
 
 
 class Insight(BaseModel):
@@ -122,6 +148,19 @@ FOCUS_PRESETS: dict[str, list[InsightCategory]] = {
         InsightCategory.BEST_PRACTICE,
         InsightCategory.PITFALL,
     ],
+    # Rich's presets
+    "youtube-channel": [
+        InsightCategory.CHANNEL_STRATEGY,
+        InsightCategory.CONTENT_IDEA,
+        InsightCategory.AUDIENCE_GROWTH,
+        InsightCategory.PRODUCTION_TIP,
+    ],
+    "ai-learning": [
+        InsightCategory.AI_CONCEPT,
+        InsightCategory.AI_TOOL,
+        InsightCategory.MENTAL_MODEL,
+        InsightCategory.PRACTICAL_APPLICATION,
+    ],
 }
 
 
@@ -142,6 +181,16 @@ CATEGORY_DEFINITIONS: dict[InsightCategory, str] = {
     InsightCategory.TOOL: "Tools, software, or resources recommended",
     InsightCategory.BEST_PRACTICE: "Recommended approaches and methodologies",
     InsightCategory.PITFALL: "Common problems and anti-patterns to avoid",
+    # YouTube channel categories
+    InsightCategory.CHANNEL_STRATEGY: "High-level channel positioning, niche, and growth direction",
+    InsightCategory.CONTENT_IDEA: "Specific video ideas, formats, series concepts to steal or adapt",
+    InsightCategory.AUDIENCE_GROWTH: "Tactics for growing subscribers, views, and engagement",
+    InsightCategory.PRODUCTION_TIP: "Filming, editing, thumbnails, titles, SEO, workflow improvements",
+    # AI learning categories
+    InsightCategory.AI_CONCEPT: "Core AI/ML concepts, architectures, or techniques explained",
+    InsightCategory.AI_TOOL: "Specific AI tools, libraries, frameworks, or services discussed",
+    InsightCategory.MENTAL_MODEL: "Frameworks and mental models for thinking about AI systems",
+    InsightCategory.PRACTICAL_APPLICATION: "Concrete ways to apply AI concepts to real projects",
 }
 ```
 
@@ -874,4 +923,14 @@ This implementation uses **Claude-assisted** extraction rather than embedding an
 - Requires user interaction to complete extraction
 - Can't be fully automated
 
-For Brandon's use case (interactive consumption), Claude-assisted is ideal. If autonomous processing is needed later, the `extraction_prompt` can be sent to any LLM API.
+For interactive use (both Brandon and Rich), Claude-assisted is ideal. The `extraction_prompt` returned by this tool is a self-contained prompt that can also be sent to any LLM API directly - this is intentional, enabling future deep agent automation without changing this tool's interface.
+
+## Relationship to FEAT-CLI-001
+
+The CLI wrapper (FEAT-CLI-001) exposes `extract-insights` as a command. The focus presets defined here - including `youtube-channel` and `ai-learning` - are available directly from the CLI:
+
+```bash
+python -m src cli extract-insights "$(cat transcript.txt)" --focus youtube-channel
+python -m src cli extract-insights "$(cat transcript.txt)" --focus ai-learning
+python -m src cli list-focus-areas
+```

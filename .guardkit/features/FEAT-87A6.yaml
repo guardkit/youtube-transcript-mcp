@@ -1,0 +1,68 @@
+id: FEAT-87A6
+name: Implement FEAT-INT-001 insight extraction
+description: Add extract_insights and list_focus_areas MCP tools with 6 focus presets
+  (general, entrepreneurial, investment, technical, youtube-channel, ai-learning)
+  for Claude-assisted transcript analysis
+created: '2026-03-06T18:50:36.883984'
+status: planned
+complexity: 5
+estimated_tasks: 5
+tasks:
+- id: TASK-INT-001
+  name: Create Pydantic insight models
+  file_path: tasks/backlog/insight-extraction/TASK-INT-001-create-pydantic-models.md
+  complexity: 3
+  dependencies: []
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 33
+- id: TASK-INT-002
+  name: Implement extraction service
+  file_path: tasks/backlog/insight-extraction/TASK-INT-002-implement-extraction-service.md
+  complexity: 5
+  dependencies:
+  - TASK-INT-001
+  status: pending
+  description: ''
+  implementation_mode: task-work
+  estimated_minutes: 75
+- id: TASK-INT-003
+  name: Register MCP tools
+  file_path: tasks/backlog/insight-extraction/TASK-INT-003-register-mcp-tools.md
+  complexity: 4
+  dependencies:
+  - TASK-INT-002
+  status: pending
+  description: ''
+  implementation_mode: task-work
+  estimated_minutes: 50
+- id: TASK-INT-004
+  name: Create unit tests
+  file_path: tasks/backlog/insight-extraction/TASK-INT-004-create-unit-tests.md
+  complexity: 4
+  dependencies:
+  - TASK-INT-003
+  status: pending
+  description: ''
+  implementation_mode: task-work
+  estimated_minutes: 50
+- id: TASK-INT-005
+  name: Verify quality gates
+  file_path: tasks/backlog/insight-extraction/TASK-INT-005-verify-quality-gates.md
+  complexity: 2
+  dependencies:
+  - TASK-INT-004
+  status: pending
+  description: ''
+  implementation_mode: direct
+  estimated_minutes: 22
+orchestration:
+  parallel_groups:
+  - - TASK-INT-001
+  - - TASK-INT-002
+  - - TASK-INT-003
+  - - TASK-INT-004
+  - - TASK-INT-005
+  estimated_duration_minutes: 230
+  recommended_parallel: 1

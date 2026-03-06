@@ -1,0 +1,56 @@
+id: FEAT-SKEL-001
+name: "Basic FastMCP Server with Ping Tool"
+description: "Foundational MCP server using FastMCP with ping health check tool - walking skeleton for all subsequent features"
+created: "2026-03-06T17:35:00Z"
+status: planned
+complexity: 2
+estimated_tasks: 4
+
+tasks:
+  - id: TASK-SKEL-001
+    name: "Project scaffolding - pyproject.toml, src package, test directories"
+    file_path: "tasks/backlog/basic-mcp-server/TASK-SKEL-001-project-scaffolding.md"
+    complexity: 1
+    dependencies: []
+    status: pending
+    implementation_mode: direct
+    estimated_minutes: 15
+
+  - id: TASK-SKEL-002
+    name: "Implement FastMCP server entry point with ping health check tool"
+    file_path: "tasks/backlog/basic-mcp-server/TASK-SKEL-002-fastmcp-server-ping-tool.md"
+    complexity: 2
+    dependencies:
+      - TASK-SKEL-001
+    status: pending
+    implementation_mode: task-work
+    estimated_minutes: 30
+
+  - id: TASK-SKEL-003
+    name: "Add unit tests for ping tool and MCP protocol compliance test"
+    file_path: "tasks/backlog/basic-mcp-server/TASK-SKEL-003-unit-and-protocol-tests.md"
+    complexity: 2
+    dependencies:
+      - TASK-SKEL-002
+    status: pending
+    implementation_mode: task-work
+    estimated_minutes: 30
+
+  - id: TASK-SKEL-004
+    name: "Add Claude Desktop configuration template and run quality checks"
+    file_path: "tasks/backlog/basic-mcp-server/TASK-SKEL-004-config-template-quality-checks.md"
+    complexity: 1
+    dependencies:
+      - TASK-SKEL-003
+    status: pending
+    implementation_mode: direct
+    estimated_minutes: 15
+
+orchestration:
+  parallel_groups:
+    - - TASK-SKEL-001
+    - - TASK-SKEL-002
+    - - TASK-SKEL-003
+    - - TASK-SKEL-004
+  estimated_duration_minutes: 90
+  recommended_parallel: 1

@@ -1,7 +1,7 @@
 ---
 id: ADR-001
 status: accepted
-date: 2026-02-03
+date: 2026-02-04
 ---
 
 # ADR-001: Adopt GuardKit System

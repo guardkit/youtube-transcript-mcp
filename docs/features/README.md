@@ -10,7 +10,7 @@ This document tracks all planned features for the youtube-mcp project.
 Get a basic MCP server running that Claude can connect to and use to fetch YouTube transcripts.
 
 ### Phase 2: Intelligence Layer
-Add insight extraction capabilities to transform raw transcripts into actionable nuggets.
+Add insight extraction capabilities to transform raw transcripts into actionable nuggets, plus a CLI wrapper for agent and direct use.
 
 ### Phase 3: Future Integration
 Connect with Google Sheets MCP and Podcast MCP for complete content digestion pipeline.
@@ -23,7 +23,7 @@ Connect with Google Sheets MCP and Podcast MCP for complete content digestion pi
 
 | Feature ID | Name | Status | Complexity | Dependencies |
 |------------|------|--------|------------|--------------|
-| `FEAT-SKEL-001` | [Walking Skeleton - Basic MCP Server](./FEAT-SKEL-001-walking-skeleton.md) | 🔲 Planned | Low (2/10) | None |
+| `FEAT-SKEL-001` | [Walking Skeleton - Basic MCP Server](./FEAT-SKEL-001-basic-mcp-server.md) | 🔲 Planned | Low (2/10) | None |
 | `FEAT-SKEL-002` | [Video Info Tool](./FEAT-SKEL-002-video-info-tool.md) | 🔲 Planned | Medium (4/10) | FEAT-SKEL-001 |
 | `FEAT-SKEL-003` | [Transcript Fetching Tool](./FEAT-SKEL-003-transcript-tool.md) | 🔲 Planned | Medium (5/10) | FEAT-SKEL-001 |
 
@@ -32,6 +32,7 @@ Connect with Google Sheets MCP and Podcast MCP for complete content digestion pi
 | Feature ID | Name | Status | Complexity | Dependencies |
 |------------|------|--------|------------|--------------|
 | `FEAT-INT-001` | [Insight Extraction Tool](./FEAT-INT-001-insight-extraction.md) | 🔲 Planned | Medium-High (6/10) | FEAT-SKEL-003 |
+| `FEAT-CLI-001` | [CLI Wrapper](./FEAT-CLI-001-cli-wrapper.md) | 🔲 Planned | Low (3/10) | FEAT-SKEL-003, FEAT-INT-001 |
 
 ---
 
@@ -42,15 +43,21 @@ Recommended order for implementation:
 ```
 1. FEAT-SKEL-001 (Walking Skeleton)
    └── Establishes basic MCP server, ping tool, Docker setup
-   
+
 2. FEAT-SKEL-002 (Video Info Tool)
    └── Adds video metadata fetching with yt-dlp
-   
+
 3. FEAT-SKEL-003 (Transcript Tool)
    └── Adds transcript fetching with youtube-transcript-api
-   
-4. FEAT-INT-001 (Insight Extraction)
-   └── Adds intelligence layer for insight extraction
+
+4. FEAT-INT-001 (Insight Extraction)        ← can start after FEAT-SKEL-003
+   └── Adds intelligence layer with persona presets:
+       - Brandon: entrepreneurial, investment
+       - Rich:    youtube-channel, ai-learning
+       - Both:    general, technical
+
+5. FEAT-CLI-001 (CLI Wrapper)               ← can run in parallel with FEAT-INT-001
+   └── Wraps all tools as CLI commands for agents and direct terminal use
 ```
 
 ## Status Legend
@@ -71,7 +78,7 @@ To implement the next feature:
 
 ```bash
 # Navigate to project
-cd /Users/richardwoollcott/Projects/appmilla_github/youtube-mcp
+cd /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp
 
 # Plan the feature (creates tasks from feature spec)
 /feature-plan "implement FEAT-SKEL-001 walking skeleton basic MCP server"

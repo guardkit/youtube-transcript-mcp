@@ -1,0 +1,9 @@
+# Graphiti Knowledge Graph Configuration
+# Project-specific settings for knowledge capture
+
+# Project ID for namespace prefixing
+# This ensures knowledge persists across directory moves/renames
+project_id: youtube-transcript-mcp
+
+# Enable Graphiti integration
+enabled: true
