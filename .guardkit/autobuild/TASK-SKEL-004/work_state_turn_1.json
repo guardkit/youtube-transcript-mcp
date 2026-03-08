@@ -1,0 +1,48 @@
+{
+  "turn_number": 1,
+  "files_modified": [
+    "src/__main__.py",
+    "tests/unit/test_ping.py",
+    "tests/unit/test_scaffolding.py"
+  ],
+  "files_created": [
+    ".mcp.json.template",
+    "tests/unit/test_mcp_template.py"
+  ],
+  "tests_written": [
+    "tests/unit/test_mcp_template.py"
+  ],
+  "tests_passed": true,
+  "test_count": 41,
+  "timestamp": "2026-03-08T14:06:47.513965",
+  "detection_method": "player_report",
+  "git_changes": {
+    "files_modified": [
+      "src/__main__.py",
+      "tests/unit/test_ping.py",
+      "tests/unit/test_scaffolding.py"
+    ],
+    "files_added": [
+      ".guardkit/autobuild/TASK-SKEL-003/checkpoints.json",
+      ".guardkit/autobuild/TASK-SKEL-004/",
+      ".mcp.json.template",
+      "tests/unit/test_mcp_template.py"
+    ],
+    "files_deleted": [],
+    "diff_stats": "src/__main__.py                | 2 +-\n tests/unit/test_ping.py        | 1 -\n tests/unit/test_scaffolding.py | 2 --\n 3 files changed, 1 insertion(+), 4 deletions(-)",
+    "insertions": 1,
+    "deletions": 4,
+    "timestamp": "2026-03-08T14:06:46.709825"
+  },
+  "test_results": {
+    "tests_run": true,
+    "tests_passed": true,
+    "test_count": 41,
+    "passed_count": 41,
+    "failed_count": 0,
+    "output_summary": ".........................................                                [100%]\n41 passed in 0.34s\n",
+    "timestamp": "2026-03-08T14:06:47.513725",
+    "error": null
+  },
+  "player_report_available": true
+}
