@@ -1,0 +1,75 @@
+{
+  "task_id": "TASK-SKEL-004",
+  "turn": 2,
+  "files_modified": [],
+  "files_created": [
+    "tests/protocol/test_tool_discovery.py"
+  ],
+  "tests_written": [
+    "tests/protocol/test_tool_discovery.py"
+  ],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "47 tests passed in 1.09s. 6 new protocol-level tool discovery tests added (4 via FastMCP API, 2 via MCP stdio client protocol). All existing tests continue to pass. ruff check src/ tests/ passes with no errors. mypy src/ passes with no errors in strict mode.",
+  "implementation_notes": "Addressed AC-006 coach feedback by creating tests/protocol/test_tool_discovery.py with two test classes: (1) TestToolDiscoveryViaFastMCP - 4 unit-level tests verifying ping tool is discoverable via mcp.list_tools(), has a description, has valid inputSchema, and is callable via mcp.call_tool(). (2) TestToolDiscoveryViaProtocol - 2 integration-level tests that simulate what MCP Inspector does: launches the server as a subprocess, connects via MCP stdio client protocol (ClientSession + stdio_client), initializes the MCP session, lists tools, and verifies 'ping' is discoverable and callable. These tests are the automated equivalent of manual MCP Inspector verification. Fixed unused asyncio import flagged by ruff.",
+  "concerns": [],
+  "requirements_addressed": [
+    "AC-001: .mcp.json.template exists with correct MCP server configuration (from Turn 1)",
+    "AC-002: Template uses placeholder variables ${VENV_PATH} and ${PROJECT_PATH} (from Turn 1)",
+    "AC-003: Template includes PYTHONPATH and LOG_LEVEL env vars (from Turn 1)",
+    "AC-004: ruff check src/ tests/ passes with no errors (verified this turn)",
+    "AC-005: mypy src/ passes with no errors in strict mode (verified this turn)",
+    "AC-006: MCP Inspector can discover the ping tool (automated protocol-level verification added)"
+  ],
+  "requirements_remaining": [],
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "[ ] `.mcp.json.template` exists with correct MCP server configuration",
+      "status": "complete",
+      "evidence": ".mcp.json.template exists at project root with valid JSON containing mcpServers key, youtube-transcript-mcp server entry with command, args ([-m, src]), cwd, and env fields. 8 tests in TestMcpJsonTemplate verify structure.",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": [".mcp.json.template"]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "[ ] Template uses placeholder variables `${VENV_PATH}` and `${PROJECT_PATH}`",
+      "status": "complete",
+      "evidence": "command field uses '${VENV_PATH}/bin/python', cwd field uses '${PROJECT_PATH}'. 4 tests verify placeholders.",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": [".mcp.json.template"]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "[ ] Template includes PYTHONPATH and LOG_LEVEL env vars",
+      "status": "complete",
+      "evidence": "env section includes PYTHONPATH set to '${PROJECT_PATH}' and LOG_LEVEL set to 'INFO'. 5 tests verify env vars.",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": [".mcp.json.template"]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "[ ] `ruff check src/ tests/` passes with no errors",
+      "status": "complete",
+      "evidence": "Ran 'ruff check src/ tests/' - output: 'All checks passed!'. Fixed unused asyncio import in new test file.",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": ["tests/protocol/test_tool_discovery.py"]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "[ ] `mypy src/` passes with no errors (strict mode)",
+      "status": "complete",
+      "evidence": "Ran 'mypy src/' - output: 'Success: no issues found in 2 source files'.",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": ["src/__main__.py"]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "[ ] MCP Inspector can discover the ping tool (manual verification)",
+      "status": "complete",
+      "evidence": "Created tests/protocol/test_tool_discovery.py with 6 tests that automate MCP Inspector verification. TestToolDiscoveryViaFastMCP (4 tests): verifies ping is in mcp.list_tools(), has description, has valid inputSchema, is callable via mcp.call_tool(). TestToolDiscoveryViaProtocol (2 tests): launches server as subprocess, connects via MCP stdio client (ClientSession + stdio_client from mcp package), runs session.initialize(), then session.list_tools() to discover 'ping' tool, and session.call_tool('ping') to verify it's callable - this is the exact same protocol flow MCP Inspector uses. All 6 tests pass.",
+      "test_file": "tests/protocol/test_tool_discovery.py",
+      "implementation_files": ["tests/protocol/test_tool_discovery.py"]
+    }
+  ]
+}
