@@ -1,24 +1,28 @@
 ---
-id: TASK-SKEL-003
-title: "Add unit tests for ping tool and MCP protocol compliance test"
-task_type: testing
-parent_review: TASK-REV-87CD
-feature_id: FEAT-SKEL-001
-wave: 3
-implementation_mode: task-work
 complexity: 2
-dependencies:
-  - TASK-SKEL-002
-status: pending
-priority: high
-tags: [testing, pytest, mcp-protocol]
-created: 2026-03-06T17:35:00Z
 consumer_context:
-  - task: TASK-SKEL-002
-    consumes: ping_tool
-    framework: "pytest + pytest-asyncio"
-    driver: "pytest-asyncio"
-    format_note: "ping() is an async function returning dict with keys: status, server, version, timestamp"
+- consumes: ping_tool
+  driver: pytest-asyncio
+  format_note: 'ping() is an async function returning dict with keys: status, server,
+    version, timestamp'
+  framework: pytest + pytest-asyncio
+  task: TASK-SKEL-002
+created: 2026-03-06 17:35:00+00:00
+dependencies:
+- TASK-SKEL-002
+feature_id: FEAT-SKEL-001
+id: TASK-SKEL-003
+implementation_mode: task-work
+parent_review: TASK-REV-87CD
+priority: high
+status: design_approved
+tags:
+- testing
+- pytest
+- mcp-protocol
+task_type: testing
+title: Add unit tests for ping tool and MCP protocol compliance test
+wave: 3
 ---
 
 # TASK-SKEL-003: Unit Tests + Protocol Test
