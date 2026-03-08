@@ -10,7 +10,6 @@ Verifies TASK-SKEL-002 acceptance criteria:
 from __future__ import annotations
 
 import ast
-import sys
 from datetime import datetime, timezone
 from pathlib import Path
 

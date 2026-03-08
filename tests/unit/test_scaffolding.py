@@ -1,10 +1,8 @@
 """Tests to verify project scaffolding meets acceptance criteria."""
 
-import os
 from pathlib import Path
 
 import tomllib
-
 
 # Resolve project root relative to this test file
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent

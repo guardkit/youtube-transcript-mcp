@@ -35,7 +35,7 @@ mcp = FastMCP(
 
 
 @mcp.tool()
-async def ping() -> dict:
+async def ping() -> dict[str, str]:
     """Health check - returns server status.
 
     Use this to verify the MCP server is running and responsive.

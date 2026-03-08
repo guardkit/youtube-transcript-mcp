@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "youtube-transcript-mcp": {
+      "command": "${VENV_PATH}/bin/python",
+      "args": ["-m", "src"],
+      "cwd": "${PROJECT_PATH}",
+      "env": {
+        "PYTHONPATH": "${PROJECT_PATH}",
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
