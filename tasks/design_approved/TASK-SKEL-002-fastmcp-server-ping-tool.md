@@ -1,18 +1,22 @@
 ---
-id: TASK-SKEL-002
-title: "Implement FastMCP server entry point with ping health check tool"
-task_type: feature
-parent_review: TASK-REV-87CD
-feature_id: FEAT-SKEL-001
-wave: 2
-implementation_mode: task-work
 complexity: 2
+created: 2026-03-06 17:35:00+00:00
 dependencies:
-  - TASK-SKEL-001
-status: pending
+- TASK-SKEL-001
+feature_id: FEAT-SKEL-001
+id: TASK-SKEL-002
+implementation_mode: task-work
+parent_review: TASK-REV-87CD
 priority: high
-tags: [mcp, fastmcp, ping, health-check]
-created: 2026-03-06T17:35:00Z
+status: design_approved
+tags:
+- mcp
+- fastmcp
+- ping
+- health-check
+task_type: feature
+title: Implement FastMCP server entry point with ping health check tool
+wave: 2
 ---
 
 # TASK-SKEL-002: FastMCP Server with Ping Tool
