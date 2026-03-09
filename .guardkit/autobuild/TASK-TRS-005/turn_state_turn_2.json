@@ -1,0 +1,36 @@
+{
+  "id": "TURN-FEAT-6F80-2",
+  "feature_id": "FEAT-6F80",
+  "task_id": "TASK-TRS-005",
+  "turn_number": 2,
+  "player_summary": "Implementation attempt",
+  "player_decision": "feedback",
+  "coach_decision": "feedback",
+  "coach_feedback": "- Not all acceptance criteria met:\n  \u2022 `ruff check src/ tests/` passes with zero errors\n  \u2022 `mypy src/` passes with zero errors\n  \u2022 All existing tests (ping, video_info) still pass (no regressions)",
+  "mode": "recovering_state",
+  "blockers_found": [],
+  "progress_summary": "Turn 2: feedback",
+  "acceptance_criteria_status": {
+    "AC-001": "verified",
+    "AC-002": "verified",
+    "AC-003": "rejected",
+    "AC-004": "rejected",
+    "AC-005": "rejected"
+  },
+  "files_modified": [
+    "tests/test_dependency.py",
+    "tests/test_transcript_client.py",
+    "tests/test_transcript_tools.py",
+    "tests/unit/test_transcript.py",
+    "tests/test_mcp_inspector.py"
+  ],
+  "tests_passed": null,
+  "tests_failed": null,
+  "coverage": null,
+  "arch_score": null,
+  "started_at": "2026-03-09T22:05:41.216245",
+  "completed_at": "2026-03-09T22:05:41.216245",
+  "duration_seconds": null,
+  "lessons_from_turn": [],
+  "what_to_try_next": null
+}

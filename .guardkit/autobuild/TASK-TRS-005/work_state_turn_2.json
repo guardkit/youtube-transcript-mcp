@@ -1,0 +1,46 @@
+{
+  "turn_number": 2,
+  "files_modified": [
+    "tests/test_dependency.py",
+    "tests/test_transcript_client.py",
+    "tests/test_transcript_tools.py",
+    "tests/unit/test_transcript.py"
+  ],
+  "files_created": [
+    "tests/test_mcp_inspector.py"
+  ],
+  "tests_written": [
+    "tests/test_mcp_inspector.py"
+  ],
+  "tests_passed": true,
+  "test_count": 81,
+  "timestamp": "2026-03-09T22:05:38.976439",
+  "detection_method": "player_report",
+  "git_changes": {
+    "files_modified": [
+      ".guardkit/autobuild/TASK-TRS-005/turn_context.json"
+    ],
+    "files_added": [
+      ".guardkit/autobuild/TASK-TRS-005/checkpoints.json",
+      ".guardkit/autobuild/TASK-TRS-005/coach_feedback_for_turn_2.json",
+      ".guardkit/autobuild/TASK-TRS-005/player_turn_2.json",
+      "tests/test_mcp_inspector.py"
+    ],
+    "files_deleted": [],
+    "diff_stats": ".guardkit/autobuild/TASK-TRS-005/turn_context.json | 4 ++--\n 1 file changed, 2 insertions(+), 2 deletions(-)",
+    "insertions": 2,
+    "deletions": 2,
+    "timestamp": "2026-03-09T22:05:38.212784"
+  },
+  "test_results": {
+    "tests_run": true,
+    "tests_passed": true,
+    "test_count": 81,
+    "passed_count": 81,
+    "failed_count": 0,
+    "output_summary": "........................................................................ [ 88%]\n.........                                                                [100%]\n81 passed in 0.39s\n",
+    "timestamp": "2026-03-09T22:05:38.976229",
+    "error": null
+  },
+  "player_report_available": true
+}

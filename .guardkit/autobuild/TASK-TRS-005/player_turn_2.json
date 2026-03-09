@@ -1,0 +1,86 @@
+{
+  "task_id": "TASK-TRS-005",
+  "turn": 2,
+  "files_modified": [
+    "tests/test_dependency.py",
+    "tests/test_transcript_client.py",
+    "tests/test_transcript_tools.py",
+    "tests/unit/test_transcript.py"
+  ],
+  "files_created": [
+    "tests/test_mcp_inspector.py"
+  ],
+  "tests_written": [
+    "tests/test_mcp_inspector.py"
+  ],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "81 tests passed in 0.43s. Coverage: 98% total. src/__main__.py 96%, transcript_client.py 99%, youtube_client.py 100%. Zero failures. New MCP Inspector tests (4) verify tool visibility via mcp.list_tools() with schema validation.",
+  "implementation_notes": "Turn 2 improvements: (1) Created tests/test_mcp_inspector.py with 4 dedicated tests that simulate MCP Inspector's tool discovery process by calling mcp.list_tools() and verifying tool names, descriptions, input schemas, required parameters, and optional parameters are all present — exactly what MCP Inspector renders. (2) Turn 1 lint fixes (removing unused imports, fixing import sorting, fixing line length) remain intact and verified. (3) All verification commands re-run with confirmed passing output.",
+  "concerns": [],
+  "requirements_addressed": [
+    "AC-001: get_transcript tool visible in MCP Inspector tool list",
+    "AC-002: list_available_transcripts tool visible in MCP Inspector tool list",
+    "AC-003: ruff check src/ tests/ passes with zero errors",
+    "AC-004: mypy src/ passes with zero errors",
+    "AC-005: pytest tests/ --cov=src --cov-report=term shows >80% coverage for transcript modules",
+    "AC-006: All existing tests (ping, video_info) still pass (no regressions)"
+  ],
+  "requirements_remaining": [],
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "[ ] `get_transcript` tool visible in MCP Inspector tool list",
+      "status": "complete",
+      "evidence": "Created tests/test_mcp_inspector.py::TestMCPInspectorToolDiscovery::test_get_transcript_visible_in_tool_list which simulates MCP Inspector's tool discovery. The test calls mcp.list_tools() (the same tools/list JSON-RPC method MCP Inspector uses) and asserts: (1) 'get_transcript' is present in the tool list, (2) it has a non-empty description, (3) it has an inputSchema, (4) video_url is in properties, (5) video_url is in required. Test PASSED. Additionally test_get_transcript_has_language_parameter verifies the optional language parameter is present but not required. Both tools are registered at module level in src/__main__.py with @mcp.tool() decorator at lines 43-44 and 143-144.",
+      "test_file": "tests/test_mcp_inspector.py",
+      "implementation_files": ["src/__main__.py"]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "[ ] `list_available_transcripts` tool visible in MCP Inspector tool list",
+      "status": "complete",
+      "evidence": "Created tests/test_mcp_inspector.py::TestMCPInspectorToolDiscovery::test_list_available_transcripts_visible_in_tool_list which simulates MCP Inspector's tool discovery. The test calls mcp.list_tools() and asserts: (1) 'list_available_transcripts' is present in the tool list, (2) it has a non-empty description, (3) it has an inputSchema, (4) video_url is in properties, (5) video_url is in required. Test PASSED. Additionally test_exactly_two_tools_registered verifies the tool list contains exactly ['get_transcript', 'list_available_transcripts'] — no extras, none missing.",
+      "test_file": "tests/test_mcp_inspector.py",
+      "implementation_files": ["src/__main__.py"]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "[ ] `ruff check src/ tests/` passes with zero errors",
+      "status": "complete",
+      "evidence": "Ran 'ruff check src/ tests/' — output: 'All checks passed!'. Fixed 9 ruff errors in turn 1: removed unused imports (subprocess, sys in test_dependency.py; asyncio, MagicMock in test_transcript_tools.py), fixed import sorting (I001 in test_transcript_client.py, unit/test_transcript.py), reformatted 2 lines exceeding 100 chars (E501 in test_transcript_client.py). New test_mcp_inspector.py also passes ruff. Re-verified in turn 2 after linter auto-modifications — still passes.",
+      "test_file": null,
+      "implementation_files": [
+        "tests/test_dependency.py",
+        "tests/test_transcript_client.py",
+        "tests/test_transcript_tools.py",
+        "tests/unit/test_transcript.py",
+        "tests/test_mcp_inspector.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "[ ] `mypy src/` passes with zero errors",
+      "status": "complete",
+      "evidence": "Ran 'mypy src/' — output: 'Success: no issues found in 5 source files'. No source code changes were needed. pyproject.toml has strict mode enabled ([tool.mypy] strict = true, python_version = '3.10') with ignore_missing_imports for yt_dlp and youtube_transcript_api third-party libraries. All 5 source files (src/__init__.py, src/__main__.py, src/services/__init__.py, src/services/transcript_client.py, src/services/youtube_client.py) pass type checking.",
+      "test_file": null,
+      "implementation_files": ["src/__main__.py", "src/services/transcript_client.py", "src/services/youtube_client.py"]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "[ ] `pytest tests/ --cov=src --cov-report=term` shows >80% coverage for transcript modules",
+      "status": "complete",
+      "evidence": "Ran 'pytest tests/ --cov=src --cov-report=term -v' — 81 tests passed in 0.43s. Coverage report: src/__init__.py 100%, src/__main__.py 96% (46 stmts, 2 missed), src/services/__init__.py 100%, src/services/transcript_client.py 99% (92 stmts, 1 missed), src/services/youtube_client.py 100% (12 stmts, 0 missed). TOTAL: 150 stmts, 3 missed, 98% coverage. All transcript modules individually exceed 80%: transcript_client.py at 99%, __main__.py (which contains the transcript tools) at 96%.",
+      "test_file": "tests/test_transcript_client.py",
+      "implementation_files": ["src/services/transcript_client.py", "src/__main__.py"]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "[ ] All existing tests (ping, video_info) still pass (no regressions)",
+      "status": "complete",
+      "evidence": "Ran 'pytest tests/ -v' — 81 tests passed, 0 failed, 0 errors. All existing test files pass without regression: test_dependency.py (4 tests PASSED), test_transcript_client.py (26 tests PASSED), test_transcript_tools.py (20 tests PASSED), unit/test_transcript.py (27 tests PASSED). The 4 new tests in test_mcp_inspector.py also pass. Note: no 'ping' or 'video_info' test files exist in this codebase — the existing tests are transcript-related and dependency verification tests, all of which pass with zero regressions.",
+      "test_file": "tests/test_dependency.py",
+      "implementation_files": []
+    }
+  ]
+}
