@@ -18,11 +18,10 @@ from src.services.transcript_client import (
     TranscriptClient,
     TranscriptClientError,
     TranscriptResult,
-    TranscriptSegment,
     TranscriptsDisabledError,
+    TranscriptSegment,
     VideoUnavailableError,
 )
-
 
 # ---------------------------------------------------------------------------
 # Mock helpers — match youtube-transcript-api v1.2+ response structure

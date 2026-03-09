@@ -17,11 +17,10 @@ from src.services.transcript_client import (
     TranscriptClient,
     TranscriptClientError,
     TranscriptResult,
-    TranscriptSegment,
     TranscriptsDisabledError,
+    TranscriptSegment,
     VideoUnavailableError,
 )
-
 
 # ---------------------------------------------------------------------------
 # Mock helpers
@@ -232,7 +231,10 @@ class TestGetTranscript:
         mock_t = _make_mock_transcript()
 
         with patch.object(client.api, "fetch", return_value=mock_t):
-            with patch("src.services.transcript_client.asyncio.to_thread", wraps=asyncio.to_thread) as mock_thread:
+            with patch(
+                "src.services.transcript_client.asyncio.to_thread",
+                wraps=asyncio.to_thread,
+            ) as mock_thread:
                 await client.get_transcript("vid", "en")
                 mock_thread.assert_called_once()
 
@@ -395,7 +397,10 @@ class TestListTranscripts:
         mock_list.__iter__ = lambda self: iter([])
 
         with patch.object(client.api, "list", return_value=mock_list):
-            with patch("src.services.transcript_client.asyncio.to_thread", wraps=asyncio.to_thread) as mock_thread:
+            with patch(
+                "src.services.transcript_client.asyncio.to_thread",
+                wraps=asyncio.to_thread,
+            ) as mock_thread:
                 await client.list_transcripts("vid")
                 mock_thread.assert_called_once()
 
@@ -437,8 +442,9 @@ class TestLogging:
 
     def test_module_logger_exists(self) -> None:
         """Module uses logging.getLogger(__name__)."""
-        import src.services.transcript_client as mod
         import logging
+
+        import src.services.transcript_client as mod
 
         assert hasattr(mod, "logger")
         assert isinstance(mod.logger, logging.Logger)

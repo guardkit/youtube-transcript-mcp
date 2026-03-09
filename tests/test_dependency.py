@@ -1,8 +1,6 @@
 """Tests to verify youtube-transcript-api dependency is correctly installed."""
 
 import importlib
-import subprocess
-import sys
 from pathlib import Path
 
 

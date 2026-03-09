@@ -6,9 +6,8 @@ registered in src/__main__.py. Covers all acceptance criteria for TASK-TRS-003.
 
 from __future__ import annotations
 
-import asyncio
 from dataclasses import dataclass
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
