@@ -8,9 +8,7 @@ structured error responses, and successful extraction preparation.
 from __future__ import annotations
 
 import pytest
-
-from src.models.insight import CATEGORY_DEFINITIONS, FOCUS_PRESETS
-
+from src.models.insight import FOCUS_PRESETS
 
 # --- Seam Tests ---
 

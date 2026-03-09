@@ -1,0 +1,188 @@
+{
+  "task_id": "TASK-INT-005",
+  "turn": 1,
+  "decision": "feedback",
+  "validation_results": {
+    "quality_gates": {
+      "tests_passed": true,
+      "coverage_met": true,
+      "arch_review_passed": true,
+      "plan_audit_passed": true,
+      "all_gates_passed": true
+    },
+    "independent_tests": {
+      "tests_passed": true,
+      "test_command": "skipped",
+      "test_output_summary": "Independent test verification skipped (tests not required for testing tasks)",
+      "duration_seconds": 0.0
+    },
+    "requirements": {
+      "criteria_total": 7,
+      "criteria_met": 3,
+      "all_criteria_met": false,
+      "missing": [
+        "`ruff check src/ tests/` passes with zero errors",
+        "`mypy src/` passes with zero errors",
+        "`src/services/insight_extractor.py` has >90% coverage",
+        "`pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)"
+      ]
+    }
+  },
+  "criteria_verification": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "`ruff check src/ tests/` passes with zero errors",
+      "result": "rejected",
+      "status": "rejected",
+      "evidence": "Promise status: incomplete",
+      "notes": "Promise status: incomplete"
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "`mypy src/` passes with zero errors",
+      "result": "rejected",
+      "status": "rejected",
+      "evidence": "Promise status: incomplete",
+      "notes": "Promise status: incomplete"
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "`src/models/insight.py` has >90% coverage",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: tests",
+      "notes": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: tests"
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "`src/services/insight_extractor.py` has >90% coverage",
+      "result": "rejected",
+      "status": "rejected",
+      "evidence": "Promise status: incomplete",
+      "notes": "Promise status: incomplete"
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "No regressions in existing tests (test_ping, test_video_info, test_transcript if they exist)",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: insight",
+      "notes": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: insight"
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "Both `extract_insights` and `list_focus_areas` tools are discoverable via MCP",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: insight_extractor",
+      "notes": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: insight_extractor"
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "`pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)",
+      "result": "rejected",
+      "status": "rejected",
+      "evidence": "Promise status: incomplete",
+      "notes": "Promise status: incomplete"
+    }
+  ],
+  "acceptance_criteria_verification": {
+    "criteria_results": [
+      {
+        "criterion_id": "AC-001",
+        "criterion_text": "`ruff check src/ tests/` passes with zero errors",
+        "result": "rejected",
+        "status": "rejected",
+        "evidence": "Promise status: incomplete",
+        "notes": "Promise status: incomplete"
+      },
+      {
+        "criterion_id": "AC-002",
+        "criterion_text": "`mypy src/` passes with zero errors",
+        "result": "rejected",
+        "status": "rejected",
+        "evidence": "Promise status: incomplete",
+        "notes": "Promise status: incomplete"
+      },
+      {
+        "criterion_id": "AC-003",
+        "criterion_text": "`src/models/insight.py` has >90% coverage",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: tests",
+        "notes": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: tests"
+      },
+      {
+        "criterion_id": "AC-004",
+        "criterion_text": "`src/services/insight_extractor.py` has >90% coverage",
+        "result": "rejected",
+        "status": "rejected",
+        "evidence": "Promise status: incomplete",
+        "notes": "Promise status: incomplete"
+      },
+      {
+        "criterion_id": "AC-005",
+        "criterion_text": "No regressions in existing tests (test_ping, test_video_info, test_transcript if they exist)",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: insight",
+        "notes": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: insight"
+      },
+      {
+        "criterion_id": "AC-006",
+        "criterion_text": "Both `extract_insights` and `list_focus_areas` tools are discoverable via MCP",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: insight_extractor",
+        "notes": "[Partial confidence - git_analysis] Git-analysis detected: Patterns: insight_extractor"
+      },
+      {
+        "criterion_id": "AC-007",
+        "criterion_text": "`pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)",
+        "result": "rejected",
+        "status": "rejected",
+        "evidence": "Promise status: incomplete",
+        "notes": "Promise status: incomplete"
+      }
+    ]
+  },
+  "issues": [
+    {
+      "severity": "must_fix",
+      "category": "missing_requirement",
+      "description": "Not all acceptance criteria met",
+      "missing_criteria": [
+        "`ruff check src/ tests/` passes with zero errors",
+        "`mypy src/` passes with zero errors",
+        "`src/services/insight_extractor.py` has >90% coverage",
+        "`pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)"
+      ]
+    }
+  ],
+  "rationale": "Missing 4 acceptance criteria: `ruff check src/ tests/` passes with zero errors, `mypy src/` passes with zero errors, `src/services/insight_extractor.py` has >90% coverage, `pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)",
+  "context_used": "## Job-Specific Context\n\nBudget: 1489/5200 tokens\n\n### \ud83c\udfa8 Relevant Patterns\n- ENABLES\n- HAS_BENEFIT\n- ENABLES\n- HAS_BENEFIT\n\n### \u26a0\ufe0f Warnings\n- ALTERNATIVE_TO\n- APPLIES_TO\n- HAS_ROOT_CAUSE\n\n### \ud83c\udfad Role Constraints\n- MONITORS_RESULTS_FROM\n- MUST_VERIFY_ALL_ACCEPTANCE_CRITERIA\n- MUST_CREATE_CRITERIA_VERIFICATION_ENTRIES\n\n### \ud83d\udee0\ufe0f Implementation Modes\n- AVOIDED_OUTCOME\n",
+  "approved_without_independent_tests": false,
+  "is_configuration_error": false,
+  "command_results": [
+    {
+      "criterion_text": "`pytest tests/ -v` \u2014 all tests pass",
+      "extracted_command": "pytest tests/ -v",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.2, pytest-9.0.2, pluggy-1.6.0 -- /usr/local/bin/python\ncachedir: .pytest_cache\nrootdir: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp\nconfigfile: pyproject.toml\nplugins: anyio-4.12.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollecting ... collected 174 item",
+      "stderr": "",
+      "elapsed_seconds": 0.591,
+      "timed_out": false
+    },
+    {
+      "criterion_text": "`pytest tests/ --cov=src --cov-report=term` \u2014 >80% coverage overall",
+      "extracted_command": "pytest tests/ --cov=src --cov-report=term",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "============================= test session starts ==============================\nplatform darwin -- Python 3.14.2, pytest-9.0.2, pluggy-1.6.0\nrootdir: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp\nconfigfile: pyproject.toml\nplugins: anyio-4.12.0, asyncio-1.3.0, cov-7.0.0\nasyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function\ncollected 174 items\n\ntests/unit/test_insight_extractor.py ........................",
+      "stderr": "",
+      "elapsed_seconds": 0.653,
+      "timed_out": false
+    }
+  ]
+}

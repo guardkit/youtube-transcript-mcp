@@ -13,15 +13,12 @@ from __future__ import annotations
 
 import pytest
 from pydantic import ValidationError
-
 from src.models.insight import (
     CATEGORY_DEFINITIONS,
     FOCUS_PRESETS,
     FocusArea,
     Insight,
     InsightCategory,
-    InsightExtractionResult,
-    KeyQuote,
 )
 from src.services.insight_extractor import (
     build_extraction_prompt,
@@ -29,7 +26,6 @@ from src.services.insight_extractor import (
     get_focus_categories,
     prepare_for_extraction,
 )
-
 
 # ---------------------------------------------------------------------------
 # TestFocusPresets
@@ -53,7 +49,7 @@ class TestFocusPresets:
         assert InsightCategory.CONTEXT in cats
 
     def test_entrepreneurial_preset_has_correct_categories(self) -> None:
-        """Entrepreneurial preset should have BUSINESS_STRATEGY, GROWTH_TACTIC, LESSON_LEARNED, MISTAKE_TO_AVOID."""
+        """Entrepreneurial preset: BUSINESS_STRATEGY, GROWTH_TACTIC, etc."""
         cats = FOCUS_PRESETS["entrepreneurial"]
         assert len(cats) == 4
         assert InsightCategory.BUSINESS_STRATEGY in cats
@@ -80,7 +76,7 @@ class TestFocusPresets:
         assert InsightCategory.PITFALL in cats
 
     def test_youtube_channel_preset_has_correct_categories(self) -> None:
-        """YouTube channel preset should have CHANNEL_STRATEGY, CONTENT_IDEA, AUDIENCE_GROWTH, PRODUCTION_TIP."""
+        """YouTube channel preset: CHANNEL_STRATEGY, CONTENT_IDEA, etc."""
         cats = FOCUS_PRESETS["youtube-channel"]
         assert len(cats) == 4
         assert InsightCategory.CHANNEL_STRATEGY in cats
@@ -89,7 +85,7 @@ class TestFocusPresets:
         assert InsightCategory.PRODUCTION_TIP in cats
 
     def test_ai_learning_preset_has_correct_categories(self) -> None:
-        """AI learning preset should have AI_CONCEPT, AI_TOOL, MENTAL_MODEL, PRACTICAL_APPLICATION."""
+        """AI learning preset: AI_CONCEPT, AI_TOOL, MENTAL_MODEL, etc."""
         cats = FOCUS_PRESETS["ai-learning"]
         assert len(cats) == 4
         assert InsightCategory.AI_CONCEPT in cats

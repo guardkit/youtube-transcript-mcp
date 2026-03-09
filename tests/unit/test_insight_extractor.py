@@ -14,7 +14,6 @@ from src.models.insight import (
     InsightCategory,
 )
 
-
 # --- Seam Test: verify insight_models contract from TASK-INT-001 ---
 
 
@@ -26,19 +25,17 @@ def test_insight_models_importable() -> None:
     Producer: TASK-INT-001
     """
     from src.models.insight import (
+        FOCUS_PRESETS,
         FocusArea,
         InsightCategory,
-        Insight,
-        KeyQuote,
-        InsightExtractionResult,
-        FOCUS_PRESETS,
-        CATEGORY_DEFINITIONS,
     )
 
     assert len(FocusArea) == 6, f"Expected 6 FocusArea values, got {len(FocusArea)}"
-    assert len(InsightCategory) == 24, f"Expected 24 InsightCategory values, got {len(InsightCategory)}"
+    cat_count = len(InsightCategory)
+    assert cat_count == 24, f"Expected 24 InsightCategory values, got {cat_count}"
     assert len(FOCUS_PRESETS) == 6, f"Expected 6 presets, got {len(FOCUS_PRESETS)}"
-    assert len(CATEGORY_DEFINITIONS) == 24, f"Expected 24 definitions, got {len(CATEGORY_DEFINITIONS)}"
+    def_count = len(CATEGORY_DEFINITIONS)
+    assert def_count == 24, f"Expected 24 definitions, got {def_count}"
 
 
 # --- Tests for get_focus_categories ---
