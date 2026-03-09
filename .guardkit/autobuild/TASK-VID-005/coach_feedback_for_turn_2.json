@@ -1,0 +1,9 @@
+{
+  "turn": 2,
+  "feedback_from_turn": 1,
+  "feedback_summary": "- Not all acceptance criteria met:\n  \u2022 `ruff check src/ tests/` passes with no errors\n  \u2022 `mypy src/` passes with no errors\n  \u2022 Tool shows correct parameter schema (video_url: string)\n  \u2022 Tool docstring visible for LLM discovery",
+  "must_fix": [],
+  "should_fix": [],
+  "validation_results": {},
+  "raw_feedback": "- Not all acceptance criteria met:\n  \u2022 `ruff check src/ tests/` passes with no errors\n  \u2022 `mypy src/` passes with no errors\n  \u2022 Tool shows correct parameter schema (video_url: string)\n  \u2022 Tool docstring visible for LLM discovery"
+}
