@@ -1,38 +1,38 @@
 ---
-id: TASK-VID-002
-title: Create YouTubeClient service with URL parser and yt-dlp wrapper
-status: in_review
+autobuild_state:
+  base_branch: main
+  current_turn: 1
+  last_updated: '2026-03-09T14:37:01.528450'
+  max_turns: 25
+  started_at: '2026-03-09T14:31:41.937874'
+  turns:
+  - coach_success: true
+    decision: approve
+    feedback: null
+    player_success: true
+    player_summary: Implementation via task-work delegation
+    timestamp: '2026-03-09T14:31:41.937874'
+    turn: 1
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA
+complexity: 4
 created: 2026-03-06 00:00:00+00:00
-updated: 2026-03-06 00:00:00+00:00
+dependencies:
+- TASK-VID-001
+feature_id: FEAT-SKEL-002
+id: TASK-VID-002
+implementation_mode: task-work
+parent_review: TASK-REV-7005
 priority: high
+status: design_approved
 tags:
 - service
 - yt-dlp
 - async
 - feat-skel-002
 task_type: feature
-parent_review: TASK-REV-7005
-feature_id: FEAT-SKEL-002
+title: Create YouTubeClient service with URL parser and yt-dlp wrapper
+updated: 2026-03-06 00:00:00+00:00
 wave: 1
-implementation_mode: task-work
-complexity: 4
-dependencies:
-- TASK-VID-001
-autobuild_state:
-  current_turn: 1
-  max_turns: 25
-  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA
-  base_branch: main
-  started_at: '2026-03-09T14:31:41.937874'
-  last_updated: '2026-03-09T14:37:01.528450'
-  turns:
-  - turn: 1
-    decision: approve
-    feedback: null
-    timestamp: '2026-03-09T14:31:41.937874'
-    player_summary: Implementation via task-work delegation
-    player_success: true
-    coach_success: true
 ---
 
 # Task: Create YouTubeClient service with URL parser and yt-dlp wrapper
