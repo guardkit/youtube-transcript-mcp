@@ -1,28 +1,31 @@
 ---
-id: TASK-INT-003
-title: "Register extract_insights and list_focus_areas MCP tools"
-task_type: feature
-parent_review: TASK-REV-A880
-feature_id: FEAT-INT-001
-wave: 3
-implementation_mode: task-work
 complexity: 4
-dependencies:
-  - TASK-INT-002
-status: pending
-priority: high
-tags: [insight-extraction, mcp-tools, tool-registration]
 consumer_context:
-  - task: TASK-INT-001
-    consumes: insight_models
-    framework: "Pydantic v2 (BaseModel, Field, Enum)"
-    driver: "pydantic>=2.0"
-    format_note: "FOCUS_PRESETS and CATEGORY_DEFINITIONS importable from src.models.insight"
-  - task: TASK-INT-002
-    consumes: extraction_service
-    framework: "Python module import"
-    driver: "src.services.insight_extractor"
-    format_note: "prepare_for_extraction and get_focus_categories importable from src.services.insight_extractor"
+- consumes: insight_models
+  driver: pydantic>=2.0
+  format_note: FOCUS_PRESETS and CATEGORY_DEFINITIONS importable from src.models.insight
+  framework: Pydantic v2 (BaseModel, Field, Enum)
+  task: TASK-INT-001
+- consumes: extraction_service
+  driver: src.services.insight_extractor
+  format_note: prepare_for_extraction and get_focus_categories importable from src.services.insight_extractor
+  framework: Python module import
+  task: TASK-INT-002
+dependencies:
+- TASK-INT-002
+feature_id: FEAT-INT-001
+id: TASK-INT-003
+implementation_mode: task-work
+parent_review: TASK-REV-A880
+priority: high
+status: design_approved
+tags:
+- insight-extraction
+- mcp-tools
+- tool-registration
+task_type: feature
+title: Register extract_insights and list_focus_areas MCP tools
+wave: 3
 ---
 
 # Task: Register extract_insights and list_focus_areas MCP Tools
