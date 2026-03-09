@@ -15,7 +15,7 @@ TDD tests covering all acceptance criteria:
 from __future__ import annotations
 
 import dataclasses
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, patch
 
 import pytest
 
@@ -58,14 +58,18 @@ class TestYouTubeClientSeam:
     def test_youtube_client_import(self) -> None:
         """Verify YouTubeClient can be imported from src.services.youtube_client."""
         from src.services.youtube_client import (
-            InvalidURLError as IE,
-            VideoNotFoundError as VNF,
-            YouTubeClient as YTC,
+            InvalidURLError as InvalidUrlErr,
+        )
+        from src.services.youtube_client import (
+            VideoNotFoundError as VideoNotFoundErr,
+        )
+        from src.services.youtube_client import (
+            YouTubeClient as YtClient,
         )
 
-        assert YTC is not None, "YouTubeClient must be importable"
-        assert issubclass(VNF, Exception), "VideoNotFoundError must be an Exception"
-        assert issubclass(IE, Exception), "InvalidURLError must be an Exception"
+        assert YtClient is not None, "YouTubeClient must be importable"
+        assert issubclass(VideoNotFoundErr, Exception), "VideoNotFoundError must be an Exception"
+        assert issubclass(InvalidUrlErr, Exception), "InvalidURLError must be an Exception"
 
 
 # ---------------------------------------------------------------------------
@@ -109,6 +113,7 @@ class TestToolSignature:
     def test_accepts_video_url_param(self) -> None:
         """get_video_info must accept a video_url string parameter."""
         import inspect
+
         import src.__main__ as main_mod
 
         sig = inspect.signature(main_mod.get_video_info)

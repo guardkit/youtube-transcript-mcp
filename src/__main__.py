@@ -10,6 +10,7 @@ from __future__ import annotations
 import dataclasses
 import logging
 import sys
+from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
@@ -35,7 +36,7 @@ youtube_client = YouTubeClient()
 
 
 @mcp.tool()
-async def get_video_info(video_url: str) -> dict:
+async def get_video_info(video_url: str) -> dict[str, Any]:
     """Get metadata for a YouTube video.
 
     Fetches title, channel, duration, description, and caption availability

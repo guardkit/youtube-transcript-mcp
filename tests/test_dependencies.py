@@ -1,6 +1,5 @@
 """Tests to verify project dependencies are correctly installed."""
 
-import importlib
 import sys
 
 if sys.version_info >= (3, 11):
