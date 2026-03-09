@@ -1,22 +1,6 @@
 {
   "task_id": "TASK-INT-002",
-  "timestamp": "2026-03-09T22:58:36.496867",
-  "completed": true,
-  "phases": {
-    "phase_4": {
-      "detected": true,
-      "text": "Testing",
-      "completed": true
-    }
-  },
-  "quality_gates": {
-    "tests_passing": true,
-    "tests_passed": 90,
-    "tests_failed": 0,
-    "coverage": 100.0,
-    "coverage_met": true,
-    "all_passed": true
-  },
+  "turn": 2,
   "files_modified": [
     ".claude/task-plans/TASK-INT-002-implementation-plan.md",
     ".guardkit/autobuild/TASK-INT-001/checkpoints.json",
@@ -40,12 +24,31 @@
     "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/.guardkit/autobuild/TASK-INT-002/player_turn_2.json"
   ],
   "tests_written": [],
-  "summary": "90 tests passed, 100.0% coverage, all quality gates passed",
-  "sdk_turns": {
-    "turns_used": 17,
-    "max_turns": 100,
-    "ceiling_hit": false
-  },
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "",
+  "implementation_notes": "Implementation via task-work delegation",
+  "concerns": [],
+  "requirements_addressed": [
+    "src/services/__init__.py exists",
+    "get_focus_categories(focus_areas) function implemented",
+    "build_extraction_prompt generates structured prompt",
+    "chunk_transcript splits at paragraph boundaries",
+    "prepare_for_extraction returns complete metadata",
+    "get_focus_categories handles 'all' keyword",
+    "get_focus_categories falls back to 'general'",
+    "get_focus_categories deduplicates",
+    "chunk_transcript returns single chunk for short transcripts",
+    "chunk_transcript maintains overlap",
+    "prepare_for_extraction returns all required keys",
+    "Prompt includes category descriptions, format instructions, guidelines",
+    "Code passes ruff check and mypy"
+  ],
+  "requirements_remaining": [],
+  "sdk_turns_used": 17,
+  "sdk_max_turns": 100,
+  "sdk_ceiling_hit": false,
+  "tests_passed_count": 90,
   "completion_promises": [
     {
       "criterion_id": "AC-001",
