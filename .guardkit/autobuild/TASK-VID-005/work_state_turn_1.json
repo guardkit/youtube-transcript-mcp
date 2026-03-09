@@ -1,0 +1,41 @@
+{
+  "turn_number": 1,
+  "files_modified": [
+    "src/__main__.py",
+    "tests/test_dependencies.py",
+    "tests/test_get_video_info_tool.py"
+  ],
+  "files_created": [],
+  "tests_written": [],
+  "tests_passed": true,
+  "test_count": 86,
+  "timestamp": "2026-03-09T20:09:18.069377",
+  "detection_method": "player_report",
+  "git_changes": {
+    "files_modified": [
+      "src/__main__.py",
+      "tests/test_dependencies.py",
+      "tests/test_get_video_info_tool.py"
+    ],
+    "files_added": [
+      ".guardkit/autobuild/TASK-VID-004/checkpoints.json",
+      ".guardkit/autobuild/TASK-VID-005/"
+    ],
+    "files_deleted": [],
+    "diff_stats": "src/__main__.py                   |  3 ++-\n tests/test_dependencies.py        |  1 -\n tests/test_get_video_info_tool.py | 19 ++++++++++++-------\n 3 files changed, 14 insertions(+), 9 deletions(-)",
+    "insertions": 14,
+    "deletions": 9,
+    "timestamp": "2026-03-09T20:09:17.244088"
+  },
+  "test_results": {
+    "tests_run": true,
+    "tests_passed": true,
+    "test_count": 86,
+    "passed_count": 86,
+    "failed_count": 0,
+    "output_summary": "........................................................................ [ 83%]\n..............                                                           [100%]\n=============================== warnings summary ===============================\ntests/test_get_video_info_tool.py:57\n  /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA/tests/test_get_video_info_tool.py:57: PytestUnknownMarkWarning: Unknown pytest.mark.seam - is this a typo?  You can re",
+    "timestamp": "2026-03-09T20:09:18.069167",
+    "error": null
+  },
+  "player_report_available": true
+}

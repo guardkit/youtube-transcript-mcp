@@ -1,0 +1,31 @@
+{
+  "id": "TURN-FEAT-2AAA-1",
+  "feature_id": "FEAT-2AAA",
+  "task_id": "TASK-VID-001",
+  "turn_number": 1,
+  "player_summary": "Implementation attempt",
+  "player_decision": "approve",
+  "coach_decision": "approve",
+  "coach_feedback": null,
+  "mode": "fresh_start",
+  "blockers_found": [],
+  "progress_summary": "Turn 1: approve",
+  "acceptance_criteria_status": {
+    "AC-001": "verified"
+  },
+  "files_modified": [
+    "pyproject.toml",
+    "src/__init__.py",
+    "tests/__init__.py",
+    "tests/test_dependencies.py"
+  ],
+  "tests_passed": null,
+  "tests_failed": null,
+  "coverage": null,
+  "arch_score": null,
+  "started_at": "2026-03-09T19:33:48.895908",
+  "completed_at": "2026-03-09T19:33:48.895908",
+  "duration_seconds": null,
+  "lessons_from_turn": [],
+  "what_to_try_next": null
+}

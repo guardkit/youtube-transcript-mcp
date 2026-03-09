@@ -1,0 +1,47 @@
+{
+  "turn_number": 1,
+  "files_modified": [],
+  "files_created": [
+    "pyproject.toml",
+    "src/__init__.py",
+    "tests/__init__.py",
+    "tests/test_dependencies.py"
+  ],
+  "tests_written": [
+    "tests/test_dependencies.py"
+  ],
+  "tests_passed": true,
+  "test_count": 5,
+  "timestamp": "2026-03-09T19:33:46.325481",
+  "detection_method": "player_report",
+  "git_changes": {
+    "files_modified": [],
+    "files_added": [
+      ".guardkit/autobuild/",
+      "pyproject.toml",
+      "src/",
+      "tasks/backlog/TASK-VID-001-add-ytdlp-dependency.md",
+      "tasks/backlog/TASK-VID-002-create-youtube-client-service.md",
+      "tasks/backlog/TASK-VID-003-register-get-video-info-tool.md",
+      "tasks/backlog/TASK-VID-004-create-unit-tests.md",
+      "tasks/backlog/TASK-VID-005-verify-mcp-inspector-linting.md",
+      "tests/"
+    ],
+    "files_deleted": [],
+    "diff_stats": "",
+    "insertions": 0,
+    "deletions": 0,
+    "timestamp": "2026-03-09T19:33:45.938785"
+  },
+  "test_results": {
+    "tests_run": true,
+    "tests_passed": true,
+    "test_count": 5,
+    "passed_count": 5,
+    "failed_count": 0,
+    "output_summary": ".....                                                                    [100%]\n5 passed in 0.10s\n",
+    "timestamp": "2026-03-09T19:33:46.325297",
+    "error": null
+  },
+  "player_report_available": true
+}
