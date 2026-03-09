@@ -1,0 +1,50 @@
+{
+  "turn_number": 2,
+  "files_modified": [
+    "src/services/insight_extractor.py",
+    "tests/unit/test_insight_extractor.py",
+    "tests/unit/test_insight_models.py",
+    "tests/unit/test_insights.py",
+    "tests/unit/test_mcp_tools.py"
+  ],
+  "files_created": [
+    "pyproject.toml"
+  ],
+  "tests_written": [],
+  "tests_passed": true,
+  "test_count": 174,
+  "timestamp": "2026-03-09T23:18:00.741863",
+  "detection_method": "player_report",
+  "git_changes": {
+    "files_modified": [
+      ".guardkit/autobuild/TASK-INT-005/turn_context.json",
+      "src/services/insight_extractor.py",
+      "tests/unit/test_insight_extractor.py",
+      "tests/unit/test_insight_models.py",
+      "tests/unit/test_insights.py",
+      "tests/unit/test_mcp_tools.py"
+    ],
+    "files_added": [
+      ".guardkit/autobuild/TASK-INT-005/checkpoints.json",
+      ".guardkit/autobuild/TASK-INT-005/coach_feedback_for_turn_2.json",
+      ".guardkit/autobuild/TASK-INT-005/player_turn_2.json",
+      "pyproject.toml"
+    ],
+    "files_deleted": [],
+    "diff_stats": ".guardkit/autobuild/TASK-INT-005/turn_context.json | 4 ++--\n src/services/insight_extractor.py                  | 3 ++-\n tests/unit/test_insight_extractor.py               | 1 +\n tests/unit/test_insight_models.py                  | 1 +\n tests/unit/test_insights.py                        | 1 +\n tests/unit/test_mcp_tools.py                       | 1 +\n 6 files changed, 8 insertions(+), 3 deletions(-)",
+    "insertions": 8,
+    "deletions": 3,
+    "timestamp": "2026-03-09T23:18:00.024919"
+  },
+  "test_results": {
+    "tests_run": true,
+    "tests_passed": true,
+    "test_count": 174,
+    "passed_count": 174,
+    "failed_count": 0,
+    "output_summary": "........................................................................ [ 41%]\n........................................................................ [ 82%]\n..............................                                           [100%]\n=============================== warnings summary ===============================\ntests/unit/test_insight_extractor.py:21\n  /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/tests/unit/test_insight_extractor.p",
+    "timestamp": "2026-03-09T23:18:00.741644",
+    "error": null
+  },
+  "player_report_available": true
+}

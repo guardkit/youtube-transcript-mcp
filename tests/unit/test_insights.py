@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import pytest
 from pydantic import ValidationError
+
 from src.models.insight import (
     CATEGORY_DEFINITIONS,
     FOCUS_PRESETS,

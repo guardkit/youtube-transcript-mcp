@@ -14,6 +14,7 @@ Functions:
 from __future__ import annotations
 
 import logging
+from typing import Any
 
 from src.models.insight import (
     CATEGORY_DEFINITIONS,
@@ -230,7 +231,7 @@ def prepare_for_extraction(
     video_id: str | None = None,
     focus_areas: list[str] | None = None,
     max_insights: int = 10,
-) -> dict:
+) -> dict[str, Any]:
     """Prepare transcript for Claude-assisted insight extraction.
 
     Structures the transcript and creates prompts / metadata that can be

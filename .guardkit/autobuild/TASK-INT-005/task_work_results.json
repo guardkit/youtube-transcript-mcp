@@ -1,6 +1,6 @@
 {
   "task_id": "TASK-INT-005",
-  "timestamp": "2026-03-09T23:14:15.843509",
+  "timestamp": "2026-03-09T23:18:00.742602",
   "completed": true,
   "success": true,
   "implementation_mode": "direct",
@@ -20,12 +20,15 @@
     "all_passed": true
   },
   "files_modified": [
-    "pyproject.toml",
+    "src/services/insight_extractor.py",
     "tests/unit/test_insight_extractor.py",
+    "tests/unit/test_insight_models.py",
     "tests/unit/test_insights.py",
     "tests/unit/test_mcp_tools.py"
   ],
-  "files_created": [],
+  "files_created": [
+    "pyproject.toml"
+  ],
   "tests_written": [],
   "requirements_addressed": [],
   "requirements_met": [],
@@ -63,14 +66,14 @@
       "criterion_id": "AC-005",
       "criterion_text": "`src/models/insight.py` has >90% coverage",
       "status": "partial",
-      "evidence": "Git-analysis detected: Patterns: insight",
+      "evidence": "Git-analysis detected: Patterns: insight, models",
       "evidence_type": "git_analysis"
     },
     {
       "criterion_id": "AC-006",
       "criterion_text": "`src/services/insight_extractor.py` has >90% coverage",
       "status": "partial",
-      "evidence": "Git-analysis detected: Patterns: insight_extractor",
+      "evidence": "Git-analysis detected: Files: src/services/insight_extractor.py (modified); Patterns: /services/insight_extractor",
       "evidence_type": "git_analysis"
     },
     {
@@ -91,7 +94,7 @@
       "criterion_id": "AC-009",
       "criterion_text": "`pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)",
       "status": "partial",
-      "evidence": "Git-analysis detected: Files: pyproject.toml (modified)",
+      "evidence": "Git-analysis detected: Files: pyproject.toml (created)",
       "evidence_type": "git_analysis"
     }
   ],

@@ -1,0 +1,123 @@
+{
+  "task_id": "TASK-INT-005",
+  "turn": 2,
+  "files_modified": [
+    "src/services/insight_extractor.py",
+    "tests/unit/test_insight_extractor.py",
+    "tests/unit/test_insight_models.py",
+    "tests/unit/test_insights.py",
+    "tests/unit/test_mcp_tools.py"
+  ],
+  "files_created": [
+    "pyproject.toml"
+  ],
+  "tests_written": [],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "174 passed, 5 warnings. Coverage: TOTAL 95% (167 stmts, 8 missed). insight.py: 100%. insight_extractor.py: 100%. Rootdir correctly resolves to worktree.",
+  "implementation_notes": "Turn 2 fixes address coach feedback from Turn 1. Root cause: pyproject.toml was missing from the worktree (only existed in parent project), so (1) coach git-analysis couldn't see pydantic>=2.0 dependency, (2) ruff/mypy ran without local config causing different behavior. Fixes: Created pyproject.toml in worktree with pydantic>=2.0 in dependencies. Fixed mypy strict error in insight_extractor.py (dict -> dict[str, Any]). Fixed 4 additional ruff I001 import sorting errors that surfaced with local pyproject.toml config.",
+  "concerns": [],
+  "requirements_addressed": [
+    "AC-001: ruff check src/ tests/ passes with zero errors",
+    "AC-002: mypy src/ passes with zero errors",
+    "AC-003: pytest tests/ -v — all 174 tests pass",
+    "AC-004: pytest coverage 95% overall (>80% threshold)",
+    "AC-005: src/models/insight.py has 100% coverage (>90% threshold)",
+    "AC-006: src/services/insight_extractor.py has 100% coverage (>90% threshold)",
+    "AC-007: No regressions — all 174 existing tests pass",
+    "AC-008: extract_insights and list_focus_areas tools discoverable via MCP",
+    "AC-009: pydantic>=2.0 listed in pyproject.toml dependencies"
+  ],
+  "requirements_remaining": [],
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "`ruff check src/ tests/` passes with zero errors",
+      "status": "complete",
+      "evidence": "Ran `ruff check src/ tests/` — output: 'All checks passed!' Fixed 4 additional I001 import sorting errors in test files that appeared when ruff found the local pyproject.toml config. All files now pass ruff with zero errors.",
+      "test_file": null,
+      "implementation_files": [
+        "tests/unit/test_insight_extractor.py",
+        "tests/unit/test_insight_models.py",
+        "tests/unit/test_insights.py",
+        "tests/unit/test_mcp_tools.py",
+        "pyproject.toml"
+      ]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "`mypy src/` passes with zero errors",
+      "status": "complete",
+      "evidence": "Ran `PYTHONPATH=. mypy src/` — output: 'Success: no issues found in 6 source files'. Fixed strict mode error in src/services/insight_extractor.py: changed `-> dict:` to `-> dict[str, Any]:` and added `from typing import Any` import to satisfy mypy strict type-arg rule.",
+      "test_file": null,
+      "implementation_files": [
+        "src/services/insight_extractor.py",
+        "pyproject.toml"
+      ]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "`pytest tests/ -v` \u2014 all tests pass",
+      "status": "complete",
+      "evidence": "Ran `PYTHONPATH=. pytest tests/ -v` — 174 passed, 5 warnings (custom marks only). Zero failures. Rootdir correctly resolves to worktree with local pyproject.toml.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": []
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "`pytest tests/ --cov=src --cov-report=term` \u2014 >80% coverage overall",
+      "status": "complete",
+      "evidence": "Ran `PYTHONPATH=. pytest tests/ --cov=src --cov-report=term` — TOTAL: 167 stmts, 8 missed, 95% coverage. Well above 80% threshold. The 8 missed lines are in __main__.py (if __name__ == '__main__' block).",
+      "test_file": null,
+      "implementation_files": []
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "`src/models/insight.py` has >90% coverage",
+      "status": "complete",
+      "evidence": "Coverage report shows src/models/insight.py: 57 stmts, 0 missed, 100% coverage. Well above 90% threshold.",
+      "test_file": "tests/unit/test_insight_models.py",
+      "implementation_files": [
+        "src/models/insight.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "`src/services/insight_extractor.py` has >90% coverage",
+      "status": "complete",
+      "evidence": "Coverage report shows src/services/insight_extractor.py: 72 stmts, 0 missed, 100% coverage. Well above 90% threshold. Added `from typing import Any` import (1 new stmt) which is also covered.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "No regressions in existing tests (test_ping, test_video_info, test_transcript if they exist)",
+      "status": "complete",
+      "evidence": "No test_ping, test_video_info, or test_transcript test files exist in the worktree. All 174 existing tests pass without regressions. No tests were removed or modified in ways that reduce coverage.",
+      "test_file": null,
+      "implementation_files": []
+    },
+    {
+      "criterion_id": "AC-008",
+      "criterion_text": "Both `extract_insights` and `list_focus_areas` tools are discoverable via MCP",
+      "status": "complete",
+      "evidence": "Both tools registered at module level in src/__main__.py with @mcp.tool() decorator (lines 38 and 148). TestToolRegistration class verifies: test_extract_insights_is_registered and test_list_focus_areas_is_registered both pass. test_mcp_server_exists confirms FastMCP instance exists.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-009",
+      "criterion_text": "`pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)",
+      "status": "complete",
+      "evidence": "Created pyproject.toml in the worktree with `pydantic>=2.0` in dependencies (line 10). The file is now visible to git-analysis within the worktree. Verified with grep: pyproject.toml line 10 contains '\"pydantic>=2.0\"'.",
+      "test_file": null,
+      "implementation_files": [
+        "pyproject.toml"
+      ]
+    }
+  ]
+}

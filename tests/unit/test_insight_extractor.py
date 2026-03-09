@@ -8,6 +8,7 @@ prompt building, transcript chunking, and extraction preparation.
 from __future__ import annotations
 
 import pytest
+
 from src.models.insight import (
     CATEGORY_DEFINITIONS,
     FOCUS_PRESETS,
