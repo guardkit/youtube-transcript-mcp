@@ -1,0 +1,75 @@
+{
+  "task_id": "TASK-TRS-001",
+  "turn": 1,
+  "decision": "approve",
+  "validation_results": {
+    "quality_gates": {
+      "tests_passed": true,
+      "coverage_met": true,
+      "arch_review_passed": true,
+      "plan_audit_passed": true,
+      "all_gates_passed": true
+    },
+    "independent_tests": {
+      "tests_passed": true,
+      "test_command": "skipped",
+      "test_output_summary": "Independent test verification skipped (tests not required for scaffolding tasks)",
+      "duration_seconds": 0.0
+    },
+    "requirements": {
+      "criteria_total": 1,
+      "criteria_met": 1,
+      "all_criteria_met": true,
+      "missing": []
+    }
+  },
+  "criteria_verification": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "`youtube-transcript-api>=1.0.0` added to `[project.dependencies]` in pyproject.toml",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "File-existence verified: pyproject.toml (created)",
+      "notes": "File-existence verified: pyproject.toml (created)"
+    }
+  ],
+  "acceptance_criteria_verification": {
+    "criteria_results": [
+      {
+        "criterion_id": "AC-001",
+        "criterion_text": "`youtube-transcript-api>=1.0.0` added to `[project.dependencies]` in pyproject.toml",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "File-existence verified: pyproject.toml (created)",
+        "notes": "File-existence verified: pyproject.toml (created)"
+      }
+    ]
+  },
+  "issues": [],
+  "rationale": "All quality gates passed. Tests not required for this task type. All acceptance criteria met. Architecture context: 425 chars provided.",
+  "context_used": "## Job-Specific Context\n\nBudget: 2204/5200 tokens\n\n### \ud83c\udfa8 Relevant Patterns\n- ASSIGNS_TASK_TO\n- PROVIDES_BENEFIT\n- ASSOCIATED_WITH_PROJECT\n- USES_PATTERN\n- USES_TEMPLATE\n\n### \u26a0\ufe0f Warnings\n- DEPENDS_ON\n- REQUIRES_USE_OF\n- INCORRECT_MODE_BEHAVIOR\n\n### \ud83c\udfad Role Constraints\n- INVOLVES_WORKFLOW_ENTITY\n- HAS_ROLE_MUST_DO\n- PROJECT_INVOLVES\n- DELEGATES_TO\n\n### \ud83d\udee0\ufe0f Implementation Modes\n- APPLIES_TO_TASK\n- CREATED_BY\n- APPLIES_TO_TASK\n",
+  "approved_without_independent_tests": false,
+  "is_configuration_error": false,
+  "command_results": [
+    {
+      "criterion_text": "`pip install -e \".[dev]\"` completes without errors",
+      "extracted_command": "/usr/local/bin/python3 -m pip install -e \".[dev]\"",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "Obtaining file:///Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6F80\n  Installing build dependencies: started\n  Installing build dependencies: finished with status 'done'\n  Checking if build backend supports build_editable: started\n  Checking if build backend supports build_editable: finished with status 'done'\n  Getting requirements to build editable: started\n  Getting requirements to build editable: finished with status 'done'\n  Installing back",
+      "stderr": "",
+      "elapsed_seconds": 2.36,
+      "timed_out": false
+    },
+    {
+      "criterion_text": "`python -c \"from youtube_transcript_api import YouTubeTranscriptApi; print('OK')\"` succeeds",
+      "extracted_command": "python -c \"from youtube_transcript_api import YouTubeTranscriptApi; print('OK')\"",
+      "passed": true,
+      "exit_code": 0,
+      "stdout": "OK\n",
+      "stderr": "",
+      "elapsed_seconds": 0.101,
+      "timed_out": false
+    }
+  ]
+}

@@ -8,6 +8,7 @@ license = {text = "MIT"}
 dependencies = [
     "mcp>=1.0.0",
     "yt-dlp>=2024.1.0",
+    "youtube-transcript-api>=1.0.0",
 ]
 
 [project.optional-dependencies]
@@ -45,4 +46,8 @@ warn_unused_configs = true
 
 [[tool.mypy.overrides]]
 module = "yt_dlp.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "youtube_transcript_api.*"
 ignore_missing_imports = true

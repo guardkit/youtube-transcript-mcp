@@ -1,0 +1,31 @@
+{
+  "id": "TURN-FEAT-6F80-1",
+  "feature_id": "FEAT-6F80",
+  "task_id": "TASK-TRS-001",
+  "turn_number": 1,
+  "player_summary": "Implementation attempt",
+  "player_decision": "approve",
+  "coach_decision": "approve",
+  "coach_feedback": null,
+  "mode": "fresh_start",
+  "blockers_found": [],
+  "progress_summary": "Turn 1: approve",
+  "acceptance_criteria_status": {
+    "AC-001": "verified"
+  },
+  "files_modified": [
+    "pyproject.toml",
+    "src/__init__.py",
+    "tests/__init__.py",
+    "tests/test_dependency.py"
+  ],
+  "tests_passed": null,
+  "tests_failed": null,
+  "coverage": null,
+  "arch_score": null,
+  "started_at": "2026-03-09T21:43:38.721236",
+  "completed_at": "2026-03-09T21:43:38.721236",
+  "duration_seconds": null,
+  "lessons_from_turn": [],
+  "what_to_try_next": null
+}

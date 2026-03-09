@@ -1,0 +1,30 @@
+{
+  "id": "TURN-FEAT-6F80-3",
+  "feature_id": "FEAT-6F80",
+  "task_id": "TASK-TRS-005",
+  "turn_number": 3,
+  "player_summary": "Implementation attempt",
+  "player_decision": "approve",
+  "coach_decision": "approve",
+  "coach_feedback": null,
+  "mode": "recovering_state",
+  "blockers_found": [],
+  "progress_summary": "Turn 3: approve",
+  "acceptance_criteria_status": {
+    "AC-001": "verified",
+    "AC-002": "verified",
+    "AC-003": "verified",
+    "AC-004": "verified",
+    "AC-005": "verified"
+  },
+  "files_modified": [],
+  "tests_passed": null,
+  "tests_failed": null,
+  "coverage": null,
+  "arch_score": null,
+  "started_at": "2026-03-09T22:07:46.317350",
+  "completed_at": "2026-03-09T22:07:46.317350",
+  "duration_seconds": null,
+  "lessons_from_turn": [],
+  "what_to_try_next": null
+}

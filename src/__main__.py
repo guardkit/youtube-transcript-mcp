@@ -1,4 +1,4 @@
-"""YouTube Transcript MCP Server - tool registration module.
+"""YouTube Transcript MCP Server — tool registration module.
 
 All MCP tools are registered at module level using @mcp.tool() decorator.
 stdout is reserved exclusively for MCP JSON-RPC messages; all logging
@@ -7,19 +7,19 @@ goes to stderr.
 
 from __future__ import annotations
 
-import dataclasses
 import logging
 import sys
-from datetime import datetime, timezone
 from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
-from src.services.youtube_client import (
-    InvalidURLError,
-    VideoNotFoundError,
-    YouTubeClient,
+from src.services.transcript_client import (
+    NoTranscriptFoundError,
+    TranscriptClient,
+    TranscriptsDisabledError,
+    VideoUnavailableError,
 )
+from src.services.youtube_client import InvalidURLError, extract_video_id
 
 # Server metadata
 SERVER_NAME = "youtube-transcript-mcp"
@@ -36,34 +36,22 @@ logger = logging.getLogger(__name__)
 # FastMCP server instance
 mcp = FastMCP(name=SERVER_NAME)
 
-# Module-level client instance
-youtube_client = YouTubeClient()
+# Module-level client instances (singleton pattern)
+transcript_client = TranscriptClient()
 
 
 @mcp.tool()
-async def ping() -> dict[str, str]:
-    """Health check - returns server status.
+async def get_transcript(
+    video_url: str,
+    language: str = "en",
+) -> dict[str, Any]:
+    """Fetch transcript for a YouTube video.
 
-    Use this to verify the MCP server is running and responsive.
-
-    Returns:
-        Dictionary with status, server name, version, and UTC timestamp.
-    """
-    return {
-        "status": "healthy",
-        "server": SERVER_NAME,
-        "version": SERVER_VERSION,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
-    }
-
-
-@mcp.tool()
-async def get_video_info(video_url: str) -> dict[str, Any]:
-    """Get metadata for a YouTube video.
-
-    Fetches title, channel, duration, description, and caption availability
-    for a YouTube video. Use this before fetching transcripts to verify
-    the video exists and has captions available.
+    Retrieves the transcript/captions for a YouTube video with intelligent
+    language fallback. If the requested language isn't available, it tries:
+    1. Auto-generated version of requested language
+    2. Any English variant
+    3. First available transcript
 
     Args:
         video_url: YouTube URL or video ID. Supports formats:
@@ -72,24 +60,17 @@ async def get_video_info(video_url: str) -> dict[str, Any]:
             - https://youtube.com/embed/VIDEO_ID
             - https://m.youtube.com/watch?v=VIDEO_ID
             - VIDEO_ID (just the 11-character video ID)
+        language: Preferred language code (default: "en").
+            Common codes: en, es, fr, de, ja, ko, zh-Hans, pt
 
     Returns:
-        Dictionary with video metadata including:
-        - video_id: The YouTube video ID
-        - title: Video title
-        - channel: Channel name
-        - duration_formatted: Duration as "MM:SS" or "HH:MM:SS"
-        - description_snippet: First 500 chars of description
-        - has_captions: Whether manual captions exist
-        - has_auto_captions: Whether auto-generated captions exist
-        - available_languages: List of available caption languages
+        Dictionary containing video_id, language, language_code,
+        is_auto_generated, segments, full_text, total_segments, and
+        total_duration_seconds. Or error dict if transcript unavailable.
     """
+    # Extract video ID from URL
     try:
-        info = await youtube_client.get_video_info(video_url)
-        return {
-            field.name: getattr(info, field.name)
-            for field in dataclasses.fields(info)
-        }
+        video_id = extract_video_id(video_url)
     except InvalidURLError as e:
         return {
             "error": {
@@ -98,21 +79,109 @@ async def get_video_info(video_url: str) -> dict[str, Any]:
                 "message": str(e),
             }
         }
-    except VideoNotFoundError as e:
+
+    # Fetch transcript via TranscriptClient
+    try:
+        result = await transcript_client.get_transcript(video_id, language)
+        return {
+            "video_id": result.video_id,
+            "language": result.language,
+            "language_code": result.language_code,
+            "is_auto_generated": result.is_auto_generated,
+            "segments": [
+                {
+                    "start": seg.start,
+                    "duration": seg.duration,
+                    "text": seg.text,
+                }
+                for seg in result.segments
+            ],
+            "full_text": result.full_text,
+            "total_segments": result.total_segments,
+            "total_duration_seconds": result.total_duration_seconds,
+        }
+
+    except TranscriptsDisabledError as e:
         return {
             "error": {
                 "category": "client_error",
-                "code": "VIDEO_NOT_FOUND",
+                "code": "TRANSCRIPTS_DISABLED",
                 "message": str(e),
             }
         }
+
+    except NoTranscriptFoundError as e:
+        return {
+            "error": {
+                "category": "client_error",
+                "code": "NO_TRANSCRIPT_FOUND",
+                "message": str(e),
+                "available_languages": e.available_languages,
+            }
+        }
+
+    except VideoUnavailableError as e:
+        return {
+            "error": {
+                "category": "client_error",
+                "code": "VIDEO_UNAVAILABLE",
+                "message": str(e),
+            }
+        }
+
     except Exception as e:
-        logger.exception("Unexpected error fetching video info: %s", e)
+        logger.exception("Unexpected error fetching transcript: %s", e)
         return {
             "error": {
                 "category": "server_error",
                 "code": "INTERNAL_ERROR",
-                "message": "Failed to fetch video info",
+                "message": "Failed to fetch transcript",
+            }
+        }
+
+
+@mcp.tool()
+async def list_available_transcripts(video_url: str) -> dict[str, Any]:
+    """List all available transcripts for a YouTube video.
+
+    Returns information about all available transcripts including
+    language codes and whether they are auto-generated or manual.
+    Useful for checking what's available before fetching.
+
+    Args:
+        video_url: YouTube URL or video ID. Supports the same formats
+            as get_transcript.
+
+    Returns:
+        Dictionary containing video_id, transcripts list, and count.
+        Each transcript has language, language_code, and is_generated.
+        Or error dict if request fails.
+    """
+    try:
+        video_id = extract_video_id(video_url)
+    except InvalidURLError as e:
+        return {
+            "error": {
+                "category": "client_error",
+                "code": "INVALID_URL",
+                "message": str(e),
+            }
+        }
+
+    try:
+        transcripts = await transcript_client.list_transcripts(video_id)
+        return {
+            "video_id": video_id,
+            "transcripts": transcripts,
+            "count": len(transcripts),
+        }
+    except Exception as e:
+        logger.exception("Unexpected error listing transcripts: %s", e)
+        return {
+            "error": {
+                "category": "server_error",
+                "code": "INTERNAL_ERROR",
+                "message": "Failed to list transcripts",
             }
         }
 
