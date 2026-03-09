@@ -1,24 +1,44 @@
 ---
 id: TASK-TRS-003
-title: "Register get_transcript and list_available_transcripts tools"
+title: Register get_transcript and list_available_transcripts tools
 task_type: feature
 parent_review: TASK-REV-9AD6
 feature_id: FEAT-SKEL-003
-status: pending
+status: in_review
 priority: high
 wave: 3
 implementation_mode: task-work
 complexity: 4
 dependencies:
-  - TASK-TRS-002
-tags: [mcp-tool, transcript, registration, feature]
+- TASK-TRS-002
+tags:
+- mcp-tool
+- transcript
+- registration
+- feature
 estimated_minutes: 60
 consumer_context:
-  - task: TASK-TRS-002
-    consumes: TranscriptClient
-    framework: "FastMCP tool registration"
-    driver: "mcp.server.fastmcp"
-    format_note: "TranscriptClient must be importable from src.services.transcript_client and instantiable at module level"
+- task: TASK-TRS-002
+  consumes: TranscriptClient
+  framework: FastMCP tool registration
+  driver: mcp.server.fastmcp
+  format_note: TranscriptClient must be importable from src.services.transcript_client
+    and instantiable at module level
+autobuild_state:
+  current_turn: 1
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6F80
+  base_branch: main
+  started_at: '2026-03-09T21:48:18.295049'
+  last_updated: '2026-03-09T21:55:13.512101'
+  turns:
+  - turn: 1
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-09T21:48:18.295049'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Register get_transcript and list_available_transcripts Tools
