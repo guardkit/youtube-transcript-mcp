@@ -1,17 +1,20 @@
 ---
-id: TASK-INT-004
-title: "Create unit tests for insight extraction"
-task_type: testing
-parent_review: TASK-REV-A880
-feature_id: FEAT-INT-001
-wave: 4
-implementation_mode: task-work
 complexity: 4
 dependencies:
-  - TASK-INT-003
-status: pending
+- TASK-INT-003
+feature_id: FEAT-INT-001
+id: TASK-INT-004
+implementation_mode: task-work
+parent_review: TASK-REV-A880
 priority: high
-tags: [insight-extraction, testing, unit-tests]
+status: design_approved
+tags:
+- insight-extraction
+- testing
+- unit-tests
+task_type: testing
+title: Create unit tests for insight extraction
+wave: 4
 ---
 
 # Task: Create Unit Tests for Insight Extraction
