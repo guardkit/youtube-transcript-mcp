@@ -1,24 +1,29 @@
 ---
-id: TASK-TRS-003
-title: "Register get_transcript and list_available_transcripts tools"
-task_type: feature
-parent_review: TASK-REV-9AD6
-feature_id: FEAT-SKEL-003
-status: pending
-priority: high
-wave: 3
-implementation_mode: task-work
 complexity: 4
-dependencies:
-  - TASK-TRS-002
-tags: [mcp-tool, transcript, registration, feature]
-estimated_minutes: 60
 consumer_context:
-  - task: TASK-TRS-002
-    consumes: TranscriptClient
-    framework: "FastMCP tool registration"
-    driver: "mcp.server.fastmcp"
-    format_note: "TranscriptClient must be importable from src.services.transcript_client and instantiable at module level"
+- consumes: TranscriptClient
+  driver: mcp.server.fastmcp
+  format_note: TranscriptClient must be importable from src.services.transcript_client
+    and instantiable at module level
+  framework: FastMCP tool registration
+  task: TASK-TRS-002
+dependencies:
+- TASK-TRS-002
+estimated_minutes: 60
+feature_id: FEAT-SKEL-003
+id: TASK-TRS-003
+implementation_mode: task-work
+parent_review: TASK-REV-9AD6
+priority: high
+status: design_approved
+tags:
+- mcp-tool
+- transcript
+- registration
+- feature
+task_type: feature
+title: Register get_transcript and list_available_transcripts tools
+wave: 3
 ---
 
 # Task: Register get_transcript and list_available_transcripts Tools
