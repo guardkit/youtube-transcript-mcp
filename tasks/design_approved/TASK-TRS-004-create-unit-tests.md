@@ -1,19 +1,22 @@
 ---
-id: TASK-TRS-004
-title: "Create unit tests for transcript tools"
-task_type: testing
-parent_review: TASK-REV-9AD6
-feature_id: FEAT-SKEL-003
-status: pending
-priority: high
-wave: 4
-implementation_mode: task-work
 complexity: 4
 dependencies:
-  - TASK-TRS-002
-  - TASK-TRS-003
-tags: [testing, transcript, unit-tests]
+- TASK-TRS-002
+- TASK-TRS-003
 estimated_minutes: 60
+feature_id: FEAT-SKEL-003
+id: TASK-TRS-004
+implementation_mode: task-work
+parent_review: TASK-REV-9AD6
+priority: high
+status: design_approved
+tags:
+- testing
+- transcript
+- unit-tests
+task_type: testing
+title: Create unit tests for transcript tools
+wave: 4
 ---
 
 # Task: Create Unit Tests for Transcript Tools
