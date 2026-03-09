@@ -2,8 +2,24 @@
 # Project-specific settings for knowledge capture
 
 # Project ID for namespace prefixing
-# This ensures knowledge persists across directory moves/renames
 project_id: youtube-transcript-mcp
 
 # Enable Graphiti integration
 enabled: true
+
+# Shared FalkorDB infrastructure (must match guardkit config)
+graph_store: falkordb
+falkordb_host: whitestocks
+falkordb_port: 6379
+timeout: 30.0
+max_concurrent_episodes: 3
+
+# LLM provider for entity extraction
+llm_provider: vllm
+llm_base_url: http://promaxgb10-41b1:8000/v1
+llm_model: claude-sonnet-4-6
+
+# Embedding provider - MUST match seeding model for shared FalkorDB
+embedding_provider: vllm
+embedding_base_url: http://promaxgb10-41b1:8001/v1
+embedding_model: nomic-embed-text-v1.5

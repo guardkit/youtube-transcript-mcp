@@ -1,11 +1,14 @@
 ---
 id: TASK-VID-003
-title: "Register get_video_info tool in __main__.py"
-status: pending
-created: 2026-03-06T00:00:00Z
-updated: 2026-03-06T00:00:00Z
+title: Register get_video_info tool in __main__.py
+status: in_review
+created: 2026-03-06 00:00:00+00:00
+updated: 2026-03-06 00:00:00+00:00
 priority: high
-tags: [mcp-tool, registration, feat-skel-002]
+tags:
+- mcp-tool
+- registration
+- feat-skel-002
 task_type: feature
 parent_review: TASK-REV-7005
 feature_id: FEAT-SKEL-002
@@ -13,13 +16,28 @@ wave: 2
 implementation_mode: task-work
 complexity: 2
 dependencies:
-  - TASK-VID-002
+- TASK-VID-002
 consumer_context:
-  - task: TASK-VID-002
-    consumes: YouTubeClient
-    framework: "FastMCP tool registration"
-    driver: "mcp.server.fastmcp"
-    format_note: "Import YouTubeClient, VideoNotFoundError, InvalidURLError from src.services.youtube_client"
+- task: TASK-VID-002
+  consumes: YouTubeClient
+  framework: FastMCP tool registration
+  driver: mcp.server.fastmcp
+  format_note: Import YouTubeClient, VideoNotFoundError, InvalidURLError from src.services.youtube_client
+autobuild_state:
+  current_turn: 1
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA
+  base_branch: main
+  started_at: '2026-03-09T19:58:45.819392'
+  last_updated: '2026-03-09T20:03:14.837175'
+  turns:
+  - turn: 1
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-09T19:58:45.819392'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Register get_video_info tool in __main__.py
