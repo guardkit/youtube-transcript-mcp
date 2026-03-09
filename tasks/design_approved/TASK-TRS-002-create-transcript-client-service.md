@@ -1,18 +1,22 @@
 ---
-id: TASK-TRS-002
-title: "Create TranscriptClient service"
-task_type: feature
-parent_review: TASK-REV-9AD6
-feature_id: FEAT-SKEL-003
-status: pending
-priority: high
-wave: 2
-implementation_mode: task-work
 complexity: 5
 dependencies:
-  - TASK-TRS-001
-tags: [service, transcript, async, feature]
+- TASK-TRS-001
 estimated_minutes: 90
+feature_id: FEAT-SKEL-003
+id: TASK-TRS-002
+implementation_mode: task-work
+parent_review: TASK-REV-9AD6
+priority: high
+status: design_approved
+tags:
+- service
+- transcript
+- async
+- feature
+task_type: feature
+title: Create TranscriptClient service
+wave: 2
 ---
 
 # Task: Create TranscriptClient Service
