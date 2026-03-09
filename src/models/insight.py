@@ -1,7 +1,7 @@
 """Pydantic models for insight extraction.
 
 Defines enums, models, and mappings for the insight extraction feature.
-Provides 6 focus area presets with 23 total insight categories.
+Provides 6 focus area presets with 24 total insight categories.
 """
 
 from __future__ import annotations
@@ -25,13 +25,14 @@ class FocusArea(str, Enum):
 class InsightCategory(str, Enum):
     """Categories for extracted insights.
 
-    24 categories across 6 focus areas (general has 3, others have 4 each).
+    24 categories across 6 focus areas (4 per focus area).
     """
 
-    # General (3 categories)
+    # General (4 categories)
     KEY_POINT = "key_point"
     ACTION_ITEM = "action_item"
     NOTABLE_QUOTE = "notable_quote"
+    CONTEXT = "context"
 
     # Entrepreneurial (4 categories)
     BUSINESS_STRATEGY = "business_strategy"
@@ -112,6 +113,7 @@ FOCUS_PRESETS: dict[str, list[InsightCategory]] = {
         InsightCategory.KEY_POINT,
         InsightCategory.ACTION_ITEM,
         InsightCategory.NOTABLE_QUOTE,
+        InsightCategory.CONTEXT,
     ],
     "entrepreneurial": [
         InsightCategory.BUSINESS_STRATEGY,
@@ -151,6 +153,9 @@ CATEGORY_DEFINITIONS: dict[InsightCategory, str] = {
     InsightCategory.KEY_POINT: "Main takeaways and central ideas",
     InsightCategory.ACTION_ITEM: "Specific actions viewers can take",
     InsightCategory.NOTABLE_QUOTE: "Memorable or impactful statements",
+    InsightCategory.CONTEXT: (
+        "Background context, framing, and important situational details"
+    ),
     InsightCategory.BUSINESS_STRATEGY: (
         "Core business approaches, models, and strategic decisions"
     ),

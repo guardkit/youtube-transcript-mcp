@@ -1,26 +1,6 @@
 {
   "task_id": "TASK-INT-001",
-  "timestamp": "2026-03-09T22:50:57.702501",
-  "completed": true,
-  "phases": {
-    "phase_3": {
-      "detected": true,
-      "text": "Implementation",
-      "completed": false
-    },
-    "phase_4": {
-      "detected": true,
-      "completed": true
-    }
-  },
-  "quality_gates": {
-    "tests_passing": true,
-    "tests_passed": 51,
-    "tests_failed": 0,
-    "coverage": 100.0,
-    "coverage_met": true,
-    "all_passed": true
-  },
+  "turn": 2,
   "files_modified": [
     ".claude/task-plans/TASK-INT-001-implementation-plan.md",
     ".guardkit-git.lock",
@@ -52,12 +32,28 @@
   "tests_written": [
     "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/tests/unit/test_insight_models.py"
   ],
-  "summary": "51 tests passed, 100.0% coverage, all quality gates passed",
-  "sdk_turns": {
-    "turns_used": 21,
-    "max_turns": 100,
-    "ceiling_hit": false
-  },
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "",
+  "implementation_notes": "Implementation via task-work delegation",
+  "concerns": [],
+  "requirements_addressed": [
+    "src/models/__init__.py exists",
+    "FocusArea enum with 6 values",
+    "InsightCategory enum with 24 categories (4 per focus area)",
+    "Insight model with all fields and constraints",
+    "KeyQuote model with all fields and constraints",
+    "InsightExtractionResult model with all fields",
+    "FOCUS_PRESETS mapping with 4 categories per focus area",
+    "CATEGORY_DEFINITIONS for all 24 categories",
+    "All models importable from src.models.insight",
+    "Code passes ruff check"
+  ],
+  "requirements_remaining": [],
+  "sdk_turns_used": 21,
+  "sdk_max_turns": 100,
+  "sdk_ceiling_hit": false,
+  "tests_passed_count": 51,
   "completion_promises": [
     {
       "criterion_id": "AC-001",

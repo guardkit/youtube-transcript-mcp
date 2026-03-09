@@ -52,14 +52,15 @@ class TestFocusAreaEnum:
 class TestInsightCategoryEnum:
     """Tests for the InsightCategory enum."""
 
-    def test_has_expected_category_count(self) -> None:
-        """3 general + 4 entrepreneurial + 4 investment + 4 technical + 4 youtube + 4 ai = 23."""
-        assert len(InsightCategory) == 23
+    def test_has_exactly_24_values(self) -> None:
+        """4 general + 4 entrepreneurial + 4 investment + 4 technical + 4 youtube + 4 ai = 24."""
+        assert len(InsightCategory) == 24
 
     def test_general_categories(self) -> None:
         assert InsightCategory.KEY_POINT.value == "key_point"
         assert InsightCategory.ACTION_ITEM.value == "action_item"
         assert InsightCategory.NOTABLE_QUOTE.value == "notable_quote"
+        assert InsightCategory.CONTEXT.value == "context"
 
     def test_entrepreneurial_categories(self) -> None:
         assert InsightCategory.BUSINESS_STRATEGY.value == "business_strategy"
@@ -304,11 +305,13 @@ class TestFocusPresets:
     def test_has_exactly_six_presets(self) -> None:
         assert len(FOCUS_PRESETS) == 6
 
-    def test_general_preset(self) -> None:
+    def test_general_preset_has_four_categories(self) -> None:
         cats = FOCUS_PRESETS["general"]
+        assert len(cats) == 4
         assert InsightCategory.KEY_POINT in cats
         assert InsightCategory.ACTION_ITEM in cats
         assert InsightCategory.NOTABLE_QUOTE in cats
+        assert InsightCategory.CONTEXT in cats
 
     def test_entrepreneurial_preset_has_four_categories(self) -> None:
         cats = FOCUS_PRESETS["entrepreneurial"]
