@@ -1,0 +1,122 @@
+{
+  "task_id": "TASK-VID-004",
+  "timestamp": "2026-03-09T20:06:11.474935",
+  "completed": true,
+  "phases": {
+    "phase_3": {
+      "detected": true,
+      "text": "Implementation",
+      "completed": false
+    },
+    "phase_4": {
+      "detected": true,
+      "completed": true
+    }
+  },
+  "quality_gates": {
+    "tests_passing": true,
+    "tests_passed": 86,
+    "tests_failed": 0,
+    "coverage": 99.0,
+    "coverage_met": true,
+    "all_passed": true
+  },
+  "files_modified": [
+    "coverage.json",
+    "tasks/backlog/TASK-VID-004-create-unit-tests.md"
+  ],
+  "files_created": [
+    ".claude/task-plans/TASK-VID-004-implementation-plan.md",
+    ".guardkit/autobuild/TASK-VID-003/checkpoints.json",
+    ".guardkit/autobuild/TASK-VID-004/player_turn_1.json",
+    ".guardkit/autobuild/TASK-VID-004/task_work_results.json",
+    ".guardkit/autobuild/TASK-VID-004/turn_context.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA/.guardkit/autobuild/TASK-VID-004/player_turn_1.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA/tests/unit/__init__.py",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA/tests/unit/test_video_info.py",
+    "tasks/design_approved/TASK-VID-004-create-unit-tests.md",
+    "tests/unit/__init__.py",
+    "tests/unit/test_video_info.py"
+  ],
+  "tests_written": [
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA/tests/unit/test_video_info.py"
+  ],
+  "summary": "86 tests passed, 99.0% coverage, all quality gates passed",
+  "sdk_turns": {
+    "turns_used": 29,
+    "max_turns": 100,
+    "ceiling_hit": false
+  },
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "TestExtractVideoId: standard URL, short URL, embed URL, mobile URL, bare ID, URL with extra params",
+      "status": "complete",
+      "evidence": "TestExtractVideoId class contains 6 tests: test_standard_url, test_short_url, test_embed_url, test_mobile_url, test_bare_id, test_url_with_extra_params. All 6 pass.",
+      "test_file": "tests/unit/test_video_info.py",
+      "implementation_files": [
+        "tests/unit/test_video_info.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "TestExtractVideoId: invalid URL raises InvalidURLError, empty string raises InvalidURLError",
+      "status": "complete",
+      "evidence": "TestExtractVideoIdErrors class contains test_invalid_url_raises and test_empty_string_raises plus additional edge cases (whitespace-only, too short/long ID, non-YouTube site). All pass and verify InvalidURLError is raised.",
+      "test_file": "tests/unit/test_video_info.py",
+      "implementation_files": [
+        "tests/unit/test_video_info.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "TestYouTubeClient: get_video_info success path with mocked _sync_get_info",
+      "status": "complete",
+      "evidence": "TestYouTubeClient.test_get_video_info_success patches _sync_get_info with a mock VideoInfo return value and verifies get_video_info returns a VideoInfo instance. Additionally test_sync_get_info_with_mocked_ytdlp tests the full _sync_get_info path with mocked yt_dlp.YoutubeDL. All pass.",
+      "test_file": "tests/unit/test_video_info.py",
+      "implementation_files": [
+        "tests/unit/test_video_info.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "TestYouTubeClient: verifies video_id, title, has_captions, available_languages from mock",
+      "status": "complete",
+      "evidence": "Four dedicated tests verify individual fields: test_video_id_from_mock, test_title_from_mock, test_has_captions_from_mock, test_available_languages_from_mock. Each patches _sync_get_info and asserts the specific field. All pass.",
+      "test_file": "tests/unit/test_video_info.py",
+      "implementation_files": [
+        "tests/unit/test_video_info.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "Duration formatting: None -> \"0:00\", 45 -> \"0:45\", 212 -> \"3:32\", 3661 -> \"1:01:01\"",
+      "status": "complete",
+      "evidence": "TestFormatDuration class has 7 tests covering all specified cases: test_none_returns_zero (None -> '0:00'), test_seconds_only (45 -> '0:45'), test_minutes_and_seconds (212 -> '3:32'), test_hours_minutes_seconds (3661 -> '1:01:01'), plus zero, exactly-one-hour, and exactly-one-minute. All pass.",
+      "test_file": "tests/unit/test_video_info.py",
+      "implementation_files": [
+        "tests/unit/test_video_info.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "All tests pass: pytest tests/unit/test_video_info.py -v",
+      "status": "complete",
+      "evidence": "pytest tests/unit/test_video_info.py -v shows 27 passed, 0 failed. Full suite (86 tests) also passes with 99% coverage.",
+      "test_file": "tests/unit/test_video_info.py",
+      "implementation_files": [
+        "tests/unit/test_video_info.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "No network calls in unit tests (all yt-dlp mocked)",
+      "status": "complete",
+      "evidence": "All tests use unittest.mock.patch to mock _sync_get_info or yt_dlp.YoutubeDL. No real yt-dlp or network calls are made. Tests complete in 0.13s, confirming no network I/O.",
+      "test_file": "tests/unit/test_video_info.py",
+      "implementation_files": [
+        "tests/unit/test_video_info.py"
+      ]
+    }
+  ]
+}

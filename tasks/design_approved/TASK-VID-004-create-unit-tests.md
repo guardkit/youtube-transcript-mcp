@@ -1,38 +1,38 @@
 ---
-id: TASK-VID-004
-title: Create unit tests for video info tool and YouTube client
-status: in_review
+autobuild_state:
+  base_branch: main
+  current_turn: 1
+  last_updated: '2026-03-09T14:44:42.403462'
+  max_turns: 25
+  started_at: '2026-03-09T14:41:12.559858'
+  turns:
+  - coach_success: true
+    decision: approve
+    feedback: null
+    player_success: true
+    player_summary: Implementation via task-work delegation
+    timestamp: '2026-03-09T14:41:12.559858'
+    turn: 1
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA
+complexity: 3
 created: 2026-03-06 00:00:00+00:00
-updated: 2026-03-06 00:00:00+00:00
+dependencies:
+- TASK-VID-002
+- TASK-VID-003
+feature_id: FEAT-SKEL-002
+id: TASK-VID-004
+implementation_mode: task-work
+parent_review: TASK-REV-7005
 priority: high
+status: design_approved
 tags:
 - testing
 - unit-tests
 - feat-skel-002
 task_type: testing
-parent_review: TASK-REV-7005
-feature_id: FEAT-SKEL-002
+title: Create unit tests for video info tool and YouTube client
+updated: 2026-03-06 00:00:00+00:00
 wave: 2
-implementation_mode: task-work
-complexity: 3
-dependencies:
-- TASK-VID-002
-- TASK-VID-003
-autobuild_state:
-  current_turn: 1
-  max_turns: 25
-  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA
-  base_branch: main
-  started_at: '2026-03-09T14:41:12.559858'
-  last_updated: '2026-03-09T14:44:42.403462'
-  turns:
-  - turn: 1
-    decision: approve
-    feedback: null
-    timestamp: '2026-03-09T14:41:12.559858'
-    player_summary: Implementation via task-work delegation
-    player_success: true
-    coach_success: true
 ---
 
 # Task: Create unit tests for video info tool and YouTube client
