@@ -1,6 +1,6 @@
 ---
 id: TASK-CLI-004
-title: "Create integration tests for CLI with real network calls"
+title: Create integration tests for CLI with real network calls
 task_type: testing
 parent_review: TASK-REV-E5FC
 feature_id: FEAT-CLI-001
@@ -8,12 +8,31 @@ wave: 4
 implementation_mode: task-work
 complexity: 2
 dependencies:
-  - TASK-CLI-001
-  - TASK-CLI-002
-status: pending
+- TASK-CLI-001
+- TASK-CLI-002
+status: in_review
 priority: normal
-tags: [cli, testing, integration, FEAT-CLI-001]
-created: 2026-03-06T10:00:00Z
+tags:
+- cli
+- testing
+- integration
+- FEAT-CLI-001
+created: 2026-03-06 10:00:00+00:00
+autobuild_state:
+  current_turn: 1
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9
+  base_branch: main
+  started_at: '2026-03-10T07:03:11.631944'
+  last_updated: '2026-03-10T07:06:55.234540'
+  turns:
+  - turn: 1
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-10T07:03:11.631944'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Create CLI Integration Tests

@@ -1,21 +1,43 @@
 ---
+id: TASK-CLI-002
+title: Update __main__.py with CLI/MCP mode switching
+task_type: feature
+parent_review: TASK-REV-E5FC
+feature_id: FEAT-CLI-001
+wave: 2
+implementation_mode: task-work
 complexity: 2
-created: 2026-03-06 10:00:00+00:00
 dependencies:
 - TASK-CLI-001
-feature_id: FEAT-CLI-001
-id: TASK-CLI-002
-implementation_mode: task-work
-parent_review: TASK-REV-E5FC
+status: in_review
 priority: high
-status: design_approved
 tags:
 - cli
 - entry-point
 - FEAT-CLI-001
-task_type: feature
-title: Update __main__.py with CLI/MCP mode switching
-wave: 2
+created: 2026-03-06 10:00:00+00:00
+autobuild_state:
+  current_turn: 2
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9
+  base_branch: main
+  started_at: '2026-03-10T06:55:04.219166'
+  last_updated: '2026-03-10T07:03:11.613538'
+  turns:
+  - turn: 1
+    decision: feedback
+    feedback: '- Coverage threshold not met'
+    timestamp: '2026-03-10T06:55:04.219166'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
+  - turn: 2
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-10T06:58:31.799003'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Update __main__.py with Mode Switching
