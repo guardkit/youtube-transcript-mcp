@@ -1,18 +1,22 @@
 ---
-id: TASK-CLI-003
-title: "Create unit tests for CLI parser and output format"
-task_type: testing
-parent_review: TASK-REV-E5FC
-feature_id: FEAT-CLI-001
-wave: 3
-implementation_mode: task-work
 complexity: 2
+created: 2026-03-06 10:00:00+00:00
 dependencies:
-  - TASK-CLI-001
-status: pending
+- TASK-CLI-001
+feature_id: FEAT-CLI-001
+id: TASK-CLI-003
+implementation_mode: task-work
+parent_review: TASK-REV-E5FC
 priority: high
-tags: [cli, testing, unit-tests, FEAT-CLI-001]
-created: 2026-03-06T10:00:00Z
+status: design_approved
+tags:
+- cli
+- testing
+- unit-tests
+- FEAT-CLI-001
+task_type: testing
+title: Create unit tests for CLI parser and output format
+wave: 3
 ---
 
 # Task: Create CLI Unit Tests
