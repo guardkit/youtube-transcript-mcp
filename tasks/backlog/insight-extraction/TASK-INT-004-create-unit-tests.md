@@ -1,6 +1,6 @@
 ---
 id: TASK-INT-004
-title: "Create unit tests for insight extraction"
+title: Create unit tests for insight extraction
 task_type: testing
 parent_review: TASK-REV-A880
 feature_id: FEAT-INT-001
@@ -8,10 +8,28 @@ wave: 4
 implementation_mode: task-work
 complexity: 4
 dependencies:
-  - TASK-INT-003
-status: pending
+- TASK-INT-003
+status: in_review
 priority: high
-tags: [insight-extraction, testing, unit-tests]
+tags:
+- insight-extraction
+- testing
+- unit-tests
+autobuild_state:
+  current_turn: 1
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6
+  base_branch: main
+  started_at: '2026-03-09T23:04:46.012159'
+  last_updated: '2026-03-09T23:09:01.427837'
+  turns:
+  - turn: 1
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-09T23:04:46.012159'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Create Unit Tests for Insight Extraction

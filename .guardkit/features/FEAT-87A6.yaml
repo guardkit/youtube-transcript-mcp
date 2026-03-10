@@ -4,7 +4,7 @@ description: Add extract_insights and list_focus_areas MCP tools with 6 focus pr
   (general, entrepreneurial, investment, technical, youtube-channel, ai-learning)
   for Claude-assisted transcript analysis
 created: '2026-03-06T18:50:36.883984'
-status: planned
+status: completed
 complexity: 5
 estimated_tasks: 5
 tasks:
@@ -13,50 +13,90 @@ tasks:
   file_path: tasks/backlog/insight-extraction/TASK-INT-001-create-pydantic-models.md
   complexity: 3
   dependencies: []
-  status: pending
-  description: ''
+  status: completed
   implementation_mode: direct
   estimated_minutes: 33
+  requires_infrastructure: []
+  result:
+    total_turns: 2
+    final_decision: approved
+    error: null
+  turns_completed: 2
+  current_turn: 0
+  started_at: '2026-03-09T22:42:16.871536'
+  completed_at: '2026-03-09T22:50:58.328648'
 - id: TASK-INT-002
   name: Implement extraction service
   file_path: tasks/backlog/insight-extraction/TASK-INT-002-implement-extraction-service.md
   complexity: 5
   dependencies:
   - TASK-INT-001
-  status: pending
-  description: ''
+  status: completed
   implementation_mode: task-work
   estimated_minutes: 75
+  requires_infrastructure: []
+  result:
+    total_turns: 2
+    final_decision: approved
+    error: null
+  turns_completed: 2
+  current_turn: 0
+  started_at: '2026-03-09T22:50:58.338212'
+  completed_at: '2026-03-09T22:58:45.304841'
 - id: TASK-INT-003
   name: Register MCP tools
   file_path: tasks/backlog/insight-extraction/TASK-INT-003-register-mcp-tools.md
   complexity: 4
   dependencies:
   - TASK-INT-002
-  status: pending
-  description: ''
+  status: completed
   implementation_mode: task-work
   estimated_minutes: 50
+  requires_infrastructure: []
+  result:
+    total_turns: 1
+    final_decision: approved
+    error: null
+  turns_completed: 1
+  current_turn: 0
+  started_at: '2026-03-09T22:58:45.314497'
+  completed_at: '2026-03-09T23:04:45.998262'
 - id: TASK-INT-004
   name: Create unit tests
   file_path: tasks/backlog/insight-extraction/TASK-INT-004-create-unit-tests.md
   complexity: 4
   dependencies:
   - TASK-INT-003
-  status: pending
-  description: ''
+  status: completed
   implementation_mode: task-work
   estimated_minutes: 50
+  requires_infrastructure: []
+  result:
+    total_turns: 1
+    final_decision: approved
+    error: null
+  turns_completed: 1
+  current_turn: 0
+  started_at: '2026-03-09T23:04:46.007287'
+  completed_at: '2026-03-09T23:09:01.430043'
 - id: TASK-INT-005
   name: Verify quality gates
   file_path: tasks/backlog/insight-extraction/TASK-INT-005-verify-quality-gates.md
   complexity: 2
   dependencies:
   - TASK-INT-004
-  status: pending
-  description: ''
+  status: completed
   implementation_mode: direct
   estimated_minutes: 22
+  requires_infrastructure: []
+  result:
+    total_turns: 3
+    final_decision: approved
+    error: null
+  turns_completed: 3
+  current_turn: 0
+  started_at: '2026-03-09T23:09:01.441024'
+  completed_at: '2026-03-09T23:20:05.667281'
 orchestration:
   parallel_groups:
   - - TASK-INT-001
@@ -66,3 +106,20 @@ orchestration:
   - - TASK-INT-005
   estimated_duration_minutes: 230
   recommended_parallel: 1
+execution:
+  started_at: '2026-03-09T22:42:16.832797'
+  completed_at: '2026-03-09T23:20:05.673648'
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6
+  total_turns: 9
+  tasks_completed: 5
+  tasks_failed: 0
+  current_wave: 5
+  completed_waves:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  last_updated: '2026-03-09T23:20:05.670349'
+  archived_at: null
+  archived_to: null

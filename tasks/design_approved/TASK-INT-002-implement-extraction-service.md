@@ -1,27 +1,50 @@
 ---
+id: TASK-INT-002
+title: Implement insight extraction service
+task_type: feature
+parent_review: TASK-REV-A880
+feature_id: FEAT-INT-001
+wave: 2
+implementation_mode: task-work
 complexity: 5
-consumer_context:
-- consumes: insight_models
-  driver: pydantic>=2.0
-  format_note: All models must be importable from src.models.insight
-  framework: Pydantic v2 (BaseModel, Field, Enum)
-  task: TASK-INT-001
 dependencies:
 - TASK-INT-001
-feature_id: FEAT-INT-001
-id: TASK-INT-002
-implementation_mode: task-work
-parent_review: TASK-REV-A880
+status: in_review
 priority: high
-status: design_approved
 tags:
 - insight-extraction
 - service
 - chunking
 - prompt-engineering
-task_type: feature
-title: Implement insight extraction service
-wave: 2
+consumer_context:
+- task: TASK-INT-001
+  consumes: insight_models
+  framework: Pydantic v2 (BaseModel, Field, Enum)
+  driver: pydantic>=2.0
+  format_note: All models must be importable from src.models.insight
+autobuild_state:
+  current_turn: 2
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6
+  base_branch: main
+  started_at: '2026-03-09T22:50:58.343312'
+  last_updated: '2026-03-09T22:58:45.302448'
+  turns:
+  - turn: 1
+    decision: feedback
+    feedback: "- Not all acceptance criteria met:\n  \u2022 Code passes `ruff check`\
+      \ and `mypy`"
+    timestamp: '2026-03-09T22:50:58.343312'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
+  - turn: 2
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-09T22:56:33.961196'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Implement Insight Extraction Service

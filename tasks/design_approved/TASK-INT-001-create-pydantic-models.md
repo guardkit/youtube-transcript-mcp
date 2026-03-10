@@ -1,19 +1,42 @@
 ---
+id: TASK-INT-001
+title: Create Pydantic insight models
+task_type: scaffolding
+parent_review: TASK-REV-A880
+feature_id: FEAT-INT-001
+wave: 1
+implementation_mode: task-work
 complexity: 3
 dependencies: []
-feature_id: FEAT-INT-001
-id: TASK-INT-001
-implementation_mode: task-work
-parent_review: TASK-REV-A880
+status: in_review
 priority: high
-status: design_approved
 tags:
 - insight-extraction
 - models
 - pydantic
-task_type: scaffolding
-title: Create Pydantic insight models
-wave: 1
+autobuild_state:
+  current_turn: 2
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6
+  base_branch: main
+  started_at: '2026-03-09T22:42:16.877473'
+  last_updated: '2026-03-09T22:50:58.326500'
+  turns:
+  - turn: 1
+    decision: feedback
+    feedback: "- Not all acceptance criteria met:\n  \u2022 `InsightCategory` enum\
+      \ defines 24 categories across all 6 focus areas (4 per focus area)"
+    timestamp: '2026-03-09T22:42:16.877473'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
+  - turn: 2
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-09T22:47:55.290359'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Create Pydantic Insight Models

@@ -1,6 +1,6 @@
 ---
 id: TASK-INT-003
-title: "Register extract_insights and list_focus_areas MCP tools"
+title: Register extract_insights and list_focus_areas MCP tools
 task_type: feature
 parent_review: TASK-REV-A880
 feature_id: FEAT-INT-001
@@ -8,21 +8,39 @@ wave: 3
 implementation_mode: task-work
 complexity: 4
 dependencies:
-  - TASK-INT-002
-status: pending
+- TASK-INT-002
+status: in_review
 priority: high
-tags: [insight-extraction, mcp-tools, tool-registration]
+tags:
+- insight-extraction
+- mcp-tools
+- tool-registration
 consumer_context:
-  - task: TASK-INT-001
-    consumes: insight_models
-    framework: "Pydantic v2 (BaseModel, Field, Enum)"
-    driver: "pydantic>=2.0"
-    format_note: "FOCUS_PRESETS and CATEGORY_DEFINITIONS importable from src.models.insight"
-  - task: TASK-INT-002
-    consumes: extraction_service
-    framework: "Python module import"
-    driver: "src.services.insight_extractor"
-    format_note: "prepare_for_extraction and get_focus_categories importable from src.services.insight_extractor"
+- task: TASK-INT-001
+  consumes: insight_models
+  framework: Pydantic v2 (BaseModel, Field, Enum)
+  driver: pydantic>=2.0
+  format_note: FOCUS_PRESETS and CATEGORY_DEFINITIONS importable from src.models.insight
+- task: TASK-INT-002
+  consumes: extraction_service
+  framework: Python module import
+  driver: src.services.insight_extractor
+  format_note: prepare_for_extraction and get_focus_categories importable from src.services.insight_extractor
+autobuild_state:
+  current_turn: 1
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6
+  base_branch: main
+  started_at: '2026-03-09T22:58:45.320036'
+  last_updated: '2026-03-09T23:04:45.995994'
+  turns:
+  - turn: 1
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-09T22:58:45.320036'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Register extract_insights and list_focus_areas MCP Tools
