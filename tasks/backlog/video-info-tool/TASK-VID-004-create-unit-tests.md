@@ -1,11 +1,14 @@
 ---
 id: TASK-VID-004
-title: "Create unit tests for video info tool and YouTube client"
-status: pending
-created: 2026-03-06T00:00:00Z
-updated: 2026-03-06T00:00:00Z
+title: Create unit tests for video info tool and YouTube client
+status: in_review
+created: 2026-03-06 00:00:00+00:00
+updated: 2026-03-06 00:00:00+00:00
 priority: high
-tags: [testing, unit-tests, feat-skel-002]
+tags:
+- testing
+- unit-tests
+- feat-skel-002
 task_type: testing
 parent_review: TASK-REV-7005
 feature_id: FEAT-SKEL-002
@@ -13,8 +16,23 @@ wave: 2
 implementation_mode: task-work
 complexity: 3
 dependencies:
-  - TASK-VID-002
-  - TASK-VID-003
+- TASK-VID-002
+- TASK-VID-003
+autobuild_state:
+  current_turn: 1
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA
+  base_branch: main
+  started_at: '2026-03-09T20:03:14.855887'
+  last_updated: '2026-03-09T20:06:12.175878'
+  turns:
+  - turn: 1
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-09T20:03:14.855887'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Create unit tests for video info tool and YouTube client

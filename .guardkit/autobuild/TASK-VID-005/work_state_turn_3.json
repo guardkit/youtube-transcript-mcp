@@ -1,0 +1,35 @@
+{
+  "turn_number": 3,
+  "files_modified": [],
+  "files_created": [],
+  "tests_written": [],
+  "tests_passed": true,
+  "test_count": 96,
+  "timestamp": "2026-03-09T20:13:09.445744",
+  "detection_method": "player_report",
+  "git_changes": {
+    "files_modified": [
+      ".guardkit/autobuild/TASK-VID-005/checkpoints.json",
+      ".guardkit/autobuild/TASK-VID-005/turn_context.json"
+    ],
+    "files_added": [
+      ".guardkit/autobuild/TASK-VID-005/player_turn_3.json"
+    ],
+    "files_deleted": [],
+    "diff_stats": ".guardkit/autobuild/TASK-VID-005/checkpoints.json  | 10 +++++++++-\n .guardkit/autobuild/TASK-VID-005/turn_context.json |  4 ++--\n 2 files changed, 11 insertions(+), 3 deletions(-)",
+    "insertions": 11,
+    "deletions": 3,
+    "timestamp": "2026-03-09T20:13:08.619205"
+  },
+  "test_results": {
+    "tests_run": true,
+    "tests_passed": true,
+    "test_count": 96,
+    "passed_count": 96,
+    "failed_count": 0,
+    "output_summary": "........................................................................ [ 75%]\n........................                                                 [100%]\n=============================== warnings summary ===============================\ntests/test_get_video_info_tool.py:57\n  /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA/tests/test_get_video_info_tool.py:57: PytestUnknownMarkWarning: Unknown pytest.mark.seam - is this a typo?  You can re",
+    "timestamp": "2026-03-09T20:13:09.445527",
+    "error": null
+  },
+  "player_report_available": true
+}

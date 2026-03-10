@@ -1,11 +1,15 @@
 ---
 id: TASK-VID-002
-title: "Create YouTubeClient service with URL parser and yt-dlp wrapper"
-status: pending
-created: 2026-03-06T00:00:00Z
-updated: 2026-03-06T00:00:00Z
+title: Create YouTubeClient service with URL parser and yt-dlp wrapper
+status: in_review
+created: 2026-03-06 00:00:00+00:00
+updated: 2026-03-06 00:00:00+00:00
 priority: high
-tags: [service, yt-dlp, async, feat-skel-002]
+tags:
+- service
+- yt-dlp
+- async
+- feat-skel-002
 task_type: feature
 parent_review: TASK-REV-7005
 feature_id: FEAT-SKEL-002
@@ -13,7 +17,22 @@ wave: 1
 implementation_mode: task-work
 complexity: 4
 dependencies:
-  - TASK-VID-001
+- TASK-VID-001
+autobuild_state:
+  current_turn: 1
+  max_turns: 25
+  worktree_path: /Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA
+  base_branch: main
+  started_at: '2026-03-09T19:33:49.596104'
+  last_updated: '2026-03-09T19:58:45.152261'
+  turns:
+  - turn: 1
+    decision: approve
+    feedback: null
+    timestamp: '2026-03-09T19:33:49.596104'
+    player_summary: Implementation via task-work delegation
+    player_success: true
+    coach_success: true
 ---
 
 # Task: Create YouTubeClient service with URL parser and yt-dlp wrapper

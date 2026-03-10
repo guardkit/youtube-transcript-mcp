@@ -1,0 +1,181 @@
+{
+  "task_id": "TASK-INT-002",
+  "timestamp": "2026-03-09T22:58:36.496867",
+  "completed": true,
+  "phases": {
+    "phase_4": {
+      "detected": true,
+      "text": "Testing",
+      "completed": true
+    }
+  },
+  "quality_gates": {
+    "tests_passing": true,
+    "tests_passed": 90,
+    "tests_failed": 0,
+    "coverage": 100.0,
+    "coverage_met": true,
+    "all_passed": true
+  },
+  "files_modified": [
+    ".claude/task-plans/TASK-INT-002-implementation-plan.md",
+    ".guardkit/autobuild/TASK-INT-001/checkpoints.json",
+    ".guardkit/autobuild/TASK-INT-002/coach_turn_1.json",
+    ".guardkit/autobuild/TASK-INT-002/player_turn_1.json",
+    ".guardkit/autobuild/TASK-INT-002/task_work_results.json",
+    ".guardkit/autobuild/TASK-INT-002/turn_context.json",
+    ".guardkit/autobuild/TASK-INT-002/turn_state_turn_1.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/src/services/insight_extractor.py",
+    "coverage.json",
+    "src/services/__init__.py",
+    "src/services/insight_extractor.py",
+    "tasks/backlog/insight-extraction/TASK-INT-002-implement-extraction-service.md",
+    "tasks/design_approved/TASK-INT-002-implement-extraction-service.md",
+    "tests/unit/test_insight_extractor.py"
+  ],
+  "files_created": [
+    ".guardkit/autobuild/TASK-INT-002/checkpoints.json",
+    ".guardkit/autobuild/TASK-INT-002/coach_feedback_for_turn_2.json",
+    ".guardkit/autobuild/TASK-INT-002/player_turn_2.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/.guardkit/autobuild/TASK-INT-002/player_turn_2.json"
+  ],
+  "tests_written": [],
+  "summary": "90 tests passed, 100.0% coverage, all quality gates passed",
+  "sdk_turns": {
+    "turns_used": 17,
+    "max_turns": 100,
+    "ceiling_hit": false
+  },
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "src/services/__init__.py exists (if not already)",
+      "status": "complete",
+      "evidence": "Created src/services/__init__.py with a module docstring. File exists and is importable.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/__init__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "src/services/insight_extractor.py implements get_focus_categories(focus_areas) function",
+      "status": "complete",
+      "evidence": "Implemented get_focus_categories() at module level in src/services/insight_extractor.py. Function resolves focus area names to InsightCategory lists using FOCUS_PRESETS mapping. Tested by 8 tests in TestGetFocusCategories class.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "build_extraction_prompt(transcript, focus_areas, max_insights) generates structured prompt",
+      "status": "complete",
+      "evidence": "Implemented build_extraction_prompt() with category descriptions, output format instructions, guidelines, and transcript embedding. Tested by 8 tests in TestBuildExtractionPrompt class.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "chunk_transcript(transcript, max_chars, overlap_chars) splits long transcripts at paragraph boundaries",
+      "status": "complete",
+      "evidence": "Implemented chunk_transcript() that splits on \\n\\n paragraph boundaries with _force_split() fallback for single long paragraphs. Tested by 8 tests in TestChunkTranscript class.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "prepare_for_extraction(transcript, video_id, focus_areas, max_insights) returns complete extraction metadata",
+      "status": "complete",
+      "evidence": "Implemented prepare_for_extraction() that returns dict with all required keys: extraction_prompt, focus_areas, categories, category_definitions, transcript_length, chunk_count, needs_chunking, max_insights, chunks. Tested by 14 tests in TestPrepareForExtraction class.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "get_focus_categories handles 'all' keyword returning all categories",
+      "status": "complete",
+      "evidence": "When 'all' is in focus_areas, returns list(InsightCategory) \u2014 all 24 categories. Tested by test_all_keyword_returns_all_categories and test_all_with_other_areas.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "get_focus_categories falls back to 'general' for unknown focus areas",
+      "status": "complete",
+      "evidence": "When no valid focus areas match, logs info and returns FOCUS_PRESETS['general']. Tested by test_unknown_focus_area_falls_back_to_general.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-008",
+      "criterion_text": "get_focus_categories deduplicates when same area specified twice",
+      "status": "complete",
+      "evidence": "Uses set-based deduplication preserving insertion order. Tested by test_deduplication_when_same_area_specified_twice which verifies len(result) == len(set(result)) == 4.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-009",
+      "criterion_text": "chunk_transcript returns single chunk for short transcripts",
+      "status": "complete",
+      "evidence": "Early return [transcript] when len(transcript) <= max_chars. Tested by test_short_transcript_returns_single_chunk.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-010",
+      "criterion_text": "chunk_transcript maintains overlap between chunks for context continuity",
+      "status": "complete",
+      "evidence": "Overlap is computed from end of stored chunk and prepended to next chunk. _force_split also maintains overlap. Tested by test_overlap_between_chunks and test_default_overlap_is_500.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-011",
+      "criterion_text": "prepare_for_extraction returns: extraction_prompt, focus_areas, categories, category_definitions, transcript_length, chunk_count, needs_chunking, max_insights, chunks",
+      "status": "complete",
+      "evidence": "All 9 keys plus video_id returned in the dict. Tested by test_contains_all_required_keys which checks all required keys are present.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-012",
+      "criterion_text": "Prompt includes category descriptions, output format instructions, guidelines",
+      "status": "complete",
+      "evidence": "build_extraction_prompt includes Focus Areas section with category descriptions, Output Format section, and Guidelines section. Tested by test_includes_category_descriptions, test_includes_output_format_instructions, test_includes_guidelines, and test_includes_json_response_format.",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-013",
+      "criterion_text": "Code passes ruff check and mypy",
+      "status": "complete",
+      "evidence": "Ran 'ruff check src/services/insight_extractor.py' \u2014 output: 'All checks passed!'. Ran 'mypy src/services/insight_extractor.py' \u2014 output: 'Success: no issues found in 1 source file'. Fixed 2 ruff UP045 violations by replacing Optional[X] with X | None syntax and removing unused typing.Optional import.",
+      "test_file": null,
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    }
+  ]
+}

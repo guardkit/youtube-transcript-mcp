@@ -20,7 +20,7 @@ Start implementation: /task-work TASK-SKEL-001
 Or use AutoBuild: /feature-build FEAT-SKEL-001
 
 
-GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-SKEL-001 --max-turns 25
+GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-SKEL-001 --verbose --max-turns 25
 
 
 
@@ -67,7 +67,7 @@ Wave 3: Verification (1 task)
   4. Or manual: /task-work TASK-VID-001
 
 
-GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-2AAA --max-turns 25
+GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-2AAA  --verbose --max-turns 25
 
 
 
@@ -111,7 +111,7 @@ Review: IMPLEMENTATION-GUIDE.md
 Start implementation: /task-work TASK-TRS-001
 AutoBuild: /feature-build FEAT-6F80
 
-GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-6F80 --max-turns 25
+GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-6F80  --verbose --max-turns 25
 
 
 
@@ -154,7 +154,7 @@ Start implementation: /feature-build FEAT-87A6
 Or work task-by-task: /task-work TASK-INT-001
 
 
-GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-87A6 --max-turns 25
+GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-87A6  --verbose --max-turns 25
 
 
 
@@ -195,4 +195,4 @@ Or autonomous build: /feature-build FEAT-6CE9
 
 
 
-GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-6CE9 --max-turns 25
+GUARDKIT_LOG_LEVEL=DEBUG guardkit autobuild feature FEAT-6CE9  --verbose --max-turns 25

@@ -1,0 +1,9 @@
+{
+  "turn": 2,
+  "feedback_from_turn": 1,
+  "feedback_summary": "- Not all acceptance criteria met:\n  \u2022 `ruff check src/ tests/` passes with zero errors\n  \u2022 `mypy src/` passes with zero errors\n  \u2022 `src/services/insight_extractor.py` has >90% coverage\n  \u2022 `pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)",
+  "must_fix": [],
+  "should_fix": [],
+  "validation_results": {},
+  "raw_feedback": "- Not all acceptance criteria met:\n  \u2022 `ruff check src/ tests/` passes with zero errors\n  \u2022 `mypy src/` passes with zero errors\n  \u2022 `src/services/insight_extractor.py` has >90% coverage\n  \u2022 `pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)"
+}

@@ -1,0 +1,83 @@
+{
+  "task_id": "TASK-SKEL-004",
+  "turn": 1,
+  "files_modified": [
+    "src/__main__.py",
+    "tests/unit/test_ping.py",
+    "tests/unit/test_scaffolding.py"
+  ],
+  "files_created": [
+    ".mcp.json.template",
+    "tests/unit/test_mcp_template.py"
+  ],
+  "tests_written": [
+    "tests/unit/test_mcp_template.py"
+  ],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "41 tests passed in 0.34s. All template validation tests (16 tests in TestMcpJsonTemplate), quality check documentation tests (2 tests in TestQualityChecks), ping tool tests (8 tests), server configuration tests (8 tests), and scaffolding tests (7 tests) passed.",
+  "implementation_notes": "Created .mcp.json.template with proper MCP server configuration using ${VENV_PATH} and ${PROJECT_PATH} placeholder variables. Template includes PYTHONPATH (set to ${PROJECT_PATH}) and LOG_LEVEL (set to INFO) environment variables. Fixed ruff linting errors in existing test files (removed unused imports: sys from test_ping.py, os from test_scaffolding.py; fixed import ordering in test_scaffolding.py). Fixed mypy strict mode error by adding type parameters to ping() return type annotation (dict -> dict[str, str]). All quality checks now pass clean.",
+  "concerns": [
+    "AC-006 (MCP Inspector ping tool discovery) requires manual verification - cannot be automated in tests"
+  ],
+  "requirements_addressed": [
+    "AC-001: .mcp.json.template exists with correct MCP server configuration",
+    "AC-002: Template uses placeholder variables ${VENV_PATH} and ${PROJECT_PATH}",
+    "AC-003: Template includes PYTHONPATH and LOG_LEVEL env vars",
+    "AC-004: ruff check src/ tests/ passes with no errors",
+    "AC-005: mypy src/ passes with no errors (strict mode)"
+  ],
+  "requirements_remaining": [
+    "AC-006: MCP Inspector can discover the ping tool (manual verification required)"
+  ],
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "[ ] `.mcp.json.template` exists with correct MCP server configuration",
+      "status": "complete",
+      "evidence": "Created .mcp.json.template at project root with valid JSON containing mcpServers key, youtube-transcript-mcp server entry with command, args ([-m, src]), cwd, and env fields. 8 tests in TestMcpJsonTemplate verify structure (test_template_file_exists, test_template_is_valid_json, test_template_has_mcp_servers_key, test_template_has_server_entry, test_server_has_command_field, test_server_has_args_field, test_server_has_cwd_field).",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": [".mcp.json.template"]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "[ ] Template uses placeholder variables `${VENV_PATH}` and `${PROJECT_PATH}`",
+      "status": "complete",
+      "evidence": "command field uses '${VENV_PATH}/bin/python', cwd field uses '${PROJECT_PATH}'. 4 tests verify placeholders: test_template_uses_venv_path_placeholder, test_template_uses_project_path_placeholder, test_command_uses_venv_path, test_cwd_uses_project_path.",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": [".mcp.json.template"]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "[ ] Template includes PYTHONPATH and LOG_LEVEL env vars",
+      "status": "complete",
+      "evidence": "env section includes PYTHONPATH set to '${PROJECT_PATH}' and LOG_LEVEL set to 'INFO'. 4 tests verify: test_template_has_env_section, test_template_has_pythonpath_env, test_pythonpath_uses_project_path, test_template_has_log_level_env, test_log_level_has_valid_default.",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": [".mcp.json.template"]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "[ ] `ruff check src/ tests/` passes with no errors",
+      "status": "complete",
+      "evidence": "Ran 'ruff check src/ tests/' - output: 'All checks passed!'. Fixed 3 pre-existing errors: removed unused 'sys' import from test_ping.py, removed unused 'os' import from test_scaffolding.py, fixed import block ordering in test_scaffolding.py.",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": ["tests/unit/test_ping.py", "tests/unit/test_scaffolding.py"]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "[ ] `mypy src/` passes with no errors (strict mode)",
+      "status": "complete",
+      "evidence": "Ran 'mypy src/' - output: 'Success: no issues found in 2 source files'. Fixed 1 pre-existing error: changed ping() return type from 'dict' to 'dict[str, str]' to satisfy strict mode's type-arg requirement.",
+      "test_file": "tests/unit/test_mcp_template.py",
+      "implementation_files": ["src/__main__.py"]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "[ ] MCP Inspector can discover the ping tool (manual verification)",
+      "status": "incomplete",
+      "evidence": "This criterion requires manual verification using MCP Inspector. The ping tool is registered at module level with @mcp.tool() decorator and the server runs with stdio transport. The tool structure is verified by existing tests (test_ping_tool_registered_at_module_level, test_fastmcp_instance_created_with_correct_name). Manual MCP Inspector verification is needed to fully confirm.",
+      "test_file": "tests/unit/test_ping.py",
+      "implementation_files": ["src/__main__.py"]
+    }
+  ]
+}

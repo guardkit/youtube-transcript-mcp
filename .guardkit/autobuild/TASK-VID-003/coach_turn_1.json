@@ -1,0 +1,187 @@
+{
+  "task_id": "TASK-VID-003",
+  "turn": 1,
+  "decision": "approve",
+  "validation_results": {
+    "quality_gates": {
+      "tests_passed": true,
+      "coverage_met": true,
+      "arch_review_passed": true,
+      "plan_audit_passed": true,
+      "all_gates_passed": true
+    },
+    "independent_tests": {
+      "tests_passed": true,
+      "test_command": "pytest tests/test_get_video_info_tool.py -v --tb=short",
+      "test_output_summary": "Result:\ntests/test_get_video_info_tool.py::TestToolDocstring::test_docstring_mentions_url_formats PASSED [ 92%]\ntests/test_get_video_info_tool.py::TestModuleLevelClient::test_youtube_client_at_module_level PASSED [100%]\ntests/test_get_video_info_tool.py:57\n/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-2AAA/tests/test_get_video_info_tool.py:57: PytestUnknownMarkWarning: Unknown pytest.mark.seam - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n======================== 14 passed, 1 warning in 0.41s =========================",
+      "duration_seconds": 8.215289831161499
+    },
+    "requirements": {
+      "criteria_total": 9,
+      "criteria_met": 9,
+      "all_criteria_met": true,
+      "missing": []
+    }
+  },
+  "criteria_verification": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "`get_video_info` tool registered at module level with `@mcp.tool()` decorator",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "get_video_info is decorated with @mcp.tool() at module level in src/__main__.py (line 37-38). Test test_tool_is_registered_on_mcp verifies it appears in mcp._tool_manager._tools.",
+      "notes": "get_video_info is decorated with @mcp.tool() at module level in src/__main__.py (line 37-38). Test test_tool_is_registered_on_mcp verifies it appears in mcp._tool_manager._tools."
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "Tool accepts `video_url: str` parameter (YouTube URL or video ID)",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Function signature is get_video_info(video_url: str) -> dict. Test test_accepts_video_url_param inspects the signature and verifies the parameter name and type annotation.",
+      "notes": "Function signature is get_video_info(video_url: str) -> dict. Test test_accepts_video_url_param inspects the signature and verifies the parameter name and type annotation."
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "Returns dict with all VideoInfo fields on success",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Success path uses dataclasses.fields(info) to dynamically build a dict containing all VideoInfo fields. Test test_returns_all_video_info_fields iterates over VideoInfo fields and asserts each is present in the response.",
+      "notes": "Success path uses dataclasses.fields(info) to dynamically build a dict containing all VideoInfo fields. Test test_returns_all_video_info_fields iterates over VideoInfo fields and asserts each is present in the response."
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "Returns structured error `{\"error\": {\"category\": \"...\", \"code\": \"...\", \"message\": \"...\"}}` on failure",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "All three exception handlers (InvalidURLError, VideoNotFoundError, generic Exception) return the structured error format. Tests verify the exact structure for all three error types.",
+      "notes": "All three exception handlers (InvalidURLError, VideoNotFoundError, generic Exception) return the structured error format. Tests verify the exact structure for all three error types."
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "`InvalidURLError` \u2192 `category: \"client_error\"`, `code: \"INVALID_URL\"`",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "InvalidURLError handler returns category='client_error', code='INVALID_URL'. Test test_invalid_url_returns_structured_error mocks the exception and verifies the response structure.",
+      "notes": "InvalidURLError handler returns category='client_error', code='INVALID_URL'. Test test_invalid_url_returns_structured_error mocks the exception and verifies the response structure."
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "`VideoNotFoundError` \u2192 `category: \"client_error\"`, `code: \"VIDEO_NOT_FOUND\"`",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "VideoNotFoundError handler returns category='client_error', code='VIDEO_NOT_FOUND'. Test test_video_not_found_returns_structured_error mocks the exception and verifies the response structure.",
+      "notes": "VideoNotFoundError handler returns category='client_error', code='VIDEO_NOT_FOUND'. Test test_video_not_found_returns_structured_error mocks the exception and verifies the response structure."
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "Unexpected exceptions \u2192 `category: \"server_error\"`, `code: \"INTERNAL_ERROR\"`, logged with `logger.exception()`",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Generic Exception handler returns category='server_error', code='INTERNAL_ERROR' and calls logger.exception(). Tests test_unexpected_error_returns_server_error and test_unexpected_error_logs_exception verify both the response structure and logger.exception() call.",
+      "notes": "Generic Exception handler returns category='server_error', code='INTERNAL_ERROR' and calls logger.exception(). Tests test_unexpected_error_returns_server_error and test_unexpected_error_logs_exception verify both the response structure and logger.exception() call."
+    },
+    {
+      "criterion_id": "AC-008",
+      "criterion_text": "Tool docstring describes accepted URL formats for LLM discovery",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Docstring lists all 5 supported URL formats (standard watch, youtu.be, embed, mobile, bare ID) and describes return fields. Tests test_has_docstring and test_docstring_mentions_url_formats verify presence and content.",
+      "notes": "Docstring lists all 5 supported URL formats (standard watch, youtu.be, embed, mobile, bare ID) and describes return fields. Tests test_has_docstring and test_docstring_mentions_url_formats verify presence and content."
+    },
+    {
+      "criterion_id": "AC-009",
+      "criterion_text": "`YouTubeClient` instantiated at module level (not inside tool function)",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "youtube_client = YouTubeClient() is at module level (line 34) in __main__.py. Test test_youtube_client_at_module_level verifies the attribute exists and is a YouTubeClient instance.",
+      "notes": "youtube_client = YouTubeClient() is at module level (line 34) in __main__.py. Test test_youtube_client_at_module_level verifies the attribute exists and is a YouTubeClient instance."
+    }
+  ],
+  "acceptance_criteria_verification": {
+    "criteria_results": [
+      {
+        "criterion_id": "AC-001",
+        "criterion_text": "`get_video_info` tool registered at module level with `@mcp.tool()` decorator",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "get_video_info is decorated with @mcp.tool() at module level in src/__main__.py (line 37-38). Test test_tool_is_registered_on_mcp verifies it appears in mcp._tool_manager._tools.",
+        "notes": "get_video_info is decorated with @mcp.tool() at module level in src/__main__.py (line 37-38). Test test_tool_is_registered_on_mcp verifies it appears in mcp._tool_manager._tools."
+      },
+      {
+        "criterion_id": "AC-002",
+        "criterion_text": "Tool accepts `video_url: str` parameter (YouTube URL or video ID)",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Function signature is get_video_info(video_url: str) -> dict. Test test_accepts_video_url_param inspects the signature and verifies the parameter name and type annotation.",
+        "notes": "Function signature is get_video_info(video_url: str) -> dict. Test test_accepts_video_url_param inspects the signature and verifies the parameter name and type annotation."
+      },
+      {
+        "criterion_id": "AC-003",
+        "criterion_text": "Returns dict with all VideoInfo fields on success",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Success path uses dataclasses.fields(info) to dynamically build a dict containing all VideoInfo fields. Test test_returns_all_video_info_fields iterates over VideoInfo fields and asserts each is present in the response.",
+        "notes": "Success path uses dataclasses.fields(info) to dynamically build a dict containing all VideoInfo fields. Test test_returns_all_video_info_fields iterates over VideoInfo fields and asserts each is present in the response."
+      },
+      {
+        "criterion_id": "AC-004",
+        "criterion_text": "Returns structured error `{\"error\": {\"category\": \"...\", \"code\": \"...\", \"message\": \"...\"}}` on failure",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "All three exception handlers (InvalidURLError, VideoNotFoundError, generic Exception) return the structured error format. Tests verify the exact structure for all three error types.",
+        "notes": "All three exception handlers (InvalidURLError, VideoNotFoundError, generic Exception) return the structured error format. Tests verify the exact structure for all three error types."
+      },
+      {
+        "criterion_id": "AC-005",
+        "criterion_text": "`InvalidURLError` \u2192 `category: \"client_error\"`, `code: \"INVALID_URL\"`",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "InvalidURLError handler returns category='client_error', code='INVALID_URL'. Test test_invalid_url_returns_structured_error mocks the exception and verifies the response structure.",
+        "notes": "InvalidURLError handler returns category='client_error', code='INVALID_URL'. Test test_invalid_url_returns_structured_error mocks the exception and verifies the response structure."
+      },
+      {
+        "criterion_id": "AC-006",
+        "criterion_text": "`VideoNotFoundError` \u2192 `category: \"client_error\"`, `code: \"VIDEO_NOT_FOUND\"`",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "VideoNotFoundError handler returns category='client_error', code='VIDEO_NOT_FOUND'. Test test_video_not_found_returns_structured_error mocks the exception and verifies the response structure.",
+        "notes": "VideoNotFoundError handler returns category='client_error', code='VIDEO_NOT_FOUND'. Test test_video_not_found_returns_structured_error mocks the exception and verifies the response structure."
+      },
+      {
+        "criterion_id": "AC-007",
+        "criterion_text": "Unexpected exceptions \u2192 `category: \"server_error\"`, `code: \"INTERNAL_ERROR\"`, logged with `logger.exception()`",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Generic Exception handler returns category='server_error', code='INTERNAL_ERROR' and calls logger.exception(). Tests test_unexpected_error_returns_server_error and test_unexpected_error_logs_exception verify both the response structure and logger.exception() call.",
+        "notes": "Generic Exception handler returns category='server_error', code='INTERNAL_ERROR' and calls logger.exception(). Tests test_unexpected_error_returns_server_error and test_unexpected_error_logs_exception verify both the response structure and logger.exception() call."
+      },
+      {
+        "criterion_id": "AC-008",
+        "criterion_text": "Tool docstring describes accepted URL formats for LLM discovery",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Docstring lists all 5 supported URL formats (standard watch, youtu.be, embed, mobile, bare ID) and describes return fields. Tests test_has_docstring and test_docstring_mentions_url_formats verify presence and content.",
+        "notes": "Docstring lists all 5 supported URL formats (standard watch, youtu.be, embed, mobile, bare ID) and describes return fields. Tests test_has_docstring and test_docstring_mentions_url_formats verify presence and content."
+      },
+      {
+        "criterion_id": "AC-009",
+        "criterion_text": "`YouTubeClient` instantiated at module level (not inside tool function)",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "youtube_client = YouTubeClient() is at module level (line 34) in __main__.py. Test test_youtube_client_at_module_level verifies the attribute exists and is a YouTubeClient instance.",
+        "notes": "youtube_client = YouTubeClient() is at module level (line 34) in __main__.py. Test test_youtube_client_at_module_level verifies the attribute exists and is a YouTubeClient instance."
+      }
+    ]
+  },
+  "issues": [
+    {
+      "severity": "consider",
+      "category": "seam_test_recommendation",
+      "description": "No seam tests detected for cross-boundary feature. Consider adding seam/contract/boundary tests to validate technology boundary interactions. This is a recommendation, not a blocking gate."
+    }
+  ],
+  "rationale": "All quality gates passed. Independent verification confirmed. All acceptance criteria met. Architecture context: 434 chars provided.",
+  "context_used": "## Job-Specific Context\n\nBudget: 2104/5200 tokens\n\n### \ud83c\udfa8 Relevant Patterns\n- INSTRUCTS_USER_TO_START\n- USES_TYPE_HINT\n- ASSIGNS_TASK_TO\n- HAS_METADATA_PROJECT\n\n### \u26a0\ufe0f Warnings\n- APPLIES_TO\n- HAS_INCORRECT_PATH_REFERENCE\n- ERROR_CAUSE_OF\n\n### \ud83c\udfad Role Constraints\n- INVOLVES_WORKFLOW_ENTITY\n- HAS_ROLE_MUST_DO\n- PROJECT_INVOLVES\n- DELEGATES_TO\n\n### \ud83d\udee0\ufe0f Implementation Modes\n- HAS_PROJECT_ID\n- APPLIES_TO_TASK_COMPLEXITY\n- APPLIES_TO_TASK\n",
+  "approved_without_independent_tests": false,
+  "is_configuration_error": false
+}

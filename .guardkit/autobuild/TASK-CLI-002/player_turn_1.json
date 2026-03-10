@@ -1,0 +1,104 @@
+{
+  "task_id": "TASK-CLI-002",
+  "turn": 1,
+  "files_modified": [
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/src/__main__.py",
+    "`src/__main__.py",
+    "src/__main__.py",
+    "tasks/backlog/TASK-CLI-002-update-main-entry-point.md",
+    "tasks/backlog/TASK-CLI-003-create-unit-tests.md"
+  ],
+  "files_created": [
+    ".claude/task-plans/TASK-CLI-002-implementation-plan.md",
+    ".claude/task-plans/TASK-CLI-003-implementation-plan.md",
+    ".guardkit/autobuild/TASK-CLI-001/checkpoints.json",
+    ".guardkit/autobuild/TASK-CLI-002/player_turn_1.json",
+    ".guardkit/autobuild/TASK-CLI-002/task_work_results.json",
+    ".guardkit/autobuild/TASK-CLI-002/turn_context.json",
+    ".guardkit/autobuild/TASK-CLI-003/player_turn_1.json",
+    ".guardkit/autobuild/TASK-CLI-003/turn_context.json",
+    ".guardkit/bootstrap_state.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/.guardkit/autobuild/TASK-CLI-002/player_turn_1.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/tests/test_main_mode_switching.py",
+    "`tests/test_main_mode_switching.py",
+    "coverage.json",
+    "tasks/design_approved/TASK-CLI-002-update-main-entry-point.md",
+    "tasks/design_approved/TASK-CLI-003-create-unit-tests.md",
+    "tests/test_main_mode_switching.py",
+    "tests/unit/__init__.py",
+    "tests/unit/test_cli.py"
+  ],
+  "tests_written": [
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/tests/test_main_mode_switching.py",
+    "`tests/test_main_mode_switching.py"
+  ],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "",
+  "implementation_notes": "Implementation via task-work delegation",
+  "concerns": [],
+  "requirements_addressed": [
+    "AC-001: MCP server mode still works (no regression)",
+    "AC-002: CLI dispatch to src.cli.main()",
+    "AC-003: CLI arguments passed correctly (sys.argv[2:])",
+    "AC-004: Exit code propagation via sys.exit()",
+    "AC-005: Lazy import of src.cli (no import in MCP mode)"
+  ],
+  "requirements_remaining": [],
+  "sdk_turns_used": 29,
+  "sdk_max_turns": 100,
+  "sdk_ceiling_hit": false,
+  "tests_passed_count": 96,
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "`python -m src` still starts the MCP server (no regression)",
+      "status": "complete",
+      "evidence": "The _entry_point() function checks sys.argv[1] == 'cli'. When no args or non-'cli' args are present, it falls through to mcp.run(transport='stdio'). Tests test_no_args_starts_mcp_server and test_random_args_starts_mcp_server verify mcp.run is called with transport='stdio' in both cases.",
+      "test_file": "tests/test_main_mode_switching.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "`python -m src cli <command>` dispatches to `src.cli.main()`",
+      "status": "complete",
+      "evidence": "When sys.argv[1] == 'cli', _entry_point() lazily imports src.cli.main and calls it. Test test_cli_arg_dispatches_to_cli_main verifies src.cli.main() is called when 'cli' is the first argument.",
+      "test_file": "tests/test_main_mode_switching.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "CLI arguments after `cli` are passed correctly (e.g., `python -m src cli get-transcript URL --language fr`)",
+      "status": "complete",
+      "evidence": "The implementation passes sys.argv[2:] to cli_main(), stripping both the module name and 'cli' prefix. Tests test_args_after_cli_stripped_and_passed (verifies ['get-transcript', 'URL', '--language', 'fr']) and test_cli_with_no_subcommand (verifies empty list []) confirm correct argument passing.",
+      "test_file": "tests/test_main_mode_switching.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "Exit code from CLI is propagated via `sys.exit()`",
+      "status": "complete",
+      "evidence": "The implementation captures the return value of cli_main() and passes it to sys.exit(). Tests test_success_exit_code_propagated (exit code 0) and test_error_exit_code_propagated (exit code 1) verify sys.exit receives the correct exit code.",
+      "test_file": "tests/test_main_mode_switching.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "No import of `src.cli` happens in MCP server mode (lazy import)",
+      "status": "complete",
+      "evidence": "The import of src.cli is inside the 'if sys.argv[1] == cli' branch, so it only executes in CLI mode. Test test_cli_not_imported_in_mcp_mode verifies src.cli is NOT in sys.modules after MCP mode execution. Test test_cli_imported_only_in_cli_mode verifies src.cli.main IS called when in CLI mode.",
+      "test_file": "tests/test_main_mode_switching.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    }
+  ]
+}

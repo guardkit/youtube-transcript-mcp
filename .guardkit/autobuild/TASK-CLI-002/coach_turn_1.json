@@ -1,0 +1,35 @@
+{
+  "task_id": "TASK-CLI-002",
+  "turn": 1,
+  "decision": "feedback",
+  "validation_results": {
+    "quality_gates": {
+      "tests_passed": true,
+      "coverage_met": false,
+      "arch_review_passed": true,
+      "plan_audit_passed": true,
+      "all_gates_passed": false
+    },
+    "independent_tests": null,
+    "requirements": null
+  },
+  "criteria_verification": [],
+  "acceptance_criteria_verification": {
+    "criteria_results": []
+  },
+  "issues": [
+    {
+      "severity": "must_fix",
+      "category": "coverage",
+      "description": "Coverage threshold not met",
+      "details": {
+        "line_coverage": 63.0,
+        "branch_coverage": 0
+      }
+    }
+  ],
+  "rationale": "1 quality gate(s) failed",
+  "context_used": "## Job-Specific Context\n\nBudget: 2107/5200 tokens\n\n### \ud83c\udfa8 Relevant Patterns\n- INCLUDES_OPERATION\n- APPLIES_TO\n- ASSIGNS_TASK_TO\n- USES_FUNCTION\n\n### \u26a0\ufe0f Warnings\n- INCORRECT_MODE_BEHAVIOR\n- APPLIES_IN_MODE\n- HAS_FIX_REFERENCE\n\n### \ud83c\udfad Role Constraints\n- DELEGATES_TO\n- INVOLVES_WORKFLOW_ENTITY\n- PROJECT_INVOLVES\n- HAS_ROLE_MUST_DO\n\n### \ud83d\udee0\ufe0f Implementation Modes\n- INTENDED_FOR\n- APPLIES_TO_TASK\n- HAS_RESULTS_LOCATION_PATTERN\n",
+  "approved_without_independent_tests": false,
+  "is_configuration_error": false
+}

@@ -1,0 +1,37 @@
+{
+  "id": "TURN-FEAT-87A6-1",
+  "feature_id": "FEAT-87A6",
+  "task_id": "TASK-INT-005",
+  "turn_number": 1,
+  "player_summary": "Implementation attempt",
+  "player_decision": "feedback",
+  "coach_decision": "feedback",
+  "coach_feedback": "- Not all acceptance criteria met:\n  \u2022 `ruff check src/ tests/` passes with zero errors\n  \u2022 `mypy src/` passes with zero errors\n  \u2022 `src/services/insight_extractor.py` has >90% coverage\n  \u2022 `pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)",
+  "mode": "fresh_start",
+  "blockers_found": [],
+  "progress_summary": "Turn 1: feedback",
+  "acceptance_criteria_status": {
+    "AC-001": "rejected",
+    "AC-002": "rejected",
+    "AC-003": "verified",
+    "AC-004": "rejected",
+    "AC-005": "verified",
+    "AC-006": "verified",
+    "AC-007": "rejected"
+  },
+  "files_modified": [
+    "tests/unit/test_insight_extractor.py",
+    "tests/unit/test_insights.py",
+    "tests/unit/test_mcp_tools.py",
+    "pyproject.toml"
+  ],
+  "tests_passed": null,
+  "tests_failed": null,
+  "coverage": null,
+  "arch_score": null,
+  "started_at": "2026-03-09T23:14:18.171229",
+  "completed_at": "2026-03-09T23:14:18.171229",
+  "duration_seconds": null,
+  "lessons_from_turn": [],
+  "what_to_try_next": null
+}
