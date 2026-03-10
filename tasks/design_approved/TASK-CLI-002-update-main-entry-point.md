@@ -1,18 +1,21 @@
 ---
-id: TASK-CLI-002
-title: "Update __main__.py with CLI/MCP mode switching"
-task_type: feature
-parent_review: TASK-REV-E5FC
-feature_id: FEAT-CLI-001
-wave: 2
-implementation_mode: task-work
 complexity: 2
+created: 2026-03-06 10:00:00+00:00
 dependencies:
-  - TASK-CLI-001
-status: pending
+- TASK-CLI-001
+feature_id: FEAT-CLI-001
+id: TASK-CLI-002
+implementation_mode: task-work
+parent_review: TASK-REV-E5FC
 priority: high
-tags: [cli, entry-point, FEAT-CLI-001]
-created: 2026-03-06T10:00:00Z
+status: design_approved
+tags:
+- cli
+- entry-point
+- FEAT-CLI-001
+task_type: feature
+title: Update __main__.py with CLI/MCP mode switching
+wave: 2
 ---
 
 # Task: Update __main__.py with Mode Switching

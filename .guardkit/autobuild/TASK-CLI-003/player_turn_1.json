@@ -1,0 +1,138 @@
+{
+  "task_id": "TASK-CLI-003",
+  "turn": 1,
+  "files_modified": [
+    ".claude/task-plans/TASK-CLI-002-implementation-plan.md",
+    ".claude/task-plans/TASK-CLI-003-implementation-plan.md",
+    ".guardkit/autobuild/TASK-CLI-001/checkpoints.json",
+    ".guardkit/autobuild/TASK-CLI-002/coach_turn_1.json",
+    ".guardkit/autobuild/TASK-CLI-002/player_turn_1.json",
+    ".guardkit/autobuild/TASK-CLI-002/task_work_results.json",
+    ".guardkit/autobuild/TASK-CLI-002/turn_context.json",
+    ".guardkit/autobuild/TASK-CLI-002/turn_state_turn_1.json",
+    ".guardkit/autobuild/TASK-CLI-003/player_turn_1.json",
+    ".guardkit/autobuild/TASK-CLI-003/turn_context.json",
+    ".guardkit/bootstrap_state.json",
+    "coverage.json",
+    "src/__main__.py",
+    "tasks/backlog/cli-wrapper/TASK-CLI-002-update-main-entry-point.md",
+    "tasks/design_approved/TASK-CLI-002-update-main-entry-point.md",
+    "tasks/design_approved/TASK-CLI-003-create-unit-tests.md",
+    "tests/test_main_mode_switching.py",
+    "tests/unit/__init__.py",
+    "tests/unit/test_cli.py"
+  ],
+  "files_created": [
+    ".guardkit/autobuild/TASK-CLI-002/checkpoints.json",
+    ".guardkit/autobuild/TASK-CLI-002/coach_feedback_for_turn_2.json",
+    ".guardkit/autobuild/TASK-CLI-003/task_work_results.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/.guardkit/autobuild/TASK-CLI-003/player_turn_1.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/tests/unit/__init__.py",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/tests/unit/test_cli.py"
+  ],
+  "tests_written": [
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/tests/unit/test_cli.py"
+  ],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "",
+  "implementation_notes": "Implementation via task-work delegation",
+  "concerns": [],
+  "requirements_addressed": [
+    "AC-001: tests/unit/test_cli.py exists with TestCliParser and TestCliOutput classes",
+    "AC-002: Parser tests cover all 6 subcommands",
+    "AC-003: Parser tests verify default values",
+    "AC-004: Parser tests verify flag parsing",
+    "AC-005: Output tests verify ping returns valid JSON with status=healthy and mode=cli",
+    "AC-006: Output tests verify error results produce exit code 1",
+    "AC-007: Output tests verify list-focus-areas returns all presets",
+    "AC-008: All tests pass with pytest tests/unit/test_cli.py -v"
+  ],
+  "requirements_remaining": [],
+  "sdk_turns_used": 33,
+  "sdk_max_turns": 100,
+  "sdk_ceiling_hit": false,
+  "tests_passed_count": 34,
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "tests/unit/test_cli.py exists with TestCliParser and TestCliOutput classes",
+      "status": "complete",
+      "evidence": "Created tests/unit/test_cli.py containing class TestCliParser (18 test methods) and class TestCliOutput (16 test methods). File verified to exist and compile cleanly.",
+      "test_file": "tests/unit/test_cli.py",
+      "implementation_files": [
+        "tests/unit/test_cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "Parser tests cover all 6 subcommands: ping, video-info, get-transcript, list-transcripts, extract-insights, list-focus-areas",
+      "status": "complete",
+      "evidence": "TestCliParser contains test_ping_subcommand, test_video_info_subcommand, test_get_transcript_subcommand, test_list_transcripts_subcommand, test_extract_insights_subcommand, and test_list_focus_areas_subcommand. All 6 verify args.command matches the expected subcommand name.",
+      "test_file": "tests/unit/test_cli.py",
+      "implementation_files": [
+        "tests/unit/test_cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "Parser tests verify default values (language=en, no_segments=False, focus_areas=general, max_insights=10)",
+      "status": "complete",
+      "evidence": "TestCliParser contains test_get_transcript_default_language (asserts language=='en'), test_get_transcript_default_no_segments (asserts no_segments is False), test_extract_insights_default_focus_areas (asserts focus_areas=='general'), and test_extract_insights_default_max_insights (asserts max_insights==10).",
+      "test_file": "tests/unit/test_cli.py",
+      "implementation_files": [
+        "tests/unit/test_cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "Parser tests verify flag parsing (--language, --no-segments, --focus, --video-id, --max-insights)",
+      "status": "complete",
+      "evidence": "TestCliParser contains test_language_flag (--language fr), test_no_segments_flag (--no-segments), test_focus_flag (--focus youtube-channel), test_focus_flag_multiple_comma_separated (--focus entrepreneurial,investment), test_video_id_flag (--video-id dQw4w9WgXcQ), test_video_id_flag_default_empty, test_max_insights_flag (--max-insights 5), and test_max_insights_flag_is_int (verifies int type).",
+      "test_file": "tests/unit/test_cli.py",
+      "implementation_files": [
+        "tests/unit/test_cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "Output tests verify ping returns valid JSON with status=healthy and mode=cli",
+      "status": "complete",
+      "evidence": "TestCliOutput contains test_ping_returns_valid_json (json.loads on stdout), test_ping_status_healthy (asserts data['status']=='healthy'), test_ping_mode_cli (asserts data['mode']=='cli'), test_ping_exit_code_zero, and test_ping_includes_server_metadata.",
+      "test_file": "tests/unit/test_cli.py",
+      "implementation_files": [
+        "tests/unit/test_cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "Output tests verify error results produce exit code 1",
+      "status": "complete",
+      "evidence": "TestCliOutput contains test_error_result_produces_exit_code_1 (video-info with invalid URL asserts exit_code==1 and 'error' in data), test_error_result_has_error_structure (verifies error dict has code and message), test_get_transcript_invalid_url_exit_code_1, and test_list_transcripts_invalid_url_exit_code_1.",
+      "test_file": "tests/unit/test_cli.py",
+      "implementation_files": [
+        "tests/unit/test_cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "Output tests verify list-focus-areas returns all presets",
+      "status": "complete",
+      "evidence": "TestCliOutput contains test_list_focus_areas_returns_all_presets (checks all 6 preset names: general, entrepreneurial, investment, technical, youtube-channel, ai-learning are present in data['focus_areas']), test_list_focus_areas_returns_valid_json (checks focus_areas, category_definitions, usage_tip keys), test_list_focus_areas_presets_contain_categories (verifies each preset has a non-empty category list), and test_list_focus_areas_exit_code_zero.",
+      "test_file": "tests/unit/test_cli.py",
+      "implementation_files": [
+        "tests/unit/test_cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-008",
+      "criterion_text": "All tests pass with pytest tests/unit/test_cli.py -v",
+      "status": "complete",
+      "evidence": "Ran 'pytest tests/unit/test_cli.py -v' \u2014 34 tests passed, 0 failed, in 0.17s. Coverage of src/cli.py at 76% from this file alone, 86% combined with existing tests/test_cli.py.",
+      "test_file": "tests/unit/test_cli.py",
+      "implementation_files": [
+        "tests/unit/test_cli.py"
+      ]
+    }
+  ]
+}

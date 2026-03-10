@@ -331,6 +331,30 @@ async def list_focus_areas() -> dict[str, Any]:
     }
 
 
+def _entry_point() -> None:
+    """Entry point with CLI/MCP mode switching.
+
+    Checks ``sys.argv`` to decide which mode to run:
+
+    * ``python -m src cli <command> [args...]`` — dispatches to the CLI
+      wrapper (``src.cli.main``), passing ``sys.argv[2:]`` as arguments
+      and propagating the exit code via ``sys.exit()``.
+    * ``python -m src`` (or any other invocation) — starts the MCP
+      server over stdio transport (existing behaviour).
+
+    The ``src.cli`` module is imported lazily so that MCP server mode
+    never pays the cost of loading CLI dependencies.
+    """
+    if len(sys.argv) > 1 and sys.argv[1] == "cli":
+        # Lazy import: src.cli is only loaded when CLI mode is requested
+        from src.cli import main as cli_main
+
+        exit_code = cli_main(sys.argv[2:])
+        sys.exit(exit_code)
+    else:
+        logger.info("Starting %s server...", SERVER_NAME)
+        mcp.run(transport="stdio")
+
+
 if __name__ == "__main__":
-    logger.info("Starting %s server...", SERVER_NAME)
-    mcp.run(transport="stdio")
+    _entry_point()
