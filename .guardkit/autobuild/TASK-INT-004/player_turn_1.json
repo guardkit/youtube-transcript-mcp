@@ -1,0 +1,145 @@
+{
+  "task_id": "TASK-INT-004",
+  "turn": 1,
+  "files_modified": [
+    "tasks/backlog/TASK-INT-004-create-unit-tests.md"
+  ],
+  "files_created": [
+    ".claude/task-plans/TASK-INT-004-implementation-plan.md",
+    ".guardkit/autobuild/TASK-INT-003/checkpoints.json",
+    ".guardkit/autobuild/TASK-INT-004/player_turn_1.json",
+    ".guardkit/autobuild/TASK-INT-004/task_work_results.json",
+    ".guardkit/autobuild/TASK-INT-004/turn_context.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/.guardkit/autobuild/TASK-INT-004/player_turn_1.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/tests/unit/test_insights.py",
+    "tasks/design_approved/TASK-INT-004-create-unit-tests.md",
+    "tests/unit/test_insights.py"
+  ],
+  "tests_written": [
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/tests/unit/test_insights.py"
+  ],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "",
+  "implementation_notes": "Implementation via task-work delegation",
+  "concerns": [],
+  "requirements_addressed": [
+    "tests/unit/test_insights.py created",
+    "TestFocusPresets class with all 6 preset tests and definitions check",
+    "TestGetFocusCategories class with single, multiple, all, unknown fallback, deduplication",
+    "TestChunkTranscript class with short, long, overlap, paragraph boundaries, edge cases",
+    "TestBuildExtractionPrompt class with transcript inclusion, category descriptions, max_insights",
+    "TestPrepareForExtraction class with required fields, chunking detection, video_id",
+    "TestInsightModel class with valid insight, quote, confidence bounds validation",
+    "All 6 focus presets tested individually",
+    "All 57 tests pass",
+    "Coverage >80% achieved (100%)"
+  ],
+  "requirements_remaining": [],
+  "sdk_turns_used": 37,
+  "sdk_max_turns": 100,
+  "sdk_ceiling_hit": false,
+  "tests_passed_count": 57,
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "tests/unit/test_insights.py created",
+      "status": "complete",
+      "evidence": "Created tests/unit/test_insights.py with 57 comprehensive unit tests across 6 test classes covering all required functionality.",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "TestFocusPresets class: tests general preset, entrepreneurial preset, all categories have definitions",
+      "status": "complete",
+      "evidence": "TestFocusPresets class has 11 tests: test_has_exactly_six_presets, test_general_preset_has_correct_categories, test_entrepreneurial_preset_has_correct_categories, test_investment_preset_has_correct_categories, test_technical_preset_has_correct_categories, test_youtube_channel_preset_has_correct_categories, test_ai_learning_preset_has_correct_categories, test_all_preset_keys_match_focus_area_values, test_all_categories_have_definitions, test_each_preset_has_four_categories, test_total_unique_categories_across_presets_is_24.",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "TestGetFocusCategories class: tests single area, multiple areas, 'all', unknown fallback, deduplication",
+      "status": "complete",
+      "evidence": "TestGetFocusCategories class has 9 tests: test_single_known_focus_area, test_multiple_focus_areas, test_all_keyword_returns_all_categories, test_unknown_focus_area_falls_back_to_general, test_deduplication_when_same_area_specified_twice, test_case_insensitive_matching, test_all_with_other_areas, test_returns_list_of_insight_category, test_mixed_known_and_unknown_areas.",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "TestChunkTranscript class: tests short transcript (single chunk), long transcript (multiple chunks), overlap, paragraph boundaries",
+      "status": "complete",
+      "evidence": "TestChunkTranscript class has 8 tests: test_short_transcript_returns_single_chunk, test_long_transcript_is_split, test_splits_at_paragraph_boundaries, test_overlap_between_chunks, test_default_max_chars_is_30000, test_handles_single_very_long_paragraph, test_returns_list_of_strings, test_empty_string_returns_single_chunk.",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "TestBuildExtractionPrompt class: tests transcript inclusion, category descriptions, max_insights",
+      "status": "complete",
+      "evidence": "TestBuildExtractionPrompt class has 8 tests: test_includes_transcript_text, test_includes_category_descriptions, test_includes_max_insights, test_default_max_insights_is_10, test_returns_string, test_includes_output_format_instructions, test_includes_json_response_format, test_general_focus_area_includes_all_general_categories.",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "TestPrepareForExtraction class: tests required fields, chunking detection, video_id inclusion",
+      "status": "complete",
+      "evidence": "TestPrepareForExtraction class has 12 tests: test_returns_all_required_fields, test_short_transcript_not_chunked, test_long_transcript_is_chunked, test_video_id_passed_through, test_video_id_none_when_not_provided, test_default_focus_areas_is_general, test_custom_focus_areas, test_transcript_length_is_correct, test_max_insights_default_is_10, test_max_insights_custom, test_categories_are_string_values, test_extraction_prompt_is_nonempty_string.",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "TestInsightModel class: tests valid insight, insight with quote, confidence bounds validation",
+      "status": "complete",
+      "evidence": "TestInsightModel class has 9 tests: test_valid_insight, test_insight_with_quote, test_confidence_below_zero_rejected, test_confidence_above_one_rejected, test_confidence_at_bounds, test_title_max_length_exceeded, test_summary_max_length_exceeded, test_quote_max_length_exceeded, test_missing_required_fields_rejected.",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-008",
+      "criterion_text": "Tests cover all 6 focus presets: general, entrepreneurial, investment, technical, youtube-channel, ai-learning",
+      "status": "complete",
+      "evidence": "TestFocusPresets has individual tests for each preset: test_general_preset_has_correct_categories, test_entrepreneurial_preset_has_correct_categories, test_investment_preset_has_correct_categories, test_technical_preset_has_correct_categories, test_youtube_channel_preset_has_correct_categories, test_ai_learning_preset_has_correct_categories. Each verifies the correct 4 categories per preset.",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-009",
+      "criterion_text": "All tests pass with pytest tests/unit/test_insights.py -v",
+      "status": "complete",
+      "evidence": "All 57 tests passed: pytest tests/unit/test_insights.py -v returned '57 passed in 0.08s' with zero failures.",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-010",
+      "criterion_text": "Coverage >80% on src/models/insight.py and src/services/insight_extractor.py",
+      "status": "complete",
+      "evidence": "Coverage is 100% on both files. src/models/insight.py: 57 statements, 0 missed (100%). src/services/insight_extractor.py: 71 statements, 0 missed (100%). Total: 128 statements, 0 missed (100%).",
+      "test_file": "tests/unit/test_insights.py",
+      "implementation_files": [
+        "tests/unit/test_insights.py"
+      ]
+    }
+  ]
+}

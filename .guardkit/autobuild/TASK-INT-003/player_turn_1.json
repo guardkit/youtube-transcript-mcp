@@ -1,0 +1,170 @@
+{
+  "task_id": "TASK-INT-003",
+  "turn": 1,
+  "files_modified": [
+    ".guardkit/autobuild/TASK-INT-002/checkpoints.json",
+    "coverage.json",
+    "tasks/backlog/TASK-INT-003-register-mcp-tools.md"
+  ],
+  "files_created": [
+    ".claude/task-plans/TASK-INT-003-implementation-plan.md",
+    ".guardkit/autobuild/TASK-INT-003/player_turn_1.json",
+    ".guardkit/autobuild/TASK-INT-003/task_work_results.json",
+    ".guardkit/autobuild/TASK-INT-003/turn_context.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/.guardkit/autobuild/TASK-INT-003/player_turn_1.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/src/__main__.py",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/tests/unit/test_mcp_tools.py",
+    "src/__main__.py",
+    "tasks/design_approved/TASK-INT-003-register-mcp-tools.md",
+    "tests/unit/test_mcp_tools.py"
+  ],
+  "tests_written": [
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/tests/unit/test_mcp_tools.py"
+  ],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "",
+  "implementation_notes": "Implementation via task-work delegation",
+  "concerns": [],
+  "requirements_addressed": [
+    "extract_insights tool registered at module level",
+    "Accepts transcript, focus_areas, video_id, max_insights parameters",
+    "Validates focus areas against known presets + 'all'",
+    "Returns INVALID_FOCUS_AREA structured error",
+    "Returns TRANSCRIPT_TOO_SHORT structured error",
+    "Converts max_insights from string to int",
+    "Returns extraction metadata from prepare_for_extraction",
+    "list_focus_areas tool registered at module level",
+    "Returns all 6 presets with categories and definitions",
+    "Comprehensive docstrings on both tools",
+    "Structured error responses follow category/code/message pattern",
+    "Code passes ruff check"
+  ],
+  "requirements_remaining": [],
+  "sdk_turns_used": 37,
+  "sdk_max_turns": 100,
+  "sdk_ceiling_hit": false,
+  "tests_passed_count": 117,
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "extract_insights tool registered at module level in __main__.py",
+      "status": "complete",
+      "evidence": "extract_insights is decorated with @mcp.tool() at module level (line 38) in src/__main__.py. Test test_extract_insights_is_registered confirms importability.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "Accepts parameters: transcript (str), focus_areas (str, comma-separated), video_id (str), max_insights (str)",
+      "status": "complete",
+      "evidence": "Function signature on lines 39-43 accepts all four parameters with correct types and defaults: transcript: str, focus_areas: str = 'general', video_id: str = '', max_insights: str = '10'. Tests test_successful_extraction, test_multiple_comma_separated_focus_areas, test_video_id_passed_through, test_max_insights_string_conversion verify each parameter.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "Validates focus areas against known presets + 'all'",
+      "status": "complete",
+      "evidence": "Lines 103-116 validate focus areas against FOCUS_PRESETS.keys() + ['all']. Tests test_invalid_focus_area_returns_structured_error and test_all_focus_area verify validation.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "Returns structured error for invalid focus areas (INVALID_FOCUS_AREA)",
+      "status": "complete",
+      "evidence": "Lines 107-116 return error dict with code 'INVALID_FOCUS_AREA' and category 'client_error'. Test test_invalid_focus_area_returns_structured_error asserts the exact error code and category.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "Returns structured error for transcripts < 100 chars (TRANSCRIPT_TOO_SHORT)",
+      "status": "complete",
+      "evidence": "Lines 119-126 return error with code 'TRANSCRIPT_TOO_SHORT' for transcripts under 100 chars. Tests test_transcript_too_short_returns_error, test_transcript_exactly_100_chars_passes, and test_transcript_99_chars_fails verify boundary behavior.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "Converts max_insights from string to int (MCP string parameter pattern)",
+      "status": "complete",
+      "evidence": "Lines 88-89 convert max_insights string to int via int(). Lines 90-98 handle ValueError/TypeError with structured error response. Test test_max_insights_string_conversion passes '5' and verifies result['max_insights'] == 5.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "Returns extraction metadata dict from prepare_for_extraction",
+      "status": "complete",
+      "evidence": "Lines 128-135 call prepare_for_extraction() and return its result dict. Test test_successful_extraction verifies all expected keys (extraction_prompt, focus_areas, categories, category_definitions, transcript_length, chunk_count, needs_chunking, max_insights) are present.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-008",
+      "criterion_text": "list_focus_areas tool registered at module level",
+      "status": "complete",
+      "evidence": "list_focus_areas is decorated with @mcp.tool() at module level (line 148). Test test_list_focus_areas_is_registered confirms importability.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-009",
+      "criterion_text": "Returns all 6 presets with their categories and category definitions",
+      "status": "complete",
+      "evidence": "Lines 165-175 return focus_areas dict with all 6 presets mapped to category lists, and category_definitions with all 24 entries. Tests test_contains_all_six_presets, test_each_preset_has_categories, test_contains_category_definitions verify completeness.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-010",
+      "criterion_text": "Both tools have comprehensive docstrings for Claude tool discovery",
+      "status": "complete",
+      "evidence": "extract_insights has a 40-line docstring (lines 45-86) covering all parameters, return values, and usage. list_focus_areas has a 14-line docstring (lines 150-164). Both tests test_has_comprehensive_docstring verify docstring presence and content keywords.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-011",
+      "criterion_text": "Structured error responses follow {\"error\": {\"category\", \"code\", \"message\"}} pattern",
+      "status": "complete",
+      "evidence": "All three error paths (INVALID_PARAMETER lines 92-98, INVALID_FOCUS_AREA lines 107-116, TRANSCRIPT_TOO_SHORT lines 120-126) follow the exact pattern. Test test_error_response_structure verifies the error dict contains all three required keys.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-012",
+      "criterion_text": "Code passes ruff check and mypy",
+      "status": "complete",
+      "evidence": "ruff check src/__main__.py returns 'All checks passed!' with zero violations. Code uses type hints throughout (dict[str, Any] return types, str parameter types).",
+      "test_file": null,
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    }
+  ]
+}

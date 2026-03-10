@@ -1,16 +1,19 @@
 ---
-id: TASK-INT-001
-title: "Create Pydantic insight models"
-task_type: scaffolding
-parent_review: TASK-REV-A880
-feature_id: FEAT-INT-001
-wave: 1
-implementation_mode: task-work
 complexity: 3
 dependencies: []
-status: pending
+feature_id: FEAT-INT-001
+id: TASK-INT-001
+implementation_mode: task-work
+parent_review: TASK-REV-A880
 priority: high
-tags: [insight-extraction, models, pydantic]
+status: design_approved
+tags:
+- insight-extraction
+- models
+- pydantic
+task_type: scaffolding
+title: Create Pydantic insight models
+wave: 1
 ---
 
 # Task: Create Pydantic Insight Models

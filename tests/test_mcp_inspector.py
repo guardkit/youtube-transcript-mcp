@@ -78,7 +78,12 @@ class TestMCPInspectorToolDiscovery:
         tools = await mcp.list_tools()
         tool_names = sorted(t.name for t in tools)
 
-        assert tool_names == ["get_transcript", "list_available_transcripts"]
+        assert tool_names == [
+            "extract_insights",
+            "get_transcript",
+            "list_available_transcripts",
+            "list_focus_areas",
+        ]
 
     @pytest.mark.asyncio
     async def test_get_transcript_has_language_parameter(self) -> None:

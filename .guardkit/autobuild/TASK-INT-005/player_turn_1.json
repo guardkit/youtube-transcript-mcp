@@ -1,0 +1,124 @@
+{
+  "task_id": "TASK-INT-005",
+  "turn": 1,
+  "files_modified": [
+    "tests/unit/test_insight_extractor.py",
+    "tests/unit/test_insights.py",
+    "tests/unit/test_mcp_tools.py",
+    "pyproject.toml"
+  ],
+  "files_created": [],
+  "tests_written": [],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "174 tests passed, 5 warnings (pytest.mark.seam and pytest.mark.integration_contract custom marks). Coverage: 95% overall, insight.py 100%, insight_extractor.py 100%.",
+  "implementation_notes": "Fixed 17 ruff linting errors across 3 test files (12 auto-fixed via ruff --fix for import sorting/unused imports, 5 manually fixed for line length >100). Added pydantic>=2.0 to pyproject.toml dependencies. All quality gates now pass: ruff (0 errors), mypy (0 errors), pytest (174/174 passed), coverage (95% overall, 100% for insight.py and insight_extractor.py).",
+  "concerns": [],
+  "requirements_addressed": [
+    "AC-001: ruff check passes with zero errors",
+    "AC-002: mypy passes with zero errors",
+    "AC-003: all 174 tests pass",
+    "AC-004: 95% overall coverage (>80% threshold)",
+    "AC-005: insight.py has 100% coverage (>90% threshold)",
+    "AC-006: insight_extractor.py has 100% coverage (>90% threshold)",
+    "AC-007: no regressions — all existing tests pass",
+    "AC-008: extract_insights and list_focus_areas discoverable via @mcp.tool()",
+    "AC-009: pydantic>=2.0 added to pyproject.toml dependencies"
+  ],
+  "requirements_remaining": [],
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "[ ] `ruff check src/ tests/` passes with zero errors",
+      "status": "complete",
+      "evidence": "Fixed 17 ruff errors: 12 auto-fixed (I001 import sorting, F401 unused imports, F811 redefinitions) and 5 manually fixed (E501 line too long >100 chars). Final run: 'All checks passed!'",
+      "test_file": null,
+      "implementation_files": [
+        "tests/unit/test_insight_extractor.py",
+        "tests/unit/test_insights.py",
+        "tests/unit/test_mcp_tools.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "[ ] `mypy src/` passes with zero errors",
+      "status": "complete",
+      "evidence": "mypy src/ reports 'Success: no issues found in 6 source files'. No changes needed — all source files already pass strict mypy checks.",
+      "test_file": null,
+      "implementation_files": [
+        "src/__main__.py",
+        "src/models/insight.py",
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "[ ] `pytest tests/ -v` — all tests pass",
+      "status": "complete",
+      "evidence": "174 tests passed with 5 warnings (custom marks). Zero failures. All test files: test_insight_extractor.py (39 tests), test_insight_models.py (51 tests), test_insights.py (57 tests), test_mcp_tools.py (27 tests).",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "tests/unit/test_insight_extractor.py",
+        "tests/unit/test_insight_models.py",
+        "tests/unit/test_insights.py",
+        "tests/unit/test_mcp_tools.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "[ ] `pytest tests/ --cov=src --cov-report=term` — >80% coverage overall",
+      "status": "complete",
+      "evidence": "Overall coverage: 95% (166 stmts, 8 missed). Breakdown: __init__.py 100%, __main__.py 79%, models/__init__.py 100%, models/insight.py 100%, services/__init__.py 100%, services/insight_extractor.py 100%.",
+      "test_file": null,
+      "implementation_files": []
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "[ ] `src/models/insight.py` has >90% coverage",
+      "status": "complete",
+      "evidence": "src/models/insight.py: 57 stmts, 0 missed, 100% coverage. Covered by test_insight_models.py (51 tests) and test_insights.py (comprehensive model tests).",
+      "test_file": "tests/unit/test_insight_models.py",
+      "implementation_files": [
+        "src/models/insight.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "[ ] `src/services/insight_extractor.py` has >90% coverage",
+      "status": "complete",
+      "evidence": "src/services/insight_extractor.py: 71 stmts, 0 missed, 100% coverage. Covered by test_insight_extractor.py (39 tests) and test_insights.py (comprehensive service tests).",
+      "test_file": "tests/unit/test_insight_extractor.py",
+      "implementation_files": [
+        "src/services/insight_extractor.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "[ ] No regressions in existing tests (test_ping, test_video_info, test_transcript if they exist)",
+      "status": "complete",
+      "evidence": "No test_ping, test_video_info, or test_transcript files exist in this worktree. All 174 existing tests pass without regressions. The 4 test files (test_insight_extractor.py, test_insight_models.py, test_insights.py, test_mcp_tools.py) all pass completely.",
+      "test_file": null,
+      "implementation_files": []
+    },
+    {
+      "criterion_id": "AC-008",
+      "criterion_text": "[ ] Both `extract_insights` and `list_focus_areas` tools are discoverable via MCP",
+      "status": "complete",
+      "evidence": "Both tools are registered at module level in src/__main__.py with @mcp.tool() decorator (lines 38 and 148). TestToolRegistration tests confirm: test_extract_insights_is_registered and test_list_focus_areas_is_registered both pass, verifying importability and callability.",
+      "test_file": "tests/unit/test_mcp_tools.py",
+      "implementation_files": [
+        "src/__main__.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-009",
+      "criterion_text": "[ ] `pydantic>=2.0` is listed in pyproject.toml dependencies (if not already)",
+      "status": "complete",
+      "evidence": "Added 'pydantic>=2.0' to pyproject.toml dependencies list (line 10). It was missing from the original dependencies which only had mcp, yt-dlp, and youtube-transcript-api.",
+      "test_file": null,
+      "implementation_files": [
+        "pyproject.toml"
+      ]
+    }
+  ]
+}

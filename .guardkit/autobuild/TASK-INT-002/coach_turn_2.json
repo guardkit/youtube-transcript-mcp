@@ -1,0 +1,245 @@
+{
+  "task_id": "TASK-INT-002",
+  "turn": 2,
+  "decision": "approve",
+  "validation_results": {
+    "quality_gates": {
+      "tests_passed": true,
+      "coverage_met": true,
+      "arch_review_passed": true,
+      "plan_audit_passed": true,
+      "all_gates_passed": true
+    },
+    "independent_tests": {
+      "tests_passed": true,
+      "test_command": "pytest tests/unit/test_insight_extractor.py -v --tb=short",
+      "test_output_summary": "Result:\ntests/unit/test_insight_extractor.py::TestPrepareForExtraction::test_custom_focus_areas PASSED [ 97%]\ntests/unit/test_insight_extractor.py::TestPrepareForExtraction::test_chunked_prompt_uses_first_chunk PASSED [100%]\ntests/unit/test_insight_extractor.py:21\n/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-87A6/tests/unit/test_insight_extractor.py:21: PytestUnknownMarkWarning: Unknown pytest.mark.seam - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n======================== 39 passed, 1 warning in 0.08s =========================",
+      "duration_seconds": 8.207206964492798
+    },
+    "requirements": {
+      "criteria_total": 13,
+      "criteria_met": 13,
+      "all_criteria_met": true,
+      "missing": []
+    }
+  },
+  "criteria_verification": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "`src/services/__init__.py` exists (if not already)",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Created src/services/__init__.py with a module docstring. File exists and is importable.",
+      "notes": "Created src/services/__init__.py with a module docstring. File exists and is importable."
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "`src/services/insight_extractor.py` implements `get_focus_categories(focus_areas)` function",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Implemented get_focus_categories() at module level in src/services/insight_extractor.py. Function resolves focus area names to InsightCategory lists using FOCUS_PRESETS mapping. Tested by 8 tests in TestGetFocusCategories class.",
+      "notes": "Implemented get_focus_categories() at module level in src/services/insight_extractor.py. Function resolves focus area names to InsightCategory lists using FOCUS_PRESETS mapping. Tested by 8 tests in TestGetFocusCategories class."
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "`build_extraction_prompt(transcript, focus_areas, max_insights)` generates structured prompt",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Implemented build_extraction_prompt() with category descriptions, output format instructions, guidelines, and transcript embedding. Tested by 8 tests in TestBuildExtractionPrompt class.",
+      "notes": "Implemented build_extraction_prompt() with category descriptions, output format instructions, guidelines, and transcript embedding. Tested by 8 tests in TestBuildExtractionPrompt class."
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "`chunk_transcript(transcript, max_chars, overlap_chars)` splits long transcripts at paragraph boundaries",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Implemented chunk_transcript() that splits on \\n\\n paragraph boundaries with _force_split() fallback for single long paragraphs. Tested by 8 tests in TestChunkTranscript class.",
+      "notes": "Implemented chunk_transcript() that splits on \\n\\n paragraph boundaries with _force_split() fallback for single long paragraphs. Tested by 8 tests in TestChunkTranscript class."
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "`prepare_for_extraction(transcript, video_id, focus_areas, max_insights)` returns complete extraction metadata",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Implemented prepare_for_extraction() that returns dict with all required keys: extraction_prompt, focus_areas, categories, category_definitions, transcript_length, chunk_count, needs_chunking, max_insights, chunks. Tested by 14 tests in TestPrepareForExtraction class.",
+      "notes": "Implemented prepare_for_extraction() that returns dict with all required keys: extraction_prompt, focus_areas, categories, category_definitions, transcript_length, chunk_count, needs_chunking, max_insights, chunks. Tested by 14 tests in TestPrepareForExtraction class."
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "`get_focus_categories` handles 'all' keyword returning all categories",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "When 'all' is in focus_areas, returns list(InsightCategory) \u2014 all 24 categories. Tested by test_all_keyword_returns_all_categories and test_all_with_other_areas.",
+      "notes": "When 'all' is in focus_areas, returns list(InsightCategory) \u2014 all 24 categories. Tested by test_all_keyword_returns_all_categories and test_all_with_other_areas."
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "`get_focus_categories` falls back to 'general' for unknown focus areas",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "When no valid focus areas match, logs info and returns FOCUS_PRESETS['general']. Tested by test_unknown_focus_area_falls_back_to_general.",
+      "notes": "When no valid focus areas match, logs info and returns FOCUS_PRESETS['general']. Tested by test_unknown_focus_area_falls_back_to_general."
+    },
+    {
+      "criterion_id": "AC-008",
+      "criterion_text": "`get_focus_categories` deduplicates when same area specified twice",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Uses set-based deduplication preserving insertion order. Tested by test_deduplication_when_same_area_specified_twice which verifies len(result) == len(set(result)) == 4.",
+      "notes": "Uses set-based deduplication preserving insertion order. Tested by test_deduplication_when_same_area_specified_twice which verifies len(result) == len(set(result)) == 4."
+    },
+    {
+      "criterion_id": "AC-009",
+      "criterion_text": "`chunk_transcript` returns single chunk for short transcripts",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Early return [transcript] when len(transcript) <= max_chars. Tested by test_short_transcript_returns_single_chunk.",
+      "notes": "Early return [transcript] when len(transcript) <= max_chars. Tested by test_short_transcript_returns_single_chunk."
+    },
+    {
+      "criterion_id": "AC-010",
+      "criterion_text": "`chunk_transcript` maintains overlap between chunks for context continuity",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Overlap is computed from end of stored chunk and prepended to next chunk. _force_split also maintains overlap. Tested by test_overlap_between_chunks and test_default_overlap_is_500.",
+      "notes": "Overlap is computed from end of stored chunk and prepended to next chunk. _force_split also maintains overlap. Tested by test_overlap_between_chunks and test_default_overlap_is_500."
+    },
+    {
+      "criterion_id": "AC-011",
+      "criterion_text": "`prepare_for_extraction` returns: extraction_prompt, focus_areas, categories, category_definitions, transcript_length, chunk_count, needs_chunking, max_insights, chunks",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "All 9 keys plus video_id returned in the dict. Tested by test_contains_all_required_keys which checks all required keys are present.",
+      "notes": "All 9 keys plus video_id returned in the dict. Tested by test_contains_all_required_keys which checks all required keys are present."
+    },
+    {
+      "criterion_id": "AC-012",
+      "criterion_text": "Prompt includes category descriptions, output format instructions, guidelines",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "build_extraction_prompt includes Focus Areas section with category descriptions, Output Format section, and Guidelines section. Tested by test_includes_category_descriptions, test_includes_output_format_instructions, test_includes_guidelines, and test_includes_json_response_format.",
+      "notes": "build_extraction_prompt includes Focus Areas section with category descriptions, Output Format section, and Guidelines section. Tested by test_includes_category_descriptions, test_includes_output_format_instructions, test_includes_guidelines, and test_includes_json_response_format."
+    },
+    {
+      "criterion_id": "AC-013",
+      "criterion_text": "Code passes `ruff check` and `mypy`",
+      "result": "verified",
+      "status": "verified",
+      "evidence": "Ran 'ruff check src/services/insight_extractor.py' \u2014 output: 'All checks passed!'. Ran 'mypy src/services/insight_extractor.py' \u2014 output: 'Success: no issues found in 1 source file'. Fixed 2 ruff UP045 violations by replacing Optional[X] with X | None syntax and removing unused typing.Optional import.",
+      "notes": "Ran 'ruff check src/services/insight_extractor.py' \u2014 output: 'All checks passed!'. Ran 'mypy src/services/insight_extractor.py' \u2014 output: 'Success: no issues found in 1 source file'. Fixed 2 ruff UP045 violations by replacing Optional[X] with X | None syntax and removing unused typing.Optional import."
+    }
+  ],
+  "acceptance_criteria_verification": {
+    "criteria_results": [
+      {
+        "criterion_id": "AC-001",
+        "criterion_text": "`src/services/__init__.py` exists (if not already)",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Created src/services/__init__.py with a module docstring. File exists and is importable.",
+        "notes": "Created src/services/__init__.py with a module docstring. File exists and is importable."
+      },
+      {
+        "criterion_id": "AC-002",
+        "criterion_text": "`src/services/insight_extractor.py` implements `get_focus_categories(focus_areas)` function",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Implemented get_focus_categories() at module level in src/services/insight_extractor.py. Function resolves focus area names to InsightCategory lists using FOCUS_PRESETS mapping. Tested by 8 tests in TestGetFocusCategories class.",
+        "notes": "Implemented get_focus_categories() at module level in src/services/insight_extractor.py. Function resolves focus area names to InsightCategory lists using FOCUS_PRESETS mapping. Tested by 8 tests in TestGetFocusCategories class."
+      },
+      {
+        "criterion_id": "AC-003",
+        "criterion_text": "`build_extraction_prompt(transcript, focus_areas, max_insights)` generates structured prompt",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Implemented build_extraction_prompt() with category descriptions, output format instructions, guidelines, and transcript embedding. Tested by 8 tests in TestBuildExtractionPrompt class.",
+        "notes": "Implemented build_extraction_prompt() with category descriptions, output format instructions, guidelines, and transcript embedding. Tested by 8 tests in TestBuildExtractionPrompt class."
+      },
+      {
+        "criterion_id": "AC-004",
+        "criterion_text": "`chunk_transcript(transcript, max_chars, overlap_chars)` splits long transcripts at paragraph boundaries",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Implemented chunk_transcript() that splits on \\n\\n paragraph boundaries with _force_split() fallback for single long paragraphs. Tested by 8 tests in TestChunkTranscript class.",
+        "notes": "Implemented chunk_transcript() that splits on \\n\\n paragraph boundaries with _force_split() fallback for single long paragraphs. Tested by 8 tests in TestChunkTranscript class."
+      },
+      {
+        "criterion_id": "AC-005",
+        "criterion_text": "`prepare_for_extraction(transcript, video_id, focus_areas, max_insights)` returns complete extraction metadata",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Implemented prepare_for_extraction() that returns dict with all required keys: extraction_prompt, focus_areas, categories, category_definitions, transcript_length, chunk_count, needs_chunking, max_insights, chunks. Tested by 14 tests in TestPrepareForExtraction class.",
+        "notes": "Implemented prepare_for_extraction() that returns dict with all required keys: extraction_prompt, focus_areas, categories, category_definitions, transcript_length, chunk_count, needs_chunking, max_insights, chunks. Tested by 14 tests in TestPrepareForExtraction class."
+      },
+      {
+        "criterion_id": "AC-006",
+        "criterion_text": "`get_focus_categories` handles 'all' keyword returning all categories",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "When 'all' is in focus_areas, returns list(InsightCategory) \u2014 all 24 categories. Tested by test_all_keyword_returns_all_categories and test_all_with_other_areas.",
+        "notes": "When 'all' is in focus_areas, returns list(InsightCategory) \u2014 all 24 categories. Tested by test_all_keyword_returns_all_categories and test_all_with_other_areas."
+      },
+      {
+        "criterion_id": "AC-007",
+        "criterion_text": "`get_focus_categories` falls back to 'general' for unknown focus areas",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "When no valid focus areas match, logs info and returns FOCUS_PRESETS['general']. Tested by test_unknown_focus_area_falls_back_to_general.",
+        "notes": "When no valid focus areas match, logs info and returns FOCUS_PRESETS['general']. Tested by test_unknown_focus_area_falls_back_to_general."
+      },
+      {
+        "criterion_id": "AC-008",
+        "criterion_text": "`get_focus_categories` deduplicates when same area specified twice",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Uses set-based deduplication preserving insertion order. Tested by test_deduplication_when_same_area_specified_twice which verifies len(result) == len(set(result)) == 4.",
+        "notes": "Uses set-based deduplication preserving insertion order. Tested by test_deduplication_when_same_area_specified_twice which verifies len(result) == len(set(result)) == 4."
+      },
+      {
+        "criterion_id": "AC-009",
+        "criterion_text": "`chunk_transcript` returns single chunk for short transcripts",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Early return [transcript] when len(transcript) <= max_chars. Tested by test_short_transcript_returns_single_chunk.",
+        "notes": "Early return [transcript] when len(transcript) <= max_chars. Tested by test_short_transcript_returns_single_chunk."
+      },
+      {
+        "criterion_id": "AC-010",
+        "criterion_text": "`chunk_transcript` maintains overlap between chunks for context continuity",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Overlap is computed from end of stored chunk and prepended to next chunk. _force_split also maintains overlap. Tested by test_overlap_between_chunks and test_default_overlap_is_500.",
+        "notes": "Overlap is computed from end of stored chunk and prepended to next chunk. _force_split also maintains overlap. Tested by test_overlap_between_chunks and test_default_overlap_is_500."
+      },
+      {
+        "criterion_id": "AC-011",
+        "criterion_text": "`prepare_for_extraction` returns: extraction_prompt, focus_areas, categories, category_definitions, transcript_length, chunk_count, needs_chunking, max_insights, chunks",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "All 9 keys plus video_id returned in the dict. Tested by test_contains_all_required_keys which checks all required keys are present.",
+        "notes": "All 9 keys plus video_id returned in the dict. Tested by test_contains_all_required_keys which checks all required keys are present."
+      },
+      {
+        "criterion_id": "AC-012",
+        "criterion_text": "Prompt includes category descriptions, output format instructions, guidelines",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "build_extraction_prompt includes Focus Areas section with category descriptions, Output Format section, and Guidelines section. Tested by test_includes_category_descriptions, test_includes_output_format_instructions, test_includes_guidelines, and test_includes_json_response_format.",
+        "notes": "build_extraction_prompt includes Focus Areas section with category descriptions, Output Format section, and Guidelines section. Tested by test_includes_category_descriptions, test_includes_output_format_instructions, test_includes_guidelines, and test_includes_json_response_format."
+      },
+      {
+        "criterion_id": "AC-013",
+        "criterion_text": "Code passes `ruff check` and `mypy`",
+        "result": "verified",
+        "status": "verified",
+        "evidence": "Ran 'ruff check src/services/insight_extractor.py' \u2014 output: 'All checks passed!'. Ran 'mypy src/services/insight_extractor.py' \u2014 output: 'Success: no issues found in 1 source file'. Fixed 2 ruff UP045 violations by replacing Optional[X] with X | None syntax and removing unused typing.Optional import.",
+        "notes": "Ran 'ruff check src/services/insight_extractor.py' \u2014 output: 'All checks passed!'. Ran 'mypy src/services/insight_extractor.py' \u2014 output: 'Success: no issues found in 1 source file'. Fixed 2 ruff UP045 violations by replacing Optional[X] with X | None syntax and removing unused typing.Optional import."
+      }
+    ]
+  },
+  "issues": [],
+  "rationale": "All quality gates passed. Independent verification confirmed. All acceptance criteria met. Architecture context: 879 chars provided.",
+  "context_used": "## Job-Specific Context\n\nBudget: 1506/5200 tokens\n\n### \ud83c\udfa8 Relevant Patterns\n- DESCRIBES\n- HAS_METHOD\n- EXECUTES_STEP\n- DEPENDS_ON_CONTENT\n\n### \u26a0\ufe0f Warnings\n- RESULTS_IN\n- REQUIRES_USE_OF\n- HAS_IMPLEMENTATION_TARGET\n\n### \ud83c\udfad Role Constraints\n- DELEGATES_TO\n- PROJECT_INVOLVES\n- PROJECT_INVOLVES\n\n### \ud83d\udee0\ufe0f Implementation Modes\n- APPLIES_TO_TASK\n\n\n## Previous Turn Summary (Turn 1)\n**What was attempted**: Implementation attempt\n**Player decision**: feedback\n**Coach decision**: feedback\n**Coach feedback**: - Not all acceptance criteria met:\n  \u2022 Code passes `ruff check` and `mypy`\n\n**Acceptance Criteria Status**:\n  \u25cb AC-001: verified\n  \u25cb AC-002: verified\n  \u25cb AC-003: verified\n  \u25cb AC-004: verified\n  \u25cb AC-005: verified\n  \u25cb AC-006: verified\n  \u25cb AC-007: verified\n  \u25cb AC-008: verified\n  \u25cb AC-009: verified\n  \u25cb AC-010: verified\n  \u25cb AC-011: verified\n  \u25cb AC-012: verified\n  \u2717 AC-013: rejected",
+  "approved_without_independent_tests": false,
+  "is_configuration_error": false
+}
