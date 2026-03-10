@@ -31,6 +31,10 @@ packages = ["src"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests requiring network access (run with '-m integration')",
+]
 
 [tool.ruff]
 line-length = 100

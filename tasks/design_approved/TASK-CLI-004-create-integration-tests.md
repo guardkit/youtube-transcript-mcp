@@ -1,19 +1,23 @@
 ---
-id: TASK-CLI-004
-title: "Create integration tests for CLI with real network calls"
-task_type: testing
-parent_review: TASK-REV-E5FC
-feature_id: FEAT-CLI-001
-wave: 4
-implementation_mode: task-work
 complexity: 2
+created: 2026-03-06 10:00:00+00:00
 dependencies:
-  - TASK-CLI-001
-  - TASK-CLI-002
-status: pending
+- TASK-CLI-001
+- TASK-CLI-002
+feature_id: FEAT-CLI-001
+id: TASK-CLI-004
+implementation_mode: task-work
+parent_review: TASK-REV-E5FC
 priority: normal
-tags: [cli, testing, integration, FEAT-CLI-001]
-created: 2026-03-06T10:00:00Z
+status: design_approved
+tags:
+- cli
+- testing
+- integration
+- FEAT-CLI-001
+task_type: testing
+title: Create integration tests for CLI with real network calls
+wave: 4
 ---
 
 # Task: Create CLI Integration Tests
