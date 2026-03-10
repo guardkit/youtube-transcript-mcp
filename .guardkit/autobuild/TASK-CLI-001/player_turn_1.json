@@ -1,0 +1,158 @@
+{
+  "task_id": "TASK-CLI-001",
+  "turn": 1,
+  "files_modified": [
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/tests/test_cli.py"
+  ],
+  "files_created": [
+    ".claude/task-plans/TASK-CLI-001-implementation-plan.md",
+    ".guardkit/autobuild/TASK-CLI-001/player_turn_1.json",
+    ".guardkit/autobuild/TASK-CLI-001/task_work_results.json",
+    ".guardkit/autobuild/TASK-CLI-001/turn_context.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/.guardkit/autobuild/TASK-CLI-001/player_turn_1.json",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/src/cli.py",
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/tests/test_cli.py",
+    "pyproject.toml",
+    "src/__init__.py",
+    "src/__main__.py",
+    "src/cli.py",
+    "src/models/__init__.py",
+    "src/models/insight.py",
+    "src/services/__init__.py",
+    "src/services/insight_extractor.py",
+    "src/services/transcript_client.py",
+    "src/services/youtube_client.py",
+    "tasks/backlog/TASK-CLI-002-update-main-entry-point.md",
+    "tasks/backlog/TASK-CLI-003-create-unit-tests.md",
+    "tasks/backlog/TASK-CLI-004-create-integration-tests.md",
+    "tasks/design_approved/TASK-CLI-001-create-cli-module.md",
+    "tests/test_cli.py"
+  ],
+  "tests_written": [
+    "/Users/richardwoollcott/Projects/appmilla_github/youtube-transcript-mcp/.guardkit/worktrees/FEAT-6CE9/tests/test_cli.py"
+  ],
+  "tests_run": true,
+  "tests_passed": true,
+  "test_output_summary": "",
+  "implementation_notes": "Implementation via task-work delegation",
+  "concerns": [],
+  "requirements_addressed": [
+    "AC-001: All 5 public functions exist",
+    "AC-002: All 6 subcommands registered",
+    "AC-003: stdout is JSON only via output_json()",
+    "AC-004: Logging goes to stderr",
+    "AC-005: --help works on all subcommands",
+    "AC-006: Exit code 0 on success, 1 on error",
+    "AC-007: extract-insights supports - for stdin",
+    "AC-008: get-transcript supports --language and --no-segments",
+    "AC-009: extract-insights supports --focus, --video-id, --max-insights",
+    "AC-010: Async dispatch via asyncio.run()"
+  ],
+  "requirements_remaining": [],
+  "sdk_turns_used": 59,
+  "sdk_max_turns": 100,
+  "sdk_ceiling_hit": false,
+  "tests_passed_count": 53,
+  "completion_promises": [
+    {
+      "criterion_id": "AC-001",
+      "criterion_text": "`src/cli.py` exists with `make_parser()`, `output_json()`, `exit_code_from_result()`, `run_command()`, and `main()` functions",
+      "status": "complete",
+      "evidence": "Created src/cli.py with all five functions: make_parser() builds the argparse parser, output_json() writes JSON to stdout, exit_code_from_result() returns 0/1 based on error key, run_command() is the async dispatcher, and main() is the CLI entry point. TestFunctionsExist class verifies all are callable.",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-002",
+      "criterion_text": "Subcommands registered: `ping`, `video-info`, `get-transcript`, `list-transcripts`, `extract-insights`, `list-focus-areas`",
+      "status": "complete",
+      "evidence": "All 6 subcommands registered via argparse subparsers in make_parser(). Verified by TestSubcommands parametrized test that parses each command successfully.",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-003",
+      "criterion_text": "All stdout output is valid JSON via `output_json()` only",
+      "status": "complete",
+      "evidence": "output_json() is the single function that writes to stdout using json.dumps(). All command paths return dicts that flow through main() -> output_json(). Tests verify stdout is valid JSON for ping, list-focus-areas, extract-insights, and error cases.",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-004",
+      "criterion_text": "All logging goes to stderr",
+      "status": "complete",
+      "evidence": "Uses logging.getLogger(__name__) which inherits from the root logger configured in __main__.py with stream=sys.stderr. No print() calls outside output_json(). TestLoggingToStderr verifies stdout is pure JSON.",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-005",
+      "criterion_text": "`--help` works on all subcommands with clear argument descriptions",
+      "status": "complete",
+      "evidence": "TestHelp parametrized test verifies --help exits with code 0 for main parser and all 6 subcommands. All arguments have help= descriptions.",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-006",
+      "criterion_text": "Exit code 0 on success, 1 on error (based on `\"error\"` key in result dict)",
+      "status": "complete",
+      "evidence": "exit_code_from_result() checks for 'error' key and returns 1 if present, 0 otherwise. main() returns this value. TestExitCodes verifies both success (0) and error (1) paths.",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-007",
+      "criterion_text": "`extract-insights` supports `-` for stdin input (pipe support)",
+      "status": "complete",
+      "evidence": "run_command() checks if args.transcript == '-' and reads from sys.stdin.read(). TestStdinPipeSupport.test_extract_insights_reads_stdin monkeypatches stdin with StringIO and verifies the transcript text is consumed.",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-008",
+      "criterion_text": "`get-transcript` supports `--language` and `--no-segments` flags",
+      "status": "complete",
+      "evidence": "get-transcript subparser has --language (default 'en') and --no-segments (store_true) arguments. TestGetTranscriptFlags verifies defaults and custom values. Mocked dispatch tests verify --no-segments omits segments from output.",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-009",
+      "criterion_text": "`extract-insights` supports `--focus`, `--video-id`, and `--max-insights` flags",
+      "status": "complete",
+      "evidence": "extract-insights subparser has --focus (dest=focus_areas, default 'general'), --video-id (default ''), --max-insights (type=int, default 10). TestExtractInsightsFlags verifies all defaults and custom values including comma-separated focus areas.",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    },
+    {
+      "criterion_id": "AC-010",
+      "criterion_text": "Async command dispatch via `asyncio.run()`",
+      "status": "complete",
+      "evidence": "run_command() is defined as async def, and main() calls asyncio.run(run_command(args)). TestAsyncDispatch verifies run_command is a coroutine function and main() successfully dispatches via asyncio.run().",
+      "test_file": "tests/test_cli.py",
+      "implementation_files": [
+        "src/cli.py"
+      ]
+    }
+  ]
+}
