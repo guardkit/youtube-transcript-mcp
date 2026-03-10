@@ -102,6 +102,9 @@ Thumbs.db
 # Docker
 .docker/
 
+# MkDocs
+site/
+
 # Local development
 *.local
 *.log

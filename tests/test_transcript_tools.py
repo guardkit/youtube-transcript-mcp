@@ -6,53 +6,9 @@ registered in src/__main__.py. Covers all acceptance criteria for TASK-TRS-003.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from unittest.mock import AsyncMock, patch
 
 import pytest
-
-# ---------------------------------------------------------------------------
-# Mock helpers (reused from test_transcript_client.py patterns)
-# ---------------------------------------------------------------------------
-
-
-@dataclass
-class MockSnippet:
-    """Mock FetchedTranscriptSnippet."""
-
-    start: float
-    duration: float
-    text: str
-
-
-@dataclass
-class MockFetchedTranscript:
-    """Mock FetchedTranscript returned by api.fetch()."""
-
-    language: str
-    language_code: str
-    is_generated: bool
-    snippets: list[MockSnippet]
-
-
-def _make_mock_transcript(
-    language: str = "English",
-    language_code: str = "en",
-    is_generated: bool = False,
-    snippets: list[MockSnippet] | None = None,
-) -> MockFetchedTranscript:
-    if snippets is None:
-        snippets = [
-            MockSnippet(start=0.0, duration=2.5, text="Hello world"),
-            MockSnippet(start=2.5, duration=3.0, text="This is a test"),
-            MockSnippet(start=5.5, duration=2.0, text="Thank you"),
-        ]
-    return MockFetchedTranscript(
-        language=language,
-        language_code=language_code,
-        is_generated=is_generated,
-        snippets=snippets,
-    )
 
 
 # ---------------------------------------------------------------------------

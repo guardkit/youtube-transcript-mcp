@@ -224,6 +224,36 @@ class TestExtractInsights:
         assert "insight" in docstring.lower()
 
     @pytest.mark.asyncio
+    async def test_invalid_max_insights_returns_error(self) -> None:
+        """Non-integer max_insights should return INVALID_PARAMETER error."""
+        from src.__main__ import extract_insights
+
+        result = await extract_insights(
+            transcript="A" * 200,
+            max_insights="not-a-number",
+        )
+        assert result["error"]["code"] == "INVALID_PARAMETER"
+        assert result["error"]["category"] == "client_error"
+
+    @pytest.mark.asyncio
+    async def test_extraction_exception_returns_server_error(self) -> None:
+        """Exception in prepare_for_extraction should return server error."""
+        from unittest.mock import patch
+
+        from src.__main__ import extract_insights
+
+        with patch(
+            "src.__main__.prepare_for_extraction",
+            side_effect=RuntimeError("boom"),
+        ):
+            result = await extract_insights(
+                transcript="A" * 200,
+                focus_areas="general",
+            )
+        assert result["error"]["code"] == "EXTRACTION_PREP_ERROR"
+        assert result["error"]["category"] == "server_error"
+
+    @pytest.mark.asyncio
     async def test_error_response_structure(self) -> None:
         """Error responses follow {error: {category, code, message}} pattern."""
         from src.__main__ import extract_insights

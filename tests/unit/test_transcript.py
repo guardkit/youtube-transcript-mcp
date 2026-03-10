@@ -2,13 +2,15 @@
 
 Comprehensive unit tests covering TranscriptClient service, tool registration,
 and error handling. All youtube-transcript-api calls are mocked to avoid
-external dependencies. Covers all acceptance criteria for TASK-TRS-004.
+external dependencies.
+
+Consolidated from tests/test_transcript_client.py (TASK-TRS-002) and
+tests/unit/test_transcript.py (TASK-TRS-004).
 """
 
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -22,77 +24,7 @@ from src.services.transcript_client import (
     TranscriptSegment,
     VideoUnavailableError,
 )
-
-# ---------------------------------------------------------------------------
-# Mock helpers — match youtube-transcript-api v1.2+ response structure
-# ---------------------------------------------------------------------------
-
-
-@dataclass
-class MockSnippet:
-    """Mock FetchedTranscriptSnippet with .start, .duration, .text."""
-
-    start: float
-    duration: float
-    text: str
-
-
-@dataclass
-class MockTranscript:
-    """Mock FetchedTranscript returned by api.fetch().
-
-    Attributes match youtube-transcript-api v1.2+: .snippets, .language,
-    .language_code, .is_generated.
-    """
-
-    language: str
-    language_code: str
-    is_generated: bool
-    snippets: list[MockSnippet]
-
-
-def _make_mock_transcript(
-    language: str = "English",
-    language_code: str = "en",
-    is_generated: bool = False,
-    snippets: list[MockSnippet] | None = None,
-) -> MockTranscript:
-    """Create a mock transcript with sensible defaults."""
-    if snippets is None:
-        snippets = [
-            MockSnippet(start=0.0, duration=2.5, text="Hello world"),
-            MockSnippet(start=2.5, duration=3.0, text="This is a test"),
-            MockSnippet(start=5.5, duration=2.0, text="Thank you"),
-        ]
-    return MockTranscript(
-        language=language,
-        language_code=language_code,
-        is_generated=is_generated,
-        snippets=snippets,
-    )
-
-
-def _make_transcript_info(
-    language: str = "English",
-    language_code: str = "en",
-    is_generated: bool = False,
-    fetched: MockTranscript | None = None,
-) -> MagicMock:
-    """Create a mock transcript-list entry (iterable item from api.list()).
-
-    Uses MagicMock for transcript list iteration (__iter__).
-    """
-    info = MagicMock()
-    info.language = language
-    info.language_code = language_code
-    info.is_generated = is_generated
-    info.fetch.return_value = fetched or _make_mock_transcript(
-        language=language,
-        language_code=language_code,
-        is_generated=is_generated,
-    )
-    return info
-
+from tests.conftest import MockSnippet, MockTranscript, make_mock_transcript, make_transcript_info
 
 # ---------------------------------------------------------------------------
 # AC: TranscriptSegment dataclass creation verified
@@ -173,7 +105,7 @@ class TestTranscriptClient:
     @pytest.fixture
     def mock_transcript(self) -> MockTranscript:
         """Create mock transcript response."""
-        return _make_mock_transcript()
+        return make_mock_transcript()
 
     @pytest.mark.asyncio
     async def test_get_transcript_success(
@@ -193,6 +125,19 @@ class TestTranscriptClient:
         assert "Hello world" in result.full_text
         assert "This is a test" in result.full_text
         assert "Thank you" in result.full_text
+
+    @pytest.mark.asyncio
+    async def test_get_transcript_calculates_totals(self) -> None:
+        """_build_result calculates total_segments, total_duration_seconds, full_text."""
+        client = TranscriptClient()
+        mock_t = make_mock_transcript()
+
+        with patch.object(client.api, "fetch", return_value=mock_t):
+            result = await client.get_transcript("vid123", "en")
+
+        assert result.total_segments == 3
+        assert result.total_duration_seconds == pytest.approx(7.5)
+        assert result.full_text == "Hello world This is a test Thank you"
 
     @pytest.mark.asyncio
     async def test_get_transcript_fallback_to_auto_generated(
@@ -228,7 +173,7 @@ class TestTranscriptClient:
         from youtube_transcript_api._errors import NoTranscriptFound
 
         client = TranscriptClient()
-        en_info = _make_transcript_info(
+        en_info = make_transcript_info(
             language="English",
             language_code="en",
             is_generated=False,
@@ -252,7 +197,7 @@ class TestTranscriptClient:
         from youtube_transcript_api._errors import NoTranscriptFound
 
         client = TranscriptClient()
-        es_info = _make_transcript_info(
+        es_info = make_transcript_info(
             language="Spanish",
             language_code="es",
             is_generated=False,
@@ -314,6 +259,20 @@ class TestTranscriptClient:
                 with pytest.raises(NoTranscriptFoundError):
                     await client.get_transcript("vid", "en")
 
+    @pytest.mark.asyncio
+    async def test_get_transcript_uses_asyncio_to_thread(self) -> None:
+        """AC: Async wrappers use asyncio.to_thread() for sync calls."""
+        client = TranscriptClient()
+        mock_t = make_mock_transcript()
+
+        with patch.object(client.api, "fetch", return_value=mock_t):
+            with patch(
+                "src.services.transcript_client.asyncio.to_thread",
+                wraps=asyncio.to_thread,
+            ) as mock_thread:
+                await client.get_transcript("vid", "en")
+                mock_thread.assert_called_once()
+
     def test_build_result_calculates_totals(
         self, mock_transcript: MockTranscript
     ) -> None:
@@ -329,7 +288,7 @@ class TestTranscriptClient:
     def test_build_result_empty_snippets(self) -> None:
         """_build_result handles empty snippet list."""
         client = TranscriptClient()
-        empty_transcript = _make_mock_transcript(snippets=[])
+        empty_transcript = make_mock_transcript(snippets=[])
 
         result = client._build_result("vid", empty_transcript)
 
@@ -340,7 +299,7 @@ class TestTranscriptClient:
     def test_build_result_single_segment(self) -> None:
         """_build_result correctly handles a single segment."""
         client = TranscriptClient()
-        transcript = _make_mock_transcript(
+        transcript = make_mock_transcript(
             snippets=[MockSnippet(start=0.0, duration=5.0, text="Only segment")]
         )
 
@@ -366,8 +325,8 @@ class TestListTranscripts:
     async def test_list_transcripts_success(self) -> None:
         """AC: list_transcripts() returns correct format with language info."""
         client = TranscriptClient()
-        en_info = _make_transcript_info("English", "en", False)
-        es_info = _make_transcript_info("Spanish", "es", True)
+        en_info = make_transcript_info("English", "en", False)
+        es_info = make_transcript_info("Spanish", "es", True)
         mock_list = MagicMock()
         mock_list.__iter__ = lambda self: iter([en_info, es_info])
 
@@ -419,6 +378,21 @@ class TestListTranscripts:
             result = await client.list_transcripts("vid")
 
         assert result == []
+
+    @pytest.mark.asyncio
+    async def test_list_transcripts_uses_asyncio_to_thread(self) -> None:
+        """AC: Async wrappers use asyncio.to_thread()."""
+        client = TranscriptClient()
+        mock_list = MagicMock()
+        mock_list.__iter__ = lambda self: iter([])
+
+        with patch.object(client.api, "list", return_value=mock_list):
+            with patch(
+                "src.services.transcript_client.asyncio.to_thread",
+                wraps=asyncio.to_thread,
+            ) as mock_thread:
+                await client.list_transcripts("vid")
+                mock_thread.assert_called_once()
 
 
 # ---------------------------------------------------------------------------
@@ -481,3 +455,22 @@ class TestCancelledErrorHandling:
         ):
             with pytest.raises(asyncio.CancelledError):
                 await client.list_transcripts("vid")
+
+
+# ---------------------------------------------------------------------------
+# AC: All logging to stderr via logging.getLogger(__name__)
+# ---------------------------------------------------------------------------
+
+
+class TestLogging:
+    """AC: All logging to stderr via logging.getLogger(__name__)."""
+
+    def test_module_logger_exists(self) -> None:
+        """Module uses logging.getLogger(__name__)."""
+        import logging
+
+        import src.services.transcript_client as mod
+
+        assert hasattr(mod, "logger")
+        assert isinstance(mod.logger, logging.Logger)
+        assert mod.logger.name == "src.services.transcript_client"

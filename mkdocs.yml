@@ -1,0 +1,129 @@
+site_name: YouTube Transcript MCP
+site_description: MCP server for fetching YouTube transcripts and extracting insights
+site_author: AppMilla
+site_url: https://appmilla.github.io/youtube-transcript-mcp/
+repo_url: https://github.com/appmilla/youtube-transcript-mcp
+repo_name: appmilla/youtube-transcript-mcp
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: red
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: red
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  icon:
+    logo: material/youtube
+    repo: fontawesome/brands/github
+  features:
+    - navigation.instant
+    - navigation.instant.prefetch
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - navigation.indexes
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+    - content.tabs.link
+
+plugins:
+  - search:
+      lang: en
+
+markdown_extensions:
+  - admonition
+  - tables
+  - footnotes
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - getting-started/index.md
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quickstart.md
+    - Configuration: getting-started/configuration.md
+  - MCP Tools:
+    - tools/index.md
+    - get_transcript: tools/get-transcript.md
+    - list_available_transcripts: tools/list-transcripts.md
+    - extract_insights: tools/extract-insights.md
+    - list_focus_areas: tools/list-focus-areas.md
+  - CLI Guide:
+    - cli/index.md
+    - Commands: cli/commands.md
+    - Examples: cli/examples.md
+  - Focus Areas:
+    - focus-areas/index.md
+    - Presets Reference: focus-areas/presets.md
+    - Custom Focus Areas: focus-areas/custom.md
+  - Development:
+    - development/index.md
+    - Architecture: development/architecture.md
+    - Contributing: development/contributing.md
+  - Troubleshooting: troubleshooting.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/appmilla/youtube-transcript-mcp
+
+docs_dir: docs
+site_dir: site
+use_directory_urls: true
+
+exclude_docs: |
+  features/
+  research/
+  reviews/
+  state/
+  adr/
+  IMPLEMENTATION-PLAN.md
+strict: true
+
+dev_addr: 127.0.0.1:8000
+watch:
+  - mkdocs.yml
+  - docs

@@ -186,7 +186,7 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
 
         # Lazy import for full video info (requires network)
         try:
-            from src.services.youtube_client import YouTubeClient, VideoNotFoundError
+            from src.services.youtube_client import VideoNotFoundError, YouTubeClient
 
             client = YouTubeClient()
             info = await client.get_video_info(args.video_url)
@@ -222,15 +222,15 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
                     "message": str(e),
                 }
             }
-        except Exception as e:
-            if type(e).__name__ == "VideoNotFoundError":
-                return {
-                    "error": {
-                        "category": "client_error",
-                        "code": "VIDEO_NOT_FOUND",
-                        "message": str(e),
-                    }
+        except VideoNotFoundError as e:
+            return {
+                "error": {
+                    "category": "client_error",
+                    "code": "VIDEO_NOT_FOUND",
+                    "message": str(e),
                 }
+            }
+        except Exception as e:
             logger.exception("Error fetching video info: %s", e)
             return {
                 "error": {
@@ -241,13 +241,13 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
             }
 
     elif args.command == "get-transcript":
-        from src.services.youtube_client import InvalidURLError, extract_video_id
         from src.services.transcript_client import (
             NoTranscriptFoundError,
             TranscriptClient,
             TranscriptsDisabledError,
             VideoUnavailableError,
         )
+        from src.services.youtube_client import InvalidURLError, extract_video_id
 
         try:
             video_id = extract_video_id(args.video_url)
@@ -305,8 +305,8 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
             }
 
     elif args.command == "list-transcripts":
-        from src.services.youtube_client import InvalidURLError, extract_video_id
         from src.services.transcript_client import TranscriptClient
+        from src.services.youtube_client import InvalidURLError, extract_video_id
 
         try:
             video_id = extract_video_id(args.video_url)

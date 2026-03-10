@@ -34,6 +34,8 @@ testpaths = ["tests"]
 markers = [
     "slow: marks tests as slow (deselect with '-m \"not slow\"')",
     "integration: marks tests as integration tests requiring network access (run with '-m integration')",
+    "seam: marks seam tests verifying cross-module contracts",
+    "integration_contract: marks integration contract tests",
 ]
 
 [tool.ruff]
