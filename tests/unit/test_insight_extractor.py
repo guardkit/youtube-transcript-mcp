@@ -1,7 +1,7 @@
 """Tests for insight extraction service.
 
 TDD RED phase: Tests define expected behavior for
-src/services/insight_extractor.py including focus area resolution,
+youtube_insights_mcp/services/insight_extractor.py including focus area resolution,
 prompt building, transcript chunking, and extraction preparation.
 """
 
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import pytest
 
-from src.models.insight import (
+from youtube_insights_mcp.models.insight import (
     CATEGORY_DEFINITIONS,
     FOCUS_PRESETS,
     InsightCategory,
@@ -20,12 +20,12 @@ from src.models.insight import (
 
 @pytest.mark.seam
 def test_insight_models_importable() -> None:
-    """Verify insight models are importable from src.models.insight.
+    """Verify insight models are importable from youtube_insights_mcp.models.insight.
 
-    Contract: All models must be importable from src.models.insight
+    Contract: All models must be importable from youtube_insights_mcp.models.insight
     Producer: TASK-INT-001
     """
-    from src.models.insight import (
+    from youtube_insights_mcp.models.insight import (
         FOCUS_PRESETS,
         FocusArea,
         InsightCategory,
@@ -47,7 +47,7 @@ class TestGetFocusCategories:
 
     def test_all_keyword_returns_all_categories(self) -> None:
         """'all' keyword should return all 24 InsightCategory values."""
-        from src.services.insight_extractor import get_focus_categories
+        from youtube_insights_mcp.services.insight_extractor import get_focus_categories
 
         result = get_focus_categories(["all"])
         assert len(result) == 24
@@ -56,7 +56,7 @@ class TestGetFocusCategories:
 
     def test_single_known_focus_area(self) -> None:
         """Single known focus area returns its 4 categories."""
-        from src.services.insight_extractor import get_focus_categories
+        from youtube_insights_mcp.services.insight_extractor import get_focus_categories
 
         result = get_focus_categories(["general"])
         assert len(result) == 4
@@ -65,7 +65,7 @@ class TestGetFocusCategories:
 
     def test_multiple_focus_areas(self) -> None:
         """Multiple focus areas returns union of categories."""
-        from src.services.insight_extractor import get_focus_categories
+        from youtube_insights_mcp.services.insight_extractor import get_focus_categories
 
         result = get_focus_categories(["general", "technical"])
         expected = set(FOCUS_PRESETS["general"]) | set(FOCUS_PRESETS["technical"])
@@ -73,7 +73,7 @@ class TestGetFocusCategories:
 
     def test_unknown_focus_area_falls_back_to_general(self) -> None:
         """Unknown focus areas should fall back to 'general' preset."""
-        from src.services.insight_extractor import get_focus_categories
+        from youtube_insights_mcp.services.insight_extractor import get_focus_categories
 
         result = get_focus_categories(["nonexistent_area"])
         expected = FOCUS_PRESETS["general"]
@@ -81,7 +81,7 @@ class TestGetFocusCategories:
 
     def test_deduplication_when_same_area_specified_twice(self) -> None:
         """Same area twice should not produce duplicate categories."""
-        from src.services.insight_extractor import get_focus_categories
+        from youtube_insights_mcp.services.insight_extractor import get_focus_categories
 
         result = get_focus_categories(["general", "general"])
         assert len(result) == len(set(result)), "Duplicate categories found"
@@ -89,21 +89,21 @@ class TestGetFocusCategories:
 
     def test_case_insensitive_matching(self) -> None:
         """Focus area matching should be case insensitive."""
-        from src.services.insight_extractor import get_focus_categories
+        from youtube_insights_mcp.services.insight_extractor import get_focus_categories
 
         result = get_focus_categories(["General"])
         assert set(result) == set(FOCUS_PRESETS["general"])
 
     def test_all_with_other_areas(self) -> None:
         """'all' combined with other areas should still return all."""
-        from src.services.insight_extractor import get_focus_categories
+        from youtube_insights_mcp.services.insight_extractor import get_focus_categories
 
         result = get_focus_categories(["all", "general"])
         assert len(result) == 24
 
     def test_returns_list_of_insight_category(self) -> None:
         """Return type should be list of InsightCategory."""
-        from src.services.insight_extractor import get_focus_categories
+        from youtube_insights_mcp.services.insight_extractor import get_focus_categories
 
         result = get_focus_categories(["general"])
         assert isinstance(result, list)
@@ -118,14 +118,14 @@ class TestBuildExtractionPrompt:
     """Tests for build_extraction_prompt function."""
 
     def test_returns_string(self) -> None:
-        from src.services.insight_extractor import build_extraction_prompt
+        from youtube_insights_mcp.services.insight_extractor import build_extraction_prompt
 
         result = build_extraction_prompt("Sample transcript", ["general"])
         assert isinstance(result, str)
 
     def test_includes_transcript(self) -> None:
         """Prompt should include the transcript text."""
-        from src.services.insight_extractor import build_extraction_prompt
+        from youtube_insights_mcp.services.insight_extractor import build_extraction_prompt
 
         transcript = "This is my unique transcript text."
         result = build_extraction_prompt(transcript, ["general"])
@@ -133,7 +133,7 @@ class TestBuildExtractionPrompt:
 
     def test_includes_category_descriptions(self) -> None:
         """Prompt should include category descriptions for focus areas."""
-        from src.services.insight_extractor import build_extraction_prompt
+        from youtube_insights_mcp.services.insight_extractor import build_extraction_prompt
 
         result = build_extraction_prompt("Some transcript", ["general"])
         # Check that general category descriptions are present
@@ -142,21 +142,21 @@ class TestBuildExtractionPrompt:
 
     def test_includes_max_insights(self) -> None:
         """Prompt should include maximum insights count."""
-        from src.services.insight_extractor import build_extraction_prompt
+        from youtube_insights_mcp.services.insight_extractor import build_extraction_prompt
 
         result = build_extraction_prompt("Transcript", ["general"], max_insights=5)
         assert "5" in result
 
     def test_default_max_insights_is_10(self) -> None:
         """Default max_insights should be 10."""
-        from src.services.insight_extractor import build_extraction_prompt
+        from youtube_insights_mcp.services.insight_extractor import build_extraction_prompt
 
         result = build_extraction_prompt("Transcript", ["general"])
         assert "10" in result
 
     def test_includes_output_format_instructions(self) -> None:
         """Prompt should include output format instructions."""
-        from src.services.insight_extractor import build_extraction_prompt
+        from youtube_insights_mcp.services.insight_extractor import build_extraction_prompt
 
         result = build_extraction_prompt("Transcript", ["general"])
         assert "category" in result.lower()
@@ -166,14 +166,14 @@ class TestBuildExtractionPrompt:
 
     def test_includes_guidelines(self) -> None:
         """Prompt should include extraction guidelines."""
-        from src.services.insight_extractor import build_extraction_prompt
+        from youtube_insights_mcp.services.insight_extractor import build_extraction_prompt
 
         result = build_extraction_prompt("Transcript", ["general"])
         assert "actionable" in result.lower()
 
     def test_includes_json_response_format(self) -> None:
         """Prompt should instruct JSON response format."""
-        from src.services.insight_extractor import build_extraction_prompt
+        from youtube_insights_mcp.services.insight_extractor import build_extraction_prompt
 
         result = build_extraction_prompt("Transcript", ["general"])
         assert "json" in result.lower()
@@ -187,7 +187,7 @@ class TestChunkTranscript:
 
     def test_short_transcript_returns_single_chunk(self) -> None:
         """Transcripts under max_chars should return as single chunk."""
-        from src.services.insight_extractor import chunk_transcript
+        from youtube_insights_mcp.services.insight_extractor import chunk_transcript
 
         transcript = "Short transcript."
         result = chunk_transcript(transcript, max_chars=30000)
@@ -196,7 +196,7 @@ class TestChunkTranscript:
 
     def test_long_transcript_is_split(self) -> None:
         """Transcripts over max_chars should be split into multiple chunks."""
-        from src.services.insight_extractor import chunk_transcript
+        from youtube_insights_mcp.services.insight_extractor import chunk_transcript
 
         # Create a transcript that's clearly over the limit
         paragraphs = ["Paragraph " + str(i) + ". " * 100 for i in range(50)]
@@ -206,7 +206,7 @@ class TestChunkTranscript:
 
     def test_splits_at_paragraph_boundaries(self) -> None:
         """Chunking should prefer splitting at paragraph boundaries."""
-        from src.services.insight_extractor import chunk_transcript
+        from youtube_insights_mcp.services.insight_extractor import chunk_transcript
 
         para1 = "A" * 200
         para2 = "B" * 200
@@ -218,7 +218,7 @@ class TestChunkTranscript:
 
     def test_overlap_between_chunks(self) -> None:
         """Chunks should have overlap for context continuity."""
-        from src.services.insight_extractor import chunk_transcript
+        from youtube_insights_mcp.services.insight_extractor import chunk_transcript
 
         # Create paragraphs with distinct content
         paragraphs = [f"Unique paragraph {i} content. " * 20 for i in range(20)]
@@ -231,7 +231,7 @@ class TestChunkTranscript:
 
     def test_default_max_chars_is_30000(self) -> None:
         """Default max_chars should be 30000."""
-        from src.services.insight_extractor import chunk_transcript
+        from youtube_insights_mcp.services.insight_extractor import chunk_transcript
 
         transcript = "A" * 29999
         result = chunk_transcript(transcript)
@@ -239,7 +239,7 @@ class TestChunkTranscript:
 
     def test_default_overlap_is_500(self) -> None:
         """Default overlap_chars should be 500."""
-        from src.services.insight_extractor import chunk_transcript
+        from youtube_insights_mcp.services.insight_extractor import chunk_transcript
 
         # Create transcript just over 30000 chars with clear paragraph boundary
         para1 = "First " * 3000  # ~18000 chars
@@ -253,7 +253,7 @@ class TestChunkTranscript:
 
     def test_handles_single_very_long_paragraph(self) -> None:
         """Should handle a paragraph that exceeds max_chars by splitting it."""
-        from src.services.insight_extractor import chunk_transcript
+        from youtube_insights_mcp.services.insight_extractor import chunk_transcript
 
         # Single paragraph with no \n\n breaks
         transcript = "Word " * 10000  # ~50000 chars
@@ -266,7 +266,7 @@ class TestChunkTranscript:
 
     def test_returns_list_of_strings(self) -> None:
         """Return type should be list of strings."""
-        from src.services.insight_extractor import chunk_transcript
+        from youtube_insights_mcp.services.insight_extractor import chunk_transcript
 
         result = chunk_transcript("Test")
         assert isinstance(result, list)
@@ -281,14 +281,14 @@ class TestPrepareForExtraction:
     """Tests for prepare_for_extraction function."""
 
     def test_returns_dict(self) -> None:
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Transcript text")
         assert isinstance(result, dict)
 
     def test_contains_all_required_keys(self) -> None:
         """Result must contain all required keys."""
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Transcript text", video_id="abc123")
         required_keys = [
@@ -306,21 +306,21 @@ class TestPrepareForExtraction:
             assert key in result, f"Missing required key: {key}"
 
     def test_video_id_passed_through(self) -> None:
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Text", video_id="vid123")
         assert result["video_id"] == "vid123"
 
     def test_default_focus_areas_is_general(self) -> None:
         """Default focus_areas should be ['general']."""
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Text")
         assert result["focus_areas"] == ["general"]
 
     def test_categories_are_string_values(self) -> None:
         """Categories in result should be string values (not enum)."""
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Text")
         for cat in result["categories"]:
@@ -328,7 +328,7 @@ class TestPrepareForExtraction:
 
     def test_category_definitions_are_strings(self) -> None:
         """Category definitions should map string keys to string descriptions."""
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Text")
         for key, value in result["category_definitions"].items():
@@ -336,7 +336,7 @@ class TestPrepareForExtraction:
             assert isinstance(value, str)
 
     def test_transcript_length_is_correct(self) -> None:
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         text = "Hello world"
         result = prepare_for_extraction(text)
@@ -344,7 +344,7 @@ class TestPrepareForExtraction:
 
     def test_short_transcript_not_chunked(self) -> None:
         """Short transcripts should not be chunked."""
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Short text")
         assert result["needs_chunking"] is False
@@ -353,7 +353,7 @@ class TestPrepareForExtraction:
 
     def test_long_transcript_is_chunked(self) -> None:
         """Long transcripts should be chunked."""
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         long_text = "Paragraph. " * 5000  # ~55000 chars
         result = prepare_for_extraction(long_text)
@@ -363,26 +363,26 @@ class TestPrepareForExtraction:
         assert isinstance(result["chunks"], list)
 
     def test_extraction_prompt_is_string(self) -> None:
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Some transcript")
         assert isinstance(result["extraction_prompt"], str)
         assert len(result["extraction_prompt"]) > 0
 
     def test_max_insights_default_is_10(self) -> None:
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Text")
         assert result["max_insights"] == 10
 
     def test_max_insights_custom(self) -> None:
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Text", max_insights=5)
         assert result["max_insights"] == 5
 
     def test_custom_focus_areas(self) -> None:
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         result = prepare_for_extraction("Text", focus_areas=["technical", "investment"])
         assert result["focus_areas"] == ["technical", "investment"]
@@ -396,7 +396,7 @@ class TestPrepareForExtraction:
 
     def test_chunked_prompt_uses_first_chunk(self) -> None:
         """When chunking is needed, extraction_prompt should use the first chunk."""
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         # Build a long transcript with identifiable first paragraph
         first_para = "FIRST_PARAGRAPH_MARKER " * 100

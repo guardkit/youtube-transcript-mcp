@@ -1,12 +1,15 @@
 {
   "mcpServers": {
-    "youtube-transcript-mcp": {
+    "youtube-insights-mcp": {
       "command": "${VENV_PATH}/bin/python",
-      "args": ["-m", "src"],
+      "args": ["-m", "youtube_insights_mcp"],
       "cwd": "${PROJECT_PATH}",
       "env": {
         "PYTHONPATH": "${PROJECT_PATH}",
-        "LOG_LEVEL": "INFO"
+        "LOG_LEVEL": "INFO",
+        "PROXY_URL": "",
+        "WEBSHARE_USERNAME": "",
+        "WEBSHARE_PASSWORD": ""
       }
     }
   }

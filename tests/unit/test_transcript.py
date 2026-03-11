@@ -15,7 +15,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from src.services.transcript_client import (
+from tests.conftest import MockSnippet, MockTranscript, make_mock_transcript, make_transcript_info
+from youtube_insights_mcp.services.transcript_client import (
     NoTranscriptFoundError,
     TranscriptClient,
     TranscriptClientError,
@@ -24,7 +25,6 @@ from src.services.transcript_client import (
     TranscriptSegment,
     VideoUnavailableError,
 )
-from tests.conftest import MockSnippet, MockTranscript, make_mock_transcript, make_transcript_info
 
 # ---------------------------------------------------------------------------
 # AC: TranscriptSegment dataclass creation verified
@@ -267,7 +267,7 @@ class TestTranscriptClient:
 
         with patch.object(client.api, "fetch", return_value=mock_t):
             with patch(
-                "src.services.transcript_client.asyncio.to_thread",
+                "youtube_insights_mcp.services.transcript_client.asyncio.to_thread",
                 wraps=asyncio.to_thread,
             ) as mock_thread:
                 await client.get_transcript("vid", "en")
@@ -388,7 +388,7 @@ class TestListTranscripts:
 
         with patch.object(client.api, "list", return_value=mock_list):
             with patch(
-                "src.services.transcript_client.asyncio.to_thread",
+                "youtube_insights_mcp.services.transcript_client.asyncio.to_thread",
                 wraps=asyncio.to_thread,
             ) as mock_thread:
                 await client.list_transcripts("vid")
@@ -439,7 +439,7 @@ class TestCancelledErrorHandling:
         """get_transcript re-raises CancelledError."""
         client = TranscriptClient()
         with patch(
-            "src.services.transcript_client.asyncio.to_thread",
+            "youtube_insights_mcp.services.transcript_client.asyncio.to_thread",
             side_effect=asyncio.CancelledError,
         ):
             with pytest.raises(asyncio.CancelledError):
@@ -450,7 +450,7 @@ class TestCancelledErrorHandling:
         """list_transcripts re-raises CancelledError."""
         client = TranscriptClient()
         with patch(
-            "src.services.transcript_client.asyncio.to_thread",
+            "youtube_insights_mcp.services.transcript_client.asyncio.to_thread",
             side_effect=asyncio.CancelledError,
         ):
             with pytest.raises(asyncio.CancelledError):
@@ -469,8 +469,104 @@ class TestLogging:
         """Module uses logging.getLogger(__name__)."""
         import logging
 
-        import src.services.transcript_client as mod
+        import youtube_insights_mcp.services.transcript_client as mod
 
         assert hasattr(mod, "logger")
         assert isinstance(mod.logger, logging.Logger)
-        assert mod.logger.name == "src.services.transcript_client"
+        assert mod.logger.name == "youtube_insights_mcp.services.transcript_client"
+
+
+# ---------------------------------------------------------------------------
+# AC: Proxy configuration
+# ---------------------------------------------------------------------------
+
+
+class TestProxyConfig:
+    """Tests for build_proxy_config() factory and TranscriptClient proxy support."""
+
+    def test_no_env_returns_none(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """No proxy env vars set returns None."""
+        monkeypatch.delenv("PROXY_URL", raising=False)
+        monkeypatch.delenv("WEBSHARE_USERNAME", raising=False)
+        monkeypatch.delenv("WEBSHARE_PASSWORD", raising=False)
+
+        from youtube_insights_mcp.services.transcript_client import build_proxy_config
+
+        assert build_proxy_config() is None
+
+    def test_proxy_url_returns_generic_config(self, monkeypatch: pytest.MonkeyPatch) -> None:
+        """PROXY_URL set returns GenericProxyConfig."""
+        from youtube_transcript_api.proxies import GenericProxyConfig
+
+        from youtube_insights_mcp.services.transcript_client import build_proxy_config
+
+        monkeypatch.setenv("PROXY_URL", "http://proxy:8080")
+        monkeypatch.delenv("WEBSHARE_USERNAME", raising=False)
+        monkeypatch.delenv("WEBSHARE_PASSWORD", raising=False)
+
+        config = build_proxy_config()
+        assert isinstance(config, GenericProxyConfig)
+
+    def test_webshare_credentials_return_webshare_config(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """WEBSHARE_USERNAME + PASSWORD returns WebshareProxyConfig."""
+        from youtube_transcript_api.proxies import WebshareProxyConfig
+
+        from youtube_insights_mcp.services.transcript_client import build_proxy_config
+
+        monkeypatch.setenv("WEBSHARE_USERNAME", "user")
+        monkeypatch.setenv("WEBSHARE_PASSWORD", "pass")
+        monkeypatch.delenv("PROXY_URL", raising=False)
+
+        config = build_proxy_config()
+        assert isinstance(config, WebshareProxyConfig)
+
+    def test_webshare_takes_priority_over_proxy_url(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """When both are set, Webshare wins."""
+        from youtube_transcript_api.proxies import WebshareProxyConfig
+
+        from youtube_insights_mcp.services.transcript_client import build_proxy_config
+
+        monkeypatch.setenv("WEBSHARE_USERNAME", "user")
+        monkeypatch.setenv("WEBSHARE_PASSWORD", "pass")
+        monkeypatch.setenv("PROXY_URL", "http://proxy:8080")
+
+        config = build_proxy_config()
+        assert isinstance(config, WebshareProxyConfig)
+
+    def test_webshare_username_only_returns_none(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """Only WEBSHARE_USERNAME without PASSWORD falls through."""
+        monkeypatch.setenv("WEBSHARE_USERNAME", "user")
+        monkeypatch.delenv("WEBSHARE_PASSWORD", raising=False)
+        monkeypatch.delenv("PROXY_URL", raising=False)
+
+        from youtube_insights_mcp.services.transcript_client import build_proxy_config
+
+        assert build_proxy_config() is None
+
+    def test_client_accepts_proxy_config(self) -> None:
+        """TranscriptClient can be instantiated with proxy_config."""
+        with patch(
+            "youtube_insights_mcp.services.transcript_client.YouTubeTranscriptApi"
+        ) as mock_api:
+            TranscriptClient(proxy_config=None)
+            mock_api.assert_called_once_with(proxy_config=None)
+
+    def test_client_passes_proxy_config_to_api(self) -> None:
+        """TranscriptClient passes proxy_config to YouTubeTranscriptApi."""
+        mock_proxy = MagicMock()
+        with patch(
+            "youtube_insights_mcp.services.transcript_client.YouTubeTranscriptApi"
+        ) as mock_api:
+            TranscriptClient(proxy_config=mock_proxy)
+            mock_api.assert_called_once_with(proxy_config=mock_proxy)
+
+    def test_client_default_no_proxy(self) -> None:
+        """TranscriptClient() without args works (backward compat)."""
+        client = TranscriptClient()
+        assert client.api is not None

@@ -1,11 +1,11 @@
 """Tests for __main__.py CLI/MCP mode switching (TASK-CLI-002).
 
 Verifies that:
-- `python -m src` still starts the MCP server (no regression)
-- `python -m src cli <command>` dispatches to src.cli.main()
+- `python -m youtube_insights_mcp` still starts the MCP server (no regression)
+- `python -m youtube_insights_mcp cli <command>` dispatches to youtube_insights_mcp.cli.main()
 - CLI arguments after `cli` are passed correctly
 - Exit code from CLI is propagated via sys.exit()
-- No import of src.cli happens in MCP server mode (lazy import)
+- No import of youtube_insights_mcp.cli happens in MCP server mode (lazy import)
 
 MCP tool regression tests and insight extractor coverage tests have been
 moved to tests/unit/test_mcp_tools.py to eliminate duplication.
@@ -18,9 +18,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-
 # ---------------------------------------------------------------------------
-# AC-001: `python -m src` still starts the MCP server (no regression)
+# AC-001: `python -m youtube_insights_mcp` still starts the MCP server (no regression)
 # ---------------------------------------------------------------------------
 
 
@@ -30,11 +29,11 @@ class TestMCPServerModeNoRegression:
     def test_no_args_starts_mcp_server(self) -> None:
         """When sys.argv has no extra args, mcp.run() should be called."""
         with (
-            patch("sys.argv", ["src"]),
-            patch("src.__main__.mcp") as mock_mcp,
+            patch("sys.argv", ["youtube_insights_mcp"]),
+            patch("youtube_insights_mcp.__main__.mcp") as mock_mcp,
         ):
             mock_mcp.run = MagicMock()
-            import src.__main__ as main_mod
+            import youtube_insights_mcp.__main__ as main_mod
 
             _run_main_guard(main_mod, mock_mcp)
             mock_mcp.run.assert_called_once_with(transport="stdio")
@@ -42,34 +41,34 @@ class TestMCPServerModeNoRegression:
     def test_random_args_starts_mcp_server(self) -> None:
         """When sys.argv[1] is NOT 'cli', MCP server should start normally."""
         with (
-            patch("sys.argv", ["src", "--some-flag"]),
-            patch("src.__main__.mcp") as mock_mcp,
+            patch("sys.argv", ["youtube_insights_mcp", "--some-flag"]),
+            patch("youtube_insights_mcp.__main__.mcp") as mock_mcp,
         ):
             mock_mcp.run = MagicMock()
-            import src.__main__ as main_mod
+            import youtube_insights_mcp.__main__ as main_mod
 
             _run_main_guard(main_mod, mock_mcp)
             mock_mcp.run.assert_called_once_with(transport="stdio")
 
 
 # ---------------------------------------------------------------------------
-# AC-002: `python -m src cli <command>` dispatches to src.cli.main()
+# AC-002: `python -m youtube_insights_mcp cli <cmd>` dispatches to cli.main()
 # ---------------------------------------------------------------------------
 
 
 class TestCLIDispatch:
-    """Verify CLI mode dispatches to src.cli.main()."""
+    """Verify CLI mode dispatches to youtube_insights_mcp.cli.main()."""
 
     def test_cli_arg_dispatches_to_cli_main(self) -> None:
-        """When sys.argv[1] == 'cli', src.cli.main() should be called."""
+        """When sys.argv[1] == 'cli', youtube_insights_mcp.cli.main() should be called."""
         with (
-            patch("sys.argv", ["src", "cli", "ping"]),
-            patch.dict("sys.modules", {"src.cli": MagicMock()}),
+            patch("sys.argv", ["youtube_insights_mcp", "cli", "ping"]),
+            patch.dict("sys.modules", {"youtube_insights_mcp.cli": MagicMock()}),
         ):
-            mock_cli = sys.modules["src.cli"]
+            mock_cli = sys.modules["youtube_insights_mcp.cli"]
             mock_cli.main = MagicMock(return_value=0)
 
-            import src.__main__ as main_mod
+            import youtube_insights_mcp.__main__ as main_mod
 
             exit_code = _run_main_guard_cli(main_mod)
 
@@ -88,13 +87,16 @@ class TestCLIArgumentPassing:
     def test_args_after_cli_stripped_and_passed(self) -> None:
         """sys.argv[2:] (everything after 'cli') should be passed to main()."""
         with (
-            patch("sys.argv", ["src", "cli", "get-transcript", "URL", "--language", "fr"]),
-            patch.dict("sys.modules", {"src.cli": MagicMock()}),
+            patch(
+                "sys.argv",
+                ["youtube_insights_mcp", "cli", "get-transcript", "URL", "--language", "fr"],
+            ),
+            patch.dict("sys.modules", {"youtube_insights_mcp.cli": MagicMock()}),
         ):
-            mock_cli = sys.modules["src.cli"]
+            mock_cli = sys.modules["youtube_insights_mcp.cli"]
             mock_cli.main = MagicMock(return_value=0)
 
-            import src.__main__ as main_mod
+            import youtube_insights_mcp.__main__ as main_mod
 
             _run_main_guard_cli(main_mod)
 
@@ -103,15 +105,15 @@ class TestCLIArgumentPassing:
             )
 
     def test_cli_with_no_subcommand(self) -> None:
-        """'python -m src cli' with no further args passes empty list."""
+        """'python -m youtube_insights_mcp cli' with no further args passes empty list."""
         with (
-            patch("sys.argv", ["src", "cli"]),
-            patch.dict("sys.modules", {"src.cli": MagicMock()}),
+            patch("sys.argv", ["youtube_insights_mcp", "cli"]),
+            patch.dict("sys.modules", {"youtube_insights_mcp.cli": MagicMock()}),
         ):
-            mock_cli = sys.modules["src.cli"]
+            mock_cli = sys.modules["youtube_insights_mcp.cli"]
             mock_cli.main = MagicMock(return_value=0)
 
-            import src.__main__ as main_mod
+            import youtube_insights_mcp.__main__ as main_mod
 
             _run_main_guard_cli(main_mod)
 
@@ -129,13 +131,13 @@ class TestExitCodePropagation:
     def test_success_exit_code_propagated(self) -> None:
         """Exit code 0 from CLI should be passed to sys.exit()."""
         with (
-            patch("sys.argv", ["src", "cli", "ping"]),
-            patch.dict("sys.modules", {"src.cli": MagicMock()}),
+            patch("sys.argv", ["youtube_insights_mcp", "cli", "ping"]),
+            patch.dict("sys.modules", {"youtube_insights_mcp.cli": MagicMock()}),
         ):
-            mock_cli = sys.modules["src.cli"]
+            mock_cli = sys.modules["youtube_insights_mcp.cli"]
             mock_cli.main = MagicMock(return_value=0)
 
-            import src.__main__ as main_mod
+            import youtube_insights_mcp.__main__ as main_mod
 
             exit_code = _run_main_guard_cli(main_mod)
             assert exit_code == 0
@@ -143,54 +145,54 @@ class TestExitCodePropagation:
     def test_error_exit_code_propagated(self) -> None:
         """Exit code 1 from CLI should be passed to sys.exit()."""
         with (
-            patch("sys.argv", ["src", "cli", "get-transcript", "bad-url"]),
-            patch.dict("sys.modules", {"src.cli": MagicMock()}),
+            patch("sys.argv", ["youtube_insights_mcp", "cli", "get-transcript", "bad-url"]),
+            patch.dict("sys.modules", {"youtube_insights_mcp.cli": MagicMock()}),
         ):
-            mock_cli = sys.modules["src.cli"]
+            mock_cli = sys.modules["youtube_insights_mcp.cli"]
             mock_cli.main = MagicMock(return_value=1)
 
-            import src.__main__ as main_mod
+            import youtube_insights_mcp.__main__ as main_mod
 
             exit_code = _run_main_guard_cli(main_mod)
             assert exit_code == 1
 
 
 # ---------------------------------------------------------------------------
-# AC-005: No import of src.cli happens in MCP server mode (lazy import)
+# AC-005: No import of youtube_insights_mcp.cli happens in MCP server mode (lazy import)
 # ---------------------------------------------------------------------------
 
 
 class TestLazyImport:
-    """Verify src.cli is NOT imported during MCP server mode."""
+    """Verify youtube_insights_mcp.cli is NOT imported during MCP server mode."""
 
     def test_cli_not_imported_in_mcp_mode(self) -> None:
-        """In MCP server mode, src.cli should not appear in sys.modules."""
-        saved = sys.modules.pop("src.cli", None)
+        """In MCP server mode, youtube_insights_mcp.cli should not appear in sys.modules."""
+        saved = sys.modules.pop("youtube_insights_mcp.cli", None)
         try:
             with (
-                patch("sys.argv", ["src"]),
-                patch("src.__main__.mcp") as mock_mcp,
+                patch("sys.argv", ["youtube_insights_mcp"]),
+                patch("youtube_insights_mcp.__main__.mcp") as mock_mcp,
             ):
                 mock_mcp.run = MagicMock()
-                import src.__main__ as main_mod
+                import youtube_insights_mcp.__main__ as main_mod
 
                 _run_main_guard(main_mod, mock_mcp)
 
-                assert "src.cli" not in sys.modules
+                assert "youtube_insights_mcp.cli" not in sys.modules
         finally:
             if saved is not None:
-                sys.modules["src.cli"] = saved
+                sys.modules["youtube_insights_mcp.cli"] = saved
 
     def test_cli_imported_only_in_cli_mode(self) -> None:
-        """In CLI mode, src.cli should be imported (lazy)."""
+        """In CLI mode, youtube_insights_mcp.cli should be imported (lazy)."""
         with (
-            patch("sys.argv", ["src", "cli", "ping"]),
+            patch("sys.argv", ["youtube_insights_mcp", "cli", "ping"]),
         ):
             mock_cli_module = MagicMock()
             mock_cli_module.main = MagicMock(return_value=0)
 
-            with patch.dict("sys.modules", {"src.cli": mock_cli_module}):
-                import src.__main__ as main_mod
+            with patch.dict("sys.modules", {"youtube_insights_mcp.cli": mock_cli_module}):
+                import youtube_insights_mcp.__main__ as main_mod
 
                 _run_main_guard_cli(main_mod)
 

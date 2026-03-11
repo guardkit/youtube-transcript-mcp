@@ -1,7 +1,7 @@
 """Tests for get_transcript and list_available_transcripts MCP tool registration.
 
 TDD RED phase: these tests define the expected behaviour of the MCP tools
-registered in src/__main__.py. Covers all acceptance criteria for TASK-TRS-003.
+registered in youtube_insights_mcp/__main__.py. Covers all acceptance criteria for TASK-TRS-003.
 """
 
 from __future__ import annotations
@@ -9,7 +9,6 @@ from __future__ import annotations
 from unittest.mock import AsyncMock, patch
 
 import pytest
-
 
 # ---------------------------------------------------------------------------
 # AC: Seam test — TranscriptClient contract from TASK-TRS-002
@@ -21,7 +20,7 @@ class TestTranscriptClientSeam:
 
     def test_transcript_client_importable(self) -> None:
         """Verify TranscriptClient is importable and instantiable."""
-        from src.services.transcript_client import TranscriptClient
+        from youtube_insights_mcp.services.transcript_client import TranscriptClient
 
         client = TranscriptClient()
         assert client is not None
@@ -39,21 +38,21 @@ class TestToolRegistration:
 
     def test_mcp_server_exists(self) -> None:
         """FastMCP server instance exists in __main__."""
-        from src.__main__ import mcp
+        from youtube_insights_mcp.__main__ import mcp
 
         assert mcp is not None
 
     def test_transcript_client_at_module_level(self) -> None:
         """AC: TranscriptClient instantiated at module level (singleton)."""
-        from src.__main__ import transcript_client
-        from src.services.transcript_client import TranscriptClient
+        from youtube_insights_mcp.__main__ import transcript_client
+        from youtube_insights_mcp.services.transcript_client import TranscriptClient
 
         assert isinstance(transcript_client, TranscriptClient)
 
     @pytest.mark.asyncio
     async def test_get_transcript_tool_registered(self) -> None:
         """AC: get_transcript tool registered with @mcp.tool()."""
-        from src.__main__ import mcp
+        from youtube_insights_mcp.__main__ import mcp
 
         tools = await mcp.list_tools()
         tool_names = [t.name for t in tools]
@@ -62,7 +61,7 @@ class TestToolRegistration:
     @pytest.mark.asyncio
     async def test_list_available_transcripts_tool_registered(self) -> None:
         """AC: list_available_transcripts tool registered with @mcp.tool()."""
-        from src.__main__ import mcp
+        from youtube_insights_mcp.__main__ import mcp
 
         tools = await mcp.list_tools()
         tool_names = [t.name for t in tools]
@@ -80,8 +79,11 @@ class TestGetTranscriptTool:
     @pytest.mark.asyncio
     async def test_get_transcript_success(self) -> None:
         """Happy path: returns structured transcript response."""
-        from src.__main__ import get_transcript
-        from src.services.transcript_client import TranscriptResult, TranscriptSegment
+        from youtube_insights_mcp.__main__ import get_transcript
+        from youtube_insights_mcp.services.transcript_client import (
+            TranscriptResult,
+            TranscriptSegment,
+        )
 
         mock_result = TranscriptResult(
             video_id="dQw4w9WgXcQ",
@@ -98,7 +100,7 @@ class TestGetTranscriptTool:
         )
 
         with patch(
-            "src.__main__.transcript_client.get_transcript",
+            "youtube_insights_mcp.__main__.transcript_client.get_transcript",
             new_callable=AsyncMock,
             return_value=mock_result,
         ):
@@ -120,8 +122,8 @@ class TestGetTranscriptTool:
     @pytest.mark.asyncio
     async def test_get_transcript_default_language(self) -> None:
         """AC: language parameter defaults to 'en'."""
-        from src.__main__ import get_transcript
-        from src.services.transcript_client import TranscriptResult
+        from youtube_insights_mcp.__main__ import get_transcript
+        from youtube_insights_mcp.services.transcript_client import TranscriptResult
 
         mock_result = TranscriptResult(
             video_id="dQw4w9WgXcQ",
@@ -134,7 +136,7 @@ class TestGetTranscriptTool:
         )
 
         with patch(
-            "src.__main__.transcript_client.get_transcript",
+            "youtube_insights_mcp.__main__.transcript_client.get_transcript",
             new_callable=AsyncMock,
             return_value=mock_result,
         ) as mock_get:
@@ -144,8 +146,8 @@ class TestGetTranscriptTool:
     @pytest.mark.asyncio
     async def test_get_transcript_custom_language(self) -> None:
         """get_transcript passes custom language to TranscriptClient."""
-        from src.__main__ import get_transcript
-        from src.services.transcript_client import TranscriptResult
+        from youtube_insights_mcp.__main__ import get_transcript
+        from youtube_insights_mcp.services.transcript_client import TranscriptResult
 
         mock_result = TranscriptResult(
             video_id="dQw4w9WgXcQ",
@@ -158,7 +160,7 @@ class TestGetTranscriptTool:
         )
 
         with patch(
-            "src.__main__.transcript_client.get_transcript",
+            "youtube_insights_mcp.__main__.transcript_client.get_transcript",
             new_callable=AsyncMock,
             return_value=mock_result,
         ) as mock_get:
@@ -171,8 +173,8 @@ class TestGetTranscriptTool:
     @pytest.mark.asyncio
     async def test_get_transcript_uses_extract_video_id(self) -> None:
         """AC: Uses extract_video_id() for URL parsing."""
-        from src.__main__ import get_transcript
-        from src.services.transcript_client import TranscriptResult
+        from youtube_insights_mcp.__main__ import get_transcript
+        from youtube_insights_mcp.services.transcript_client import TranscriptResult
 
         mock_result = TranscriptResult(
             video_id="dQw4w9WgXcQ",
@@ -185,7 +187,7 @@ class TestGetTranscriptTool:
         )
 
         with patch(
-            "src.__main__.transcript_client.get_transcript",
+            "youtube_insights_mcp.__main__.transcript_client.get_transcript",
             new_callable=AsyncMock,
             return_value=mock_result,
         ) as mock_get:
@@ -207,7 +209,7 @@ class TestGetTranscriptErrors:
     @pytest.mark.asyncio
     async def test_invalid_url_error(self) -> None:
         """AC: INVALID_URL error for bad URLs."""
-        from src.__main__ import get_transcript
+        from youtube_insights_mcp.__main__ import get_transcript
 
         result = await get_transcript(video_url="not-a-valid-url")
         assert "error" in result
@@ -217,11 +219,11 @@ class TestGetTranscriptErrors:
     @pytest.mark.asyncio
     async def test_transcripts_disabled_error(self) -> None:
         """AC: TRANSCRIPTS_DISABLED error."""
-        from src.__main__ import get_transcript
-        from src.services.transcript_client import TranscriptsDisabledError
+        from youtube_insights_mcp.__main__ import get_transcript
+        from youtube_insights_mcp.services.transcript_client import TranscriptsDisabledError
 
         with patch(
-            "src.__main__.transcript_client.get_transcript",
+            "youtube_insights_mcp.__main__.transcript_client.get_transcript",
             new_callable=AsyncMock,
             side_effect=TranscriptsDisabledError("disabled"),
         ):
@@ -233,11 +235,11 @@ class TestGetTranscriptErrors:
     @pytest.mark.asyncio
     async def test_no_transcript_found_error(self) -> None:
         """AC: NO_TRANSCRIPT_FOUND error includes available_languages."""
-        from src.__main__ import get_transcript
-        from src.services.transcript_client import NoTranscriptFoundError
+        from youtube_insights_mcp.__main__ import get_transcript
+        from youtube_insights_mcp.services.transcript_client import NoTranscriptFoundError
 
         with patch(
-            "src.__main__.transcript_client.get_transcript",
+            "youtube_insights_mcp.__main__.transcript_client.get_transcript",
             new_callable=AsyncMock,
             side_effect=NoTranscriptFoundError(
                 "not found", available_languages=["en", "fr"]
@@ -252,11 +254,11 @@ class TestGetTranscriptErrors:
     @pytest.mark.asyncio
     async def test_video_unavailable_error(self) -> None:
         """AC: VIDEO_UNAVAILABLE error."""
-        from src.__main__ import get_transcript
-        from src.services.transcript_client import VideoUnavailableError
+        from youtube_insights_mcp.__main__ import get_transcript
+        from youtube_insights_mcp.services.transcript_client import VideoUnavailableError
 
         with patch(
-            "src.__main__.transcript_client.get_transcript",
+            "youtube_insights_mcp.__main__.transcript_client.get_transcript",
             new_callable=AsyncMock,
             side_effect=VideoUnavailableError("unavailable"),
         ):
@@ -268,10 +270,10 @@ class TestGetTranscriptErrors:
     @pytest.mark.asyncio
     async def test_internal_error(self) -> None:
         """AC: INTERNAL_ERROR for unexpected exceptions."""
-        from src.__main__ import get_transcript
+        from youtube_insights_mcp.__main__ import get_transcript
 
         with patch(
-            "src.__main__.transcript_client.get_transcript",
+            "youtube_insights_mcp.__main__.transcript_client.get_transcript",
             new_callable=AsyncMock,
             side_effect=RuntimeError("kaboom"),
         ):
@@ -292,7 +294,7 @@ class TestListAvailableTranscriptsTool:
     @pytest.mark.asyncio
     async def test_list_transcripts_success(self) -> None:
         """Happy path: returns transcripts list with count."""
-        from src.__main__ import list_available_transcripts
+        from youtube_insights_mcp.__main__ import list_available_transcripts
 
         mock_transcripts = [
             {"language": "English", "language_code": "en", "is_generated": False},
@@ -300,7 +302,7 @@ class TestListAvailableTranscriptsTool:
         ]
 
         with patch(
-            "src.__main__.transcript_client.list_transcripts",
+            "youtube_insights_mcp.__main__.transcript_client.list_transcripts",
             new_callable=AsyncMock,
             return_value=mock_transcripts,
         ):
@@ -316,10 +318,10 @@ class TestListAvailableTranscriptsTool:
     @pytest.mark.asyncio
     async def test_list_transcripts_uses_extract_video_id(self) -> None:
         """AC: Uses extract_video_id() for URL parsing."""
-        from src.__main__ import list_available_transcripts
+        from youtube_insights_mcp.__main__ import list_available_transcripts
 
         with patch(
-            "src.__main__.transcript_client.list_transcripts",
+            "youtube_insights_mcp.__main__.transcript_client.list_transcripts",
             new_callable=AsyncMock,
             return_value=[],
         ) as mock_list:
@@ -340,7 +342,7 @@ class TestListAvailableTranscriptsErrors:
     @pytest.mark.asyncio
     async def test_invalid_url_error(self) -> None:
         """AC: INVALID_URL error for bad URLs."""
-        from src.__main__ import list_available_transcripts
+        from youtube_insights_mcp.__main__ import list_available_transcripts
 
         result = await list_available_transcripts(
             video_url="not-a-valid-url"
@@ -352,10 +354,10 @@ class TestListAvailableTranscriptsErrors:
     @pytest.mark.asyncio
     async def test_internal_error(self) -> None:
         """AC: INTERNAL_ERROR for unexpected exceptions."""
-        from src.__main__ import list_available_transcripts
+        from youtube_insights_mcp.__main__ import list_available_transcripts
 
         with patch(
-            "src.__main__.transcript_client.list_transcripts",
+            "youtube_insights_mcp.__main__.transcript_client.list_transcripts",
             new_callable=AsyncMock,
             side_effect=RuntimeError("kaboom"),
         ):
@@ -379,7 +381,7 @@ class TestToolLogging:
         """Module uses logging.getLogger(__name__)."""
         import logging
 
-        import src.__main__ as mod
+        import youtube_insights_mcp.__main__ as mod
 
         assert hasattr(mod, "logger")
         assert isinstance(mod.logger, logging.Logger)
@@ -395,7 +397,7 @@ class TestToolLogging:
         """
         import inspect
 
-        import src.__main__ as mod
+        import youtube_insights_mcp.__main__ as mod
 
         source = inspect.getsource(mod)
         assert "stream=sys.stderr" in source, (

@@ -9,14 +9,22 @@ from __future__ import annotations
 
 import asyncio
 import logging
+import os
 from dataclasses import dataclass, field
 from typing import Any
 
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import (
+    IpBlocked,
     NoTranscriptFound,
+    RequestBlocked,
     TranscriptsDisabled,
     VideoUnavailable,
+)
+from youtube_transcript_api.proxies import (
+    GenericProxyConfig,
+    ProxyConfig,
+    WebshareProxyConfig,
 )
 
 logger = logging.getLogger(__name__)
@@ -84,6 +92,52 @@ class VideoUnavailableError(TranscriptClientError):
     """Video is unavailable (does not exist or is private)."""
 
 
+class IpBlockedError(TranscriptClientError):
+    """YouTube is blocking requests from this IP address."""
+
+
+# ---------------------------------------------------------------------------
+# Proxy configuration
+# ---------------------------------------------------------------------------
+
+
+def build_proxy_config() -> ProxyConfig | None:
+    """Build proxy config from environment variables.
+
+    Priority:
+        1. WEBSHARE_USERNAME + WEBSHARE_PASSWORD → WebshareProxyConfig
+        2. PROXY_URL → GenericProxyConfig (used for both http and https)
+        3. None (no proxy)
+
+    Returns:
+        ProxyConfig instance or None if no proxy is configured.
+    """
+    webshare_username = os.getenv("WEBSHARE_USERNAME")
+    webshare_password = os.getenv("WEBSHARE_PASSWORD")
+    proxy_url = os.getenv("PROXY_URL")
+
+    if webshare_username and webshare_password:
+        if proxy_url:
+            logger.warning(
+                "Both WEBSHARE_USERNAME/PASSWORD and PROXY_URL are set; "
+                "using Webshare proxy configuration"
+            )
+        logger.info("Using Webshare rotating proxy")
+        return WebshareProxyConfig(
+            proxy_username=webshare_username,
+            proxy_password=webshare_password,
+        )
+
+    if proxy_url:
+        logger.info("Using generic proxy: %s", proxy_url)
+        return GenericProxyConfig(
+            http_url=proxy_url,
+            https_url=proxy_url,
+        )
+
+    return None
+
+
 # ---------------------------------------------------------------------------
 # TranscriptClient
 # ---------------------------------------------------------------------------
@@ -96,8 +150,8 @@ class TranscriptClient:
     implements a 4-step language fallback strategy.
     """
 
-    def __init__(self) -> None:
-        self.api = YouTubeTranscriptApi()
+    def __init__(self, proxy_config: ProxyConfig | None = None) -> None:
+        self.api = YouTubeTranscriptApi(proxy_config=proxy_config)
 
     # -- public async API --------------------------------------------------
 
@@ -179,6 +233,13 @@ class TranscriptClient:
                 f"Video is unavailable: {video_id}"
             )
 
+        except (IpBlocked, RequestBlocked):
+            raise IpBlockedError(
+                "YouTube is blocking requests from this IP. "
+                "Configure PROXY_URL or WEBSHARE_USERNAME/WEBSHARE_PASSWORD "
+                "environment variables to use a proxy."
+            )
+
     def _fetch_with_fallback(
         self,
         video_id: str,
@@ -243,6 +304,12 @@ class TranscriptClient:
 
         except (TranscriptsDisabled, VideoUnavailable):
             raise
+        except (IpBlocked, RequestBlocked):
+            raise IpBlockedError(
+                "YouTube is blocking requests from this IP. "
+                "Configure PROXY_URL or WEBSHARE_USERNAME/WEBSHARE_PASSWORD "
+                "environment variables to use a proxy."
+            )
         except TranscriptClientError:
             raise
 

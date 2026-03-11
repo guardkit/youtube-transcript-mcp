@@ -1,7 +1,7 @@
 """Tests for extract_insights and list_focus_areas MCP tools.
 
 TDD RED phase: Tests define expected behavior for the two MCP tools
-registered in src/__main__.py. Covers parameter handling, validation,
+registered in youtube_insights_mcp/__main__.py. Covers parameter handling, validation,
 structured error responses, and successful extraction preparation.
 """
 
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import pytest
 
-from src.models.insight import FOCUS_PRESETS
+from youtube_insights_mcp.models.insight import FOCUS_PRESETS
 
 # --- Seam Tests ---
 
@@ -20,10 +20,10 @@ def test_extraction_service_importable() -> None:
     """Verify extraction service functions are importable.
 
     Contract: prepare_for_extraction and get_focus_categories importable
-    from src.services.insight_extractor
+    from youtube_insights_mcp.services.insight_extractor
     Producer: TASK-INT-002
     """
-    from src.services.insight_extractor import (
+    from youtube_insights_mcp.services.insight_extractor import (
         get_focus_categories,
         prepare_for_extraction,
     )
@@ -38,7 +38,7 @@ def test_focus_presets_importable() -> None:
     """Verify FOCUS_PRESETS importable for tool validation.
 
     Contract: FOCUS_PRESETS and CATEGORY_DEFINITIONS importable
-    from src.models.insight
+    from youtube_insights_mcp.models.insight
     Producer: TASK-INT-001
     """
     assert "general" in FOCUS_PRESETS
@@ -55,7 +55,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_successful_extraction(self) -> None:
         """Successful call returns extraction metadata dict."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200  # Over 100 char minimum
         result = await extract_insights(transcript=transcript)
@@ -72,7 +72,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_default_focus_area_is_general(self) -> None:
         """Default focus_areas parameter should resolve to general."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200
         result = await extract_insights(transcript=transcript)
@@ -82,7 +82,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_multiple_comma_separated_focus_areas(self) -> None:
         """Comma-separated focus areas should be parsed correctly."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200
         result = await extract_insights(
@@ -100,7 +100,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_focus_areas_with_spaces_trimmed(self) -> None:
         """Focus areas with whitespace should be trimmed."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200
         result = await extract_insights(
@@ -113,7 +113,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_invalid_focus_area_returns_structured_error(self) -> None:
         """Invalid focus area should return INVALID_FOCUS_AREA error."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200
         result = await extract_insights(
@@ -128,7 +128,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_transcript_too_short_returns_error(self) -> None:
         """Transcript under 100 chars returns TRANSCRIPT_TOO_SHORT error."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         result = await extract_insights(transcript="Too short")
         assert "error" in result
@@ -138,7 +138,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_transcript_exactly_100_chars_passes(self) -> None:
         """Transcript of exactly 100 chars should pass validation."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 100
         result = await extract_insights(transcript=transcript)
@@ -147,7 +147,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_transcript_99_chars_fails(self) -> None:
         """Transcript of 99 chars should fail validation."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 99
         result = await extract_insights(transcript=transcript)
@@ -157,7 +157,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_max_insights_string_conversion(self) -> None:
         """max_insights arrives as string, must be converted to int."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200
         result = await extract_insights(
@@ -170,7 +170,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_default_max_insights_is_10(self) -> None:
         """Default max_insights should be 10."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200
         result = await extract_insights(transcript=transcript)
@@ -179,7 +179,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_video_id_passed_through(self) -> None:
         """video_id should be passed to extraction result."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200
         result = await extract_insights(
@@ -192,7 +192,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_empty_video_id_becomes_none(self) -> None:
         """Empty string video_id should become None in result."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200
         result = await extract_insights(transcript=transcript, video_id="")
@@ -201,7 +201,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_all_focus_area(self) -> None:
         """'all' focus area should be accepted and return all categories."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         transcript = "A" * 200
         result = await extract_insights(
@@ -214,7 +214,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_has_comprehensive_docstring(self) -> None:
         """Tool should have a comprehensive docstring for discovery."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         assert extract_insights.__doc__ is not None
         docstring = extract_insights.__doc__
@@ -226,7 +226,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_invalid_max_insights_returns_error(self) -> None:
         """Non-integer max_insights should return INVALID_PARAMETER error."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         result = await extract_insights(
             transcript="A" * 200,
@@ -240,10 +240,10 @@ class TestExtractInsights:
         """Exception in prepare_for_extraction should return server error."""
         from unittest.mock import patch
 
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         with patch(
-            "src.__main__.prepare_for_extraction",
+            "youtube_insights_mcp.__main__.prepare_for_extraction",
             side_effect=RuntimeError("boom"),
         ):
             result = await extract_insights(
@@ -256,7 +256,7 @@ class TestExtractInsights:
     @pytest.mark.asyncio
     async def test_error_response_structure(self) -> None:
         """Error responses follow {error: {category, code, message}} pattern."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         result = await extract_insights(transcript="short")
         assert "error" in result
@@ -275,7 +275,7 @@ class TestListFocusAreas:
     @pytest.mark.asyncio
     async def test_returns_dict(self) -> None:
         """list_focus_areas should return a dict."""
-        from src.__main__ import list_focus_areas
+        from youtube_insights_mcp.__main__ import list_focus_areas
 
         result = await list_focus_areas()
         assert isinstance(result, dict)
@@ -283,7 +283,7 @@ class TestListFocusAreas:
     @pytest.mark.asyncio
     async def test_contains_all_six_presets(self) -> None:
         """Result should contain all 6 focus area presets."""
-        from src.__main__ import list_focus_areas
+        from youtube_insights_mcp.__main__ import list_focus_areas
 
         result = await list_focus_areas()
         assert "focus_areas" in result
@@ -294,7 +294,7 @@ class TestListFocusAreas:
     @pytest.mark.asyncio
     async def test_each_preset_has_categories(self) -> None:
         """Each preset should have a list of category strings."""
-        from src.__main__ import list_focus_areas
+        from youtube_insights_mcp.__main__ import list_focus_areas
 
         result = await list_focus_areas()
         for name, categories in result["focus_areas"].items():
@@ -306,7 +306,7 @@ class TestListFocusAreas:
     @pytest.mark.asyncio
     async def test_contains_category_definitions(self) -> None:
         """Result should contain category definitions."""
-        from src.__main__ import list_focus_areas
+        from youtube_insights_mcp.__main__ import list_focus_areas
 
         result = await list_focus_areas()
         assert "category_definitions" in result
@@ -316,7 +316,7 @@ class TestListFocusAreas:
     @pytest.mark.asyncio
     async def test_category_definitions_are_descriptive(self) -> None:
         """Category definitions should be non-empty strings."""
-        from src.__main__ import list_focus_areas
+        from youtube_insights_mcp.__main__ import list_focus_areas
 
         result = await list_focus_areas()
         for cat, desc in result["category_definitions"].items():
@@ -327,7 +327,7 @@ class TestListFocusAreas:
     @pytest.mark.asyncio
     async def test_has_comprehensive_docstring(self) -> None:
         """Tool should have a comprehensive docstring for discovery."""
-        from src.__main__ import list_focus_areas
+        from youtube_insights_mcp.__main__ import list_focus_areas
 
         assert list_focus_areas.__doc__ is not None
         docstring = list_focus_areas.__doc__
@@ -336,7 +336,7 @@ class TestListFocusAreas:
     @pytest.mark.asyncio
     async def test_contains_usage_tip(self) -> None:
         """Result should contain a usage tip."""
-        from src.__main__ import list_focus_areas
+        from youtube_insights_mcp.__main__ import list_focus_areas
 
         result = await list_focus_areas()
         assert "usage_tip" in result
@@ -351,18 +351,18 @@ class TestToolRegistration:
 
     def test_extract_insights_is_registered(self) -> None:
         """extract_insights should be importable from __main__."""
-        from src.__main__ import extract_insights
+        from youtube_insights_mcp.__main__ import extract_insights
 
         assert callable(extract_insights)
 
     def test_list_focus_areas_is_registered(self) -> None:
         """list_focus_areas should be importable from __main__."""
-        from src.__main__ import list_focus_areas
+        from youtube_insights_mcp.__main__ import list_focus_areas
 
         assert callable(list_focus_areas)
 
     def test_mcp_server_exists(self) -> None:
         """FastMCP server instance should exist."""
-        from src.__main__ import mcp
+        from youtube_insights_mcp.__main__ import mcp
 
         assert mcp is not None

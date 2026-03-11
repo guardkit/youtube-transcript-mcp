@@ -1,6 +1,6 @@
 """Comprehensive unit tests for insight extraction models and service.
 
-Tests for src/models/insight.py and src/services/insight_extractor.py covering:
+Tests for models/insight.py and services/insight_extractor.py covering:
 - Focus preset definitions (all 6 presets, all 24 categories)
 - get_focus_categories function (single, multiple, all, unknown, deduplication)
 - Transcript chunking (short, long, overlap, paragraph boundaries)
@@ -14,14 +14,14 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from src.models.insight import (
+from youtube_insights_mcp.models.insight import (
     CATEGORY_DEFINITIONS,
     FOCUS_PRESETS,
     FocusArea,
     Insight,
     InsightCategory,
 )
-from src.services.insight_extractor import (
+from youtube_insights_mcp.services.insight_extractor import (
     build_extraction_prompt,
     chunk_transcript,
     get_focus_categories,

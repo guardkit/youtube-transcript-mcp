@@ -1,7 +1,7 @@
 """Tests for insight extraction Pydantic models and constants.
 
 TDD RED phase: These tests define the expected behavior for
-src/models/insight.py including enums, models, and mappings.
+youtube_insights_mcp/models/insight.py including enums, models, and mappings.
 """
 
 from __future__ import annotations
@@ -9,7 +9,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from src.models.insight import (
+from youtube_insights_mcp.models.insight import (
     CATEGORY_DEFINITIONS,
     FOCUS_PRESETS,
     FocusArea,
@@ -399,32 +399,32 @@ class TestCategoryDefinitions:
 
 
 class TestImportability:
-    """Tests that all models are importable from src.models.insight."""
+    """Tests that all models are importable from youtube_insights_mcp.models.insight."""
 
     def test_focus_area_importable(self) -> None:
-        from src.models.insight import FocusArea
+        from youtube_insights_mcp.models.insight import FocusArea
         assert FocusArea is not None
 
     def test_insight_category_importable(self) -> None:
-        from src.models.insight import InsightCategory
+        from youtube_insights_mcp.models.insight import InsightCategory
         assert InsightCategory is not None
 
     def test_insight_importable(self) -> None:
-        from src.models.insight import Insight
+        from youtube_insights_mcp.models.insight import Insight
         assert Insight is not None
 
     def test_key_quote_importable(self) -> None:
-        from src.models.insight import KeyQuote
+        from youtube_insights_mcp.models.insight import KeyQuote
         assert KeyQuote is not None
 
     def test_insight_extraction_result_importable(self) -> None:
-        from src.models.insight import InsightExtractionResult
+        from youtube_insights_mcp.models.insight import InsightExtractionResult
         assert InsightExtractionResult is not None
 
     def test_focus_presets_importable(self) -> None:
-        from src.models.insight import FOCUS_PRESETS
+        from youtube_insights_mcp.models.insight import FOCUS_PRESETS
         assert FOCUS_PRESETS is not None
 
     def test_category_definitions_importable(self) -> None:
-        from src.models.insight import CATEGORY_DEFINITIONS
+        from youtube_insights_mcp.models.insight import CATEGORY_DEFINITIONS
         assert CATEGORY_DEFINITIONS is not None

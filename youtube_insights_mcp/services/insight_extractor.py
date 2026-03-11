@@ -16,7 +16,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from src.models.insight import (
+from youtube_insights_mcp.models.insight import (
     CATEGORY_DEFINITIONS,
     FOCUS_PRESETS,
     InsightCategory,

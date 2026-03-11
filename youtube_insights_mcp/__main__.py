@@ -13,21 +13,23 @@ from typing import Any
 
 from mcp.server.fastmcp import FastMCP
 
-from src.models.insight import (
+from youtube_insights_mcp.models.insight import (
     CATEGORY_DEFINITIONS,
     FOCUS_PRESETS,
 )
-from src.services.insight_extractor import prepare_for_extraction
-from src.services.transcript_client import (
+from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
+from youtube_insights_mcp.services.transcript_client import (
+    IpBlockedError,
     NoTranscriptFoundError,
     TranscriptClient,
     TranscriptsDisabledError,
     VideoUnavailableError,
+    build_proxy_config,
 )
-from src.services.youtube_client import InvalidURLError, extract_video_id
+from youtube_insights_mcp.services.youtube_client import InvalidURLError, extract_video_id
 
 # Server metadata
-SERVER_NAME = "youtube-transcript-mcp"
+SERVER_NAME = "youtube-insights-mcp"
 SERVER_VERSION = "0.1.0"
 
 # Configure logging to stderr only (stdout is reserved for MCP protocol)
@@ -42,7 +44,7 @@ logger = logging.getLogger(__name__)
 mcp = FastMCP(name=SERVER_NAME)
 
 # Module-level client instances (singleton pattern)
-transcript_client = TranscriptClient()
+transcript_client = TranscriptClient(proxy_config=build_proxy_config())
 
 
 @mcp.tool()
@@ -130,6 +132,15 @@ async def get_transcript(
             "error": {
                 "category": "client_error",
                 "code": "VIDEO_UNAVAILABLE",
+                "message": str(e),
+            }
+        }
+
+    except IpBlockedError as e:
+        return {
+            "error": {
+                "category": "client_error",
+                "code": "IP_BLOCKED",
                 "message": str(e),
             }
         }
@@ -347,7 +358,7 @@ def _entry_point() -> None:
     """
     if len(sys.argv) > 1 and sys.argv[1] == "cli":
         # Lazy import: src.cli is only loaded when CLI mode is requested
-        from src.cli import main as cli_main
+        from youtube_insights_mcp.cli import main as cli_main
 
         exit_code = cli_main(sys.argv[2:])
         sys.exit(exit_code)

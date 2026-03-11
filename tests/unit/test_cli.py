@@ -2,7 +2,7 @@
 
 Covers argument parsing (TestCliParser), JSON output/exit codes
 (TestCliOutput), and command dispatch with mocking (TestCommandDispatch)
-for the CLI wrapper module (src/cli.py).
+for the CLI wrapper module (youtube_insights_mcp/cli.py).
 
 Consolidated from tests/test_cli.py and tests/unit/test_cli.py.
 """
@@ -15,8 +15,13 @@ from unittest.mock import AsyncMock, patch
 
 import pytest
 
-from src.cli import exit_code_from_result, main, make_parser, output_json, run_command
-
+from youtube_insights_mcp.cli import (
+    exit_code_from_result,
+    main,
+    make_parser,
+    output_json,
+    run_command,
+)
 
 # ---------------------------------------------------------------------------
 # AC-001: Functions exist and are callable
@@ -93,7 +98,10 @@ class TestCliParser:
 
     @pytest.mark.parametrize(
         "command",
-        ["ping", "video-info", "get-transcript", "list-transcripts", "extract-insights", "list-focus-areas"],
+        [
+            "ping", "video-info", "get-transcript",
+            "list-transcripts", "extract-insights", "list-focus-areas",
+        ],
     )
     def test_subcommand_registered(self, command: str) -> None:
         """Each required subcommand should be parseable without error."""
@@ -214,7 +222,7 @@ class TestCliOutput:
     # Ping command
 
     def test_ping_returns_valid_json(self, capsys: pytest.CaptureFixture[str]) -> None:
-        exit_code = main(["ping"])
+        main(["ping"])
         captured = capsys.readouterr()
         data = json.loads(captured.out)
         assert isinstance(data, dict)
@@ -241,7 +249,7 @@ class TestCliOutput:
         main(["ping"])
         captured = capsys.readouterr()
         data = json.loads(captured.out)
-        assert data["server"] == "youtube-transcript-mcp"
+        assert data["server"] == "youtube-insights-mcp"
         assert data["version"] == "0.1.0"
         assert "timestamp" in data
 
@@ -274,7 +282,7 @@ class TestCliOutput:
     def test_error_result_has_error_structure(
         self, capsys: pytest.CaptureFixture[str]
     ) -> None:
-        exit_code = main(["video-info", "not-a-valid-url-at-all"])
+        main(["video-info", "not-a-valid-url-at-all"])
         captured = capsys.readouterr()
         data = json.loads(captured.out)
         assert "error" in data
@@ -438,7 +446,7 @@ class TestCommandDispatch:
         captured = capsys.readouterr()
         data = json.loads(captured.out)
         assert data["status"] == "healthy"
-        assert data["server"] == "youtube-transcript-mcp"
+        assert data["server"] == "youtube-insights-mcp"
         assert data["version"] == "0.1.0"
         assert "timestamp" in data
         assert data["mode"] == "cli"
@@ -478,7 +486,10 @@ class TestCommandDispatch:
         assert data["error"]["code"] == "INVALID_URL"
 
     def test_get_transcript_success_with_segments(self, capsys: pytest.CaptureFixture[str]) -> None:
-        from src.services.transcript_client import TranscriptResult, TranscriptSegment
+        from youtube_insights_mcp.services.transcript_client import (
+            TranscriptResult,
+            TranscriptSegment,
+        )
 
         mock_result = TranscriptResult(
             video_id="dQw4w9WgXcQ",
@@ -490,7 +501,7 @@ class TestCommandDispatch:
             total_segments=1,
             total_duration_seconds=5.0,
         )
-        with patch("src.services.transcript_client.TranscriptClient") as mock_cls:
+        with patch("youtube_insights_mcp.services.transcript_client.TranscriptClient") as mock_cls:
             instance = mock_cls.return_value
             instance.get_transcript = AsyncMock(return_value=mock_result)
             code = main(["get-transcript", "dQw4w9WgXcQ"])
@@ -504,7 +515,10 @@ class TestCommandDispatch:
         assert len(data["segments"]) == 1
 
     def test_get_transcript_no_segments_flag(self, capsys: pytest.CaptureFixture[str]) -> None:
-        from src.services.transcript_client import TranscriptResult, TranscriptSegment
+        from youtube_insights_mcp.services.transcript_client import (
+            TranscriptResult,
+            TranscriptSegment,
+        )
 
         mock_result = TranscriptResult(
             video_id="dQw4w9WgXcQ",
@@ -516,7 +530,7 @@ class TestCommandDispatch:
             total_segments=1,
             total_duration_seconds=5.0,
         )
-        with patch("src.services.transcript_client.TranscriptClient") as mock_cls:
+        with patch("youtube_insights_mcp.services.transcript_client.TranscriptClient") as mock_cls:
             instance = mock_cls.return_value
             instance.get_transcript = AsyncMock(return_value=mock_result)
             code = main(["get-transcript", "dQw4w9WgXcQ", "--no-segments"])
@@ -528,9 +542,9 @@ class TestCommandDispatch:
         assert data["is_auto_generated"] is True
 
     def test_get_transcript_transcripts_disabled(self, capsys: pytest.CaptureFixture[str]) -> None:
-        from src.services.transcript_client import TranscriptsDisabledError
+        from youtube_insights_mcp.services.transcript_client import TranscriptsDisabledError
 
-        with patch("src.services.transcript_client.TranscriptClient") as mock_cls:
+        with patch("youtube_insights_mcp.services.transcript_client.TranscriptClient") as mock_cls:
             instance = mock_cls.return_value
             instance.get_transcript = AsyncMock(
                 side_effect=TranscriptsDisabledError("Transcripts disabled")
@@ -543,9 +557,9 @@ class TestCommandDispatch:
         assert data["error"]["code"] == "TRANSCRIPTS_DISABLED"
 
     def test_get_transcript_no_transcript_found(self, capsys: pytest.CaptureFixture[str]) -> None:
-        from src.services.transcript_client import NoTranscriptFoundError
+        from youtube_insights_mcp.services.transcript_client import NoTranscriptFoundError
 
-        with patch("src.services.transcript_client.TranscriptClient") as mock_cls:
+        with patch("youtube_insights_mcp.services.transcript_client.TranscriptClient") as mock_cls:
             instance = mock_cls.return_value
             instance.get_transcript = AsyncMock(
                 side_effect=NoTranscriptFoundError("Not found", available_languages=["es", "fr"])
@@ -559,9 +573,9 @@ class TestCommandDispatch:
         assert data["error"]["available_languages"] == ["es", "fr"]
 
     def test_get_transcript_video_unavailable(self, capsys: pytest.CaptureFixture[str]) -> None:
-        from src.services.transcript_client import VideoUnavailableError
+        from youtube_insights_mcp.services.transcript_client import VideoUnavailableError
 
-        with patch("src.services.transcript_client.TranscriptClient") as mock_cls:
+        with patch("youtube_insights_mcp.services.transcript_client.TranscriptClient") as mock_cls:
             instance = mock_cls.return_value
             instance.get_transcript = AsyncMock(
                 side_effect=VideoUnavailableError("Video unavailable")
@@ -578,7 +592,7 @@ class TestCommandDispatch:
             {"language": "English", "language_code": "en", "is_generated": False},
             {"language": "Spanish", "language_code": "es", "is_generated": True},
         ]
-        with patch("src.services.transcript_client.TranscriptClient") as mock_cls:
+        with patch("youtube_insights_mcp.services.transcript_client.TranscriptClient") as mock_cls:
             instance = mock_cls.return_value
             instance.list_transcripts = AsyncMock(return_value=mock_transcripts)
             code = main(["list-transcripts", "dQw4w9WgXcQ"])

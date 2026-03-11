@@ -1,4 +1,4 @@
-"""CLI wrapper for youtube-transcript-mcp.
+"""CLI wrapper for youtube-insights-mcp.
 
 Provides command-line access to all MCP tools, outputting JSON to stdout.
 This enables use from deep agents, shell scripts, and direct terminal usage
@@ -164,14 +164,14 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
 
         return {
             "status": "healthy",
-            "server": "youtube-transcript-mcp",
+            "server": "youtube-insights-mcp",
             "version": "0.1.0",
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "mode": "cli",
         }
 
     elif args.command == "video-info":
-        from src.services.youtube_client import InvalidURLError, extract_video_id
+        from youtube_insights_mcp.services.youtube_client import InvalidURLError, extract_video_id
 
         try:
             extract_video_id(args.video_url)
@@ -186,7 +186,10 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
 
         # Lazy import for full video info (requires network)
         try:
-            from src.services.youtube_client import VideoNotFoundError, YouTubeClient
+            from youtube_insights_mcp.services.youtube_client import (
+                VideoNotFoundError,
+                YouTubeClient,
+            )
 
             client = YouTubeClient()
             info = await client.get_video_info(args.video_url)
@@ -241,13 +244,14 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
             }
 
     elif args.command == "get-transcript":
-        from src.services.transcript_client import (
+        from youtube_insights_mcp.services.transcript_client import (
             NoTranscriptFoundError,
             TranscriptClient,
             TranscriptsDisabledError,
             VideoUnavailableError,
+            build_proxy_config,
         )
-        from src.services.youtube_client import InvalidURLError, extract_video_id
+        from youtube_insights_mcp.services.youtube_client import InvalidURLError, extract_video_id
 
         try:
             video_id = extract_video_id(args.video_url)
@@ -260,7 +264,7 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
                 }
             }
 
-        client = TranscriptClient()
+        client = TranscriptClient(proxy_config=build_proxy_config())
         try:
             result = await client.get_transcript(video_id, args.language)
             output: dict[str, Any] = {
@@ -305,8 +309,11 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
             }
 
     elif args.command == "list-transcripts":
-        from src.services.transcript_client import TranscriptClient
-        from src.services.youtube_client import InvalidURLError, extract_video_id
+        from youtube_insights_mcp.services.transcript_client import (
+            TranscriptClient,
+            build_proxy_config,
+        )
+        from youtube_insights_mcp.services.youtube_client import InvalidURLError, extract_video_id
 
         try:
             video_id = extract_video_id(args.video_url)
@@ -319,7 +326,7 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
                 }
             }
 
-        client = TranscriptClient()
+        client = TranscriptClient(proxy_config=build_proxy_config())
         transcripts = await client.list_transcripts(video_id)
         return {
             "video_id": video_id,
@@ -328,7 +335,7 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
         }
 
     elif args.command == "extract-insights":
-        from src.services.insight_extractor import prepare_for_extraction
+        from youtube_insights_mcp.services.insight_extractor import prepare_for_extraction
 
         transcript_text = args.transcript
         if transcript_text == "-":
@@ -344,7 +351,7 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
         )
 
     elif args.command == "list-focus-areas":
-        from src.models.insight import CATEGORY_DEFINITIONS, FOCUS_PRESETS
+        from youtube_insights_mcp.models.insight import CATEGORY_DEFINITIONS, FOCUS_PRESETS
 
         return {
             "focus_areas": {

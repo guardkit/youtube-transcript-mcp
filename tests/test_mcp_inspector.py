@@ -23,7 +23,7 @@ class TestMCPInspectorToolDiscovery:
         MCP Inspector calls tools/list and renders every tool returned.
         Verify get_transcript is present with required metadata.
         """
-        from src.__main__ import mcp
+        from youtube_insights_mcp.__main__ import mcp
 
         tools = await mcp.list_tools()
         tool_map = {t.name: t for t in tools}
@@ -50,7 +50,7 @@ class TestMCPInspectorToolDiscovery:
         MCP Inspector calls tools/list and renders every tool returned.
         Verify list_available_transcripts is present with required metadata.
         """
-        from src.__main__ import mcp
+        from youtube_insights_mcp.__main__ import mcp
 
         tools = await mcp.list_tools()
         tool_map = {t.name: t for t in tools}
@@ -73,7 +73,7 @@ class TestMCPInspectorToolDiscovery:
     @pytest.mark.asyncio
     async def test_exactly_two_tools_registered(self) -> None:
         """Verify exactly the expected tools are registered (no extras, none missing)."""
-        from src.__main__ import mcp
+        from youtube_insights_mcp.__main__ import mcp
 
         tools = await mcp.list_tools()
         tool_names = sorted(t.name for t in tools)
@@ -88,7 +88,7 @@ class TestMCPInspectorToolDiscovery:
     @pytest.mark.asyncio
     async def test_get_transcript_has_language_parameter(self) -> None:
         """MCP Inspector shows the language parameter with default 'en'."""
-        from src.__main__ import mcp
+        from youtube_insights_mcp.__main__ import mcp
 
         tools = await mcp.list_tools()
         tool_map = {t.name: t for t in tools}

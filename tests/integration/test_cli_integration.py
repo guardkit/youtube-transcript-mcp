@@ -22,7 +22,7 @@ import json
 
 import pytest
 
-from src.cli import main
+from youtube_insights_mcp.cli import main
 
 # Known stable video: Rick Astley - Never Gonna Give You Up
 KNOWN_VIDEO_ID = "dQw4w9WgXcQ"
@@ -31,7 +31,7 @@ KNOWN_VIDEO_ID = "dQw4w9WgXcQ"
 def _has_youtube_client() -> bool:
     """Check whether YouTubeClient is available for video-info tests."""
     try:
-        from src.services.youtube_client import YouTubeClient  # noqa: F401
+        from youtube_insights_mcp.services.youtube_client import YouTubeClient  # noqa: F401
 
         return True
     except ImportError:

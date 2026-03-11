@@ -1,4 +1,4 @@
-"""Shared test fixtures for youtube-transcript-mcp test suite.
+"""Shared test fixtures for youtube-insights-mcp test suite.
 
 Provides common mock helpers for transcript API responses, eliminating
 duplication across test modules.
