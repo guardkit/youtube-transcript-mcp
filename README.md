@@ -69,6 +69,22 @@ Add to your Claude Desktop MCP configuration (`claude_desktop_config.json`):
 
 > **Note:** MCP configuration requires absolute paths. Relative paths will cause startup failures.
 
+### Starting the Server
+
+**With Claude Desktop** — no manual start needed. Claude Desktop automatically launches and manages the server process using the configuration above. Just restart Claude Desktop after adding the config.
+
+**Manual start** (for testing or other MCP clients):
+
+```bash
+# Start the MCP server (stdio transport)
+youtube-insights-mcp
+
+# Or using Python module directly
+python -m youtube_insights_mcp
+```
+
+The server communicates via stdin/stdout using the MCP JSON-RPC protocol. It is designed to be started by an MCP client (like Claude Desktop) rather than run interactively.
+
 ### CLI Usage
 
 ```bash
