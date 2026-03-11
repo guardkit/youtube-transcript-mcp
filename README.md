@@ -16,17 +16,34 @@ An MCP server that fetches YouTube transcripts and extracts structured insights 
 - **Smart chunking** for long transcripts with overlap for context continuity
 - **Proxy support** for environments with IP restrictions
 
-## Installation
+## Prerequisites
+
+You need Python 3.10 or later. Check if it's installed:
 
 ```bash
+python3 --version
+```
+
+**If Python is not installed:**
+
+- **macOS**: `brew install python` (requires [Homebrew](https://brew.sh)) or download from [python.org](https://www.python.org/downloads/)
+- **Windows**: Download from [python.org](https://www.python.org/downloads/) (check "Add to PATH" during install)
+- **Linux**: `sudo apt install python3 python3-pip` (Debian/Ubuntu) or `sudo dnf install python3 python3-pip` (Fedora)
+
+## Installation
+
+We recommend installing in a virtual environment to avoid conflicts with other Python packages:
+
+```bash
+# Create and activate a virtual environment
+python3 -m venv youtube-mcp-env
+source youtube-mcp-env/bin/activate  # On Windows: youtube-mcp-env\Scripts\activate
+
+# Install the package
 pip install youtube-insights-mcp
 ```
 
-Or with development dependencies:
-
-```bash
-pip install youtube-insights-mcp[dev]
-```
+> **Troubleshooting:** If you see `ModuleNotFoundError: No module named 'pip'`, your system Python is misconfigured. Create a virtual environment first (as shown above) — this gives you a clean, working pip.
 
 ## Quick Start
 
