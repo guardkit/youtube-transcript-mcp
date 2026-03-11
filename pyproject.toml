@@ -1,6 +1,6 @@
 [project]
 name = "youtube-insights-mcp"
-version = "0.1.3"
+version = "0.1.4"
 description = "MCP server for YouTube transcript extraction and insight analysis"
 requires-python = ">=3.10"
 license = {text = "MIT"}
