@@ -51,13 +51,19 @@ pip install youtube-insights-mcp
 
 Add to your Claude Desktop MCP configuration (`claude_desktop_config.json`):
 
-**Using pip install (recommended):**
+After installing, find the absolute path to the command:
+
+```bash
+which youtube-insights-mcp
+```
+
+Then add to your Claude Desktop MCP configuration (`claude_desktop_config.json`):
 
 ```json
 {
   "mcpServers": {
     "youtube-insights-mcp": {
-      "command": "youtube-insights-mcp",
+      "command": "/absolute/path/to/youtube-mcp-env/bin/youtube-insights-mcp",
       "env": {
         "LOG_LEVEL": "INFO"
       }
@@ -66,25 +72,9 @@ Add to your Claude Desktop MCP configuration (`claude_desktop_config.json`):
 }
 ```
 
-**Using a local clone:**
+Replace `/absolute/path/to/youtube-mcp-env/bin/youtube-insights-mcp` with the output from `which youtube-insights-mcp`.
 
-```json
-{
-  "mcpServers": {
-    "youtube-insights-mcp": {
-      "command": "/absolute/path/to/.venv/bin/python",
-      "args": ["-m", "youtube_insights_mcp"],
-      "cwd": "/absolute/path/to/project",
-      "env": {
-        "PYTHONPATH": "/absolute/path/to/project",
-        "LOG_LEVEL": "INFO"
-      }
-    }
-  }
-}
-```
-
-> **Note:** MCP configuration requires absolute paths. Relative paths will cause startup failures.
+> **Important:** Claude Desktop does not use your shell's PATH or virtual environment. You must provide the **full absolute path** to the command. Using just `"command": "youtube-insights-mcp"` will fail unless it's installed globally on your system PATH.
 
 ### Starting the Server
 

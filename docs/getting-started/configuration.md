@@ -6,11 +6,20 @@ The MCP server connects to Claude Desktop via the MCP configuration file (`claud
 
 ### Using pip install (recommended)
 
+After installing in a virtual environment, find the absolute path to the command:
+
+```bash
+which youtube-insights-mcp
+# Example output: /Users/yourname/youtube-mcp-env/bin/youtube-insights-mcp
+```
+
+Use that full path in your config:
+
 ```json
 {
   "mcpServers": {
     "youtube-insights-mcp": {
-      "command": "youtube-insights-mcp",
+      "command": "/absolute/path/to/youtube-mcp-env/bin/youtube-insights-mcp",
       "env": {
         "LOG_LEVEL": "INFO"
       }
@@ -18,6 +27,9 @@ The MCP server connects to Claude Desktop via the MCP configuration file (`claud
   }
 }
 ```
+
+!!! warning "Full path required"
+    Claude Desktop does **not** use your shell's PATH or virtual environment. You must use the full absolute path from `which youtube-insights-mcp`. Using just `"youtube-insights-mcp"` will cause the server to show as disconnected.
 
 ### Using a local clone
 
