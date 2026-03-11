@@ -30,7 +30,7 @@ from youtube_insights_mcp.services.youtube_client import InvalidURLError, extrac
 
 # Server metadata
 SERVER_NAME = "youtube-insights-mcp"
-SERVER_VERSION = "0.1.0"
+SERVER_VERSION = "0.1.1"
 
 # Configure logging to stderr only (stdout is reserved for MCP protocol)
 logging.basicConfig(
