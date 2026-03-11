@@ -209,16 +209,16 @@ Yes. The CLI provides direct terminal access to all MCP tool functionality:
 
 ```bash
 # Fetch a transcript
-python -m src cli get-transcript "https://youtu.be/VIDEO_ID"
+youtube-insights-mcp cli get-transcript "https://youtu.be/VIDEO_ID"
 
 # List available languages
-python -m src cli list-transcripts "https://youtu.be/VIDEO_ID"
+youtube-insights-mcp cli list-transcripts "https://youtu.be/VIDEO_ID"
 
 # Extract insights
-python -m src cli extract-insights --focus entrepreneurial --video-id VIDEO_ID < transcript.txt
+youtube-insights-mcp cli extract-insights --focus entrepreneurial --video-id VIDEO_ID < transcript.txt
 
 # List focus areas
-python -m src cli list-focus-areas
+youtube-insights-mcp cli list-focus-areas
 ```
 
 See the [CLI Guide](cli/index.md) for full command documentation.

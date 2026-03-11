@@ -3,7 +3,7 @@
 YouTube Transcript MCP includes a command-line interface that wraps the MCP tools for direct shell usage. All output is JSON on stdout, making the CLI composable with tools like `jq` and suitable for shell scripts, automation, and agent pipelines.
 
 ```bash
-python -m src cli <command> [options]
+youtube-insights-mcp cli <command> [options]
 ```
 
 ## Key Features
@@ -28,12 +28,12 @@ python -m src cli <command> [options]
 
 ```bash
 # Fetch a transcript and extract the plain text
-python -m src cli get-transcript dQw4w9WgXcQ | jq -r '.full_text'
+youtube-insights-mcp cli get-transcript dQw4w9WgXcQ | jq -r '.full_text'
 
 # Pipe into insight extraction
-python -m src cli get-transcript dQw4w9WgXcQ | \
+youtube-insights-mcp cli get-transcript dQw4w9WgXcQ | \
   jq -r '.full_text' | \
-  python -m src cli extract-insights - --focus technical
+  youtube-insights-mcp cli extract-insights - --focus technical
 ```
 
 See [Commands Reference](commands.md) for full details on each command and [Examples](examples.md) for practical usage patterns including piping, batch processing, and shell scripts.

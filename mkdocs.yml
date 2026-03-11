@@ -1,5 +1,5 @@
-site_name: YouTube Transcript MCP
-site_description: MCP server for fetching YouTube transcripts and extracting insights
+site_name: YouTube Insights MCP
+site_description: MCP server for fetching YouTube transcripts and extracting structured insights
 site_author: AppMilla
 site_url: https://appmilla.github.io/youtube-transcript-mcp/
 repo_url: https://github.com/appmilla/youtube-transcript-mcp

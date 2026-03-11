@@ -2,16 +2,31 @@
 
 ## Claude Desktop Configuration
 
-The MCP server connects to Claude Desktop via the `.mcp.json` configuration file. Claude Desktop reads this file to discover and launch MCP servers.
+The MCP server connects to Claude Desktop via the MCP configuration file (`claude_desktop_config.json`). Claude Desktop reads this file to discover and launch MCP servers.
 
-### Configuration Template
+### Using pip install (recommended)
 
 ```json
 {
   "mcpServers": {
-    "youtube-transcript-mcp": {
-      "command": "/absolute/path/to/youtube-transcript-mcp/.venv/bin/python",
-      "args": ["-m", "src"],
+    "youtube-insights-mcp": {
+      "command": "youtube-insights-mcp",
+      "env": {
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
+```
+
+### Using a local clone
+
+```json
+{
+  "mcpServers": {
+    "youtube-insights-mcp": {
+      "command": "/absolute/path/to/.venv/bin/python",
+      "args": ["-m", "youtube_insights_mcp"],
       "cwd": "/absolute/path/to/youtube-transcript-mcp",
       "env": {
         "PYTHONPATH": "/absolute/path/to/youtube-transcript-mcp",
@@ -28,25 +43,25 @@ A template file is provided at `.mcp.json.template` in the repository root.
 
 | Field | Description | Example |
 |-------|-------------|---------|
-| `command` | Absolute path to the Python interpreter in your virtual environment | `/Users/you/youtube-transcript-mcp/.venv/bin/python` |
-| `args` | Arguments to start the MCP server | `["-m", "src"]` |
-| `cwd` | Absolute path to the project root directory | `/Users/you/youtube-transcript-mcp` |
-| `env.PYTHONPATH` | Must match `cwd` for correct module resolution | `/Users/you/youtube-transcript-mcp` |
+| `command` | Path to the installed entry point, or absolute path to Python in your venv | `youtube-insights-mcp` or `/Users/you/project/.venv/bin/python` |
+| `args` | Arguments to start the MCP server (only needed for local clone) | `["-m", "youtube_insights_mcp"]` |
+| `cwd` | Absolute path to the project root directory (local clone only) | `/Users/you/youtube-transcript-mcp` |
+| `env.PYTHONPATH` | Must match `cwd` for correct module resolution (local clone only) | `/Users/you/youtube-transcript-mcp` |
 | `env.LOG_LEVEL` | Logging verbosity (`DEBUG`, `INFO`, `WARNING`, `ERROR`) | `INFO` |
 
 !!! danger "Absolute paths required"
-    All paths **must** be absolute. Relative paths like `./venv/bin/python` or `../project` will cause the server to fail silently on startup.
+    When using a local clone, all paths **must** be absolute. Relative paths like `./venv/bin/python` or `../project` will cause the server to fail silently on startup.
 
-### Platform Examples
+### Platform Examples (local clone)
 
 === "macOS"
 
     ```json
     {
       "mcpServers": {
-        "youtube-transcript-mcp": {
+        "youtube-insights-mcp": {
           "command": "/Users/yourname/Projects/youtube-transcript-mcp/.venv/bin/python",
-          "args": ["-m", "src"],
+          "args": ["-m", "youtube_insights_mcp"],
           "cwd": "/Users/yourname/Projects/youtube-transcript-mcp",
           "env": {
             "PYTHONPATH": "/Users/yourname/Projects/youtube-transcript-mcp",
@@ -62,9 +77,9 @@ A template file is provided at `.mcp.json.template` in the repository root.
     ```json
     {
       "mcpServers": {
-        "youtube-transcript-mcp": {
+        "youtube-insights-mcp": {
           "command": "/home/yourname/projects/youtube-transcript-mcp/.venv/bin/python",
-          "args": ["-m", "src"],
+          "args": ["-m", "youtube_insights_mcp"],
           "cwd": "/home/yourname/projects/youtube-transcript-mcp",
           "env": {
             "PYTHONPATH": "/home/yourname/projects/youtube-transcript-mcp",
@@ -80,9 +95,9 @@ A template file is provided at `.mcp.json.template` in the repository root.
     ```json
     {
       "mcpServers": {
-        "youtube-transcript-mcp": {
+        "youtube-insights-mcp": {
           "command": "C:\\Users\\yourname\\Projects\\youtube-transcript-mcp\\.venv\\Scripts\\python.exe",
-          "args": ["-m", "src"],
+          "args": ["-m", "youtube_insights_mcp"],
           "cwd": "C:\\Users\\yourname\\Projects\\youtube-transcript-mcp",
           "env": {
             "PYTHONPATH": "C:\\Users\\yourname\\Projects\\youtube-transcript-mcp",
@@ -107,21 +122,18 @@ Project-specific configuration takes precedence over global configuration.
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `LOG_LEVEL` | `INFO` | Logging level. Set to `DEBUG` for verbose output, `WARNING` for quiet operation. |
-| `PYTHONPATH` | (none) | Must be set to project root for correct imports. |
+| `PYTHONPATH` | (none) | Must be set to project root for correct imports (local clone only). |
 
 ### Setting Log Level
 
-For development and debugging, set `LOG_LEVEL=DEBUG` in your `.mcp.json`:
+For development and debugging, set `LOG_LEVEL=DEBUG`:
 
 ```json
 {
   "mcpServers": {
-    "youtube-transcript-mcp": {
-      "command": "/absolute/path/to/.venv/bin/python",
-      "args": ["-m", "src"],
-      "cwd": "/absolute/path/to/project",
+    "youtube-insights-mcp": {
+      "command": "youtube-insights-mcp",
       "env": {
-        "PYTHONPATH": "/absolute/path/to/project",
         "LOG_LEVEL": "DEBUG"
       }
     }
@@ -137,7 +149,7 @@ The server uses **stdio** transport by default, which is the recommended transpo
 
 ```bash
 # Default: stdio transport (used by Claude Desktop)
-python -m src
+youtube-insights-mcp
 ```
 
 No additional transport configuration is needed for standard Claude Desktop usage.
@@ -152,9 +164,8 @@ After configuring, verify the server starts correctly:
 
 If the server fails to start, check:
 
-- All paths in `.mcp.json` are absolute
-- The virtual environment exists and has dependencies installed
-- `PYTHONPATH` matches the `cwd` value
+- All paths are absolute (when using local clone)
+- The package is installed (`pip show youtube-insights-mcp`)
 - Python version is >= 3.10
 
 See [Troubleshooting](../troubleshooting.md) for common issues and solutions.

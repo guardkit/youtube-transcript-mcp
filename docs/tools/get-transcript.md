@@ -140,4 +140,4 @@ get_transcript(video_url="dQw4w9WgXcQ", language="ja")
 
 ## Source
 
-Defined in [`src/__main__.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/src/__main__.py) using `TranscriptClient` from [`src/services/transcript_client.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/src/services/transcript_client.py).
+Defined in [`youtube_insights_mcp/__main__.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/youtube_insights_mcp/__main__.py) using `TranscriptClient` from [`youtube_insights_mcp/services/transcript_client.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/youtube_insights_mcp/services/transcript_client.py).

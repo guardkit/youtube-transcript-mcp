@@ -187,4 +187,4 @@ extract_insights(
 
 ## Source
 
-Defined in [`src/__main__.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/src/__main__.py) using `prepare_for_extraction()` from [`src/services/insight_extractor.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/src/services/insight_extractor.py).
+Defined in [`youtube_insights_mcp/__main__.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/youtube_insights_mcp/__main__.py) using `prepare_for_extraction()` from [`youtube_insights_mcp/services/insight_extractor.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/youtube_insights_mcp/services/insight_extractor.py).

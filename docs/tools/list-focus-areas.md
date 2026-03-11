@@ -130,4 +130,4 @@ list_focus_areas()
 
 ## Source
 
-Defined in [`src/__main__.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/src/__main__.py) using `FOCUS_PRESETS` and `CATEGORY_DEFINITIONS` from [`src/models/insight.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/src/models/insight.py).
+Defined in [`youtube_insights_mcp/__main__.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/youtube_insights_mcp/__main__.py) using `FOCUS_PRESETS` and `CATEGORY_DEFINITIONS` from [`youtube_insights_mcp/models/insight.py`](https://github.com/appmilla/youtube-transcript-mcp/blob/main/youtube_insights_mcp/models/insight.py).

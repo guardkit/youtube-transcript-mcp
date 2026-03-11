@@ -27,7 +27,7 @@ The `[dev]` extra installs testing and linting tools: pytest, pytest-asyncio, py
 pytest tests/ -v
 
 # Check the CLI works
-python -m src cli ping
+youtube-insights-mcp cli ping
 ```
 
 ## Running Tests
@@ -43,7 +43,7 @@ pytest tests/ -v
 ### Run with Coverage
 
 ```bash
-pytest tests/ --cov=src --cov-report=term
+pytest tests/ --cov=youtube_insights_mcp --cov-report=term
 ```
 
 Target: 80% line coverage, 75% branch coverage.
@@ -79,13 +79,13 @@ testpaths = ["tests"]       # Test discovery directory
 
 ```bash
 # Check for issues
-ruff check src/ tests/
+ruff check youtube_insights_mcp/ tests/
 
 # Auto-fix issues
-ruff check src/ tests/ --fix
+ruff check youtube_insights_mcp/ tests/ --fix
 
 # Format code
-ruff format src/ tests/
+ruff format youtube_insights_mcp/ tests/
 ```
 
 Configuration from `pyproject.toml`:
@@ -113,7 +113,7 @@ Enabled rule sets:
 [mypy](https://mypy-lang.org/) runs in strict mode for full type safety.
 
 ```bash
-mypy src/
+mypy youtube_insights_mcp/
 ```
 
 Configuration from `pyproject.toml`:
@@ -133,15 +133,15 @@ Third-party libraries `yt_dlp` and `youtube_transcript_api` have `ignore_missing
 Before pushing, run:
 
 ```bash
-ruff check src/ tests/
+ruff check youtube_insights_mcp/ tests/
 ruff format --check src/ tests/
-mypy src/
-pytest tests/ -v --cov=src
+mypy youtube_insights_mcp/
+pytest tests/ -v --cov=youtube_insights_mcp
 ```
 
 ## Adding New Tools
 
-MCP tools are registered at module level in `src/__main__.py`. Follow this pattern:
+MCP tools are registered at module level in `youtube_insights_mcp/__main__.py`. Follow this pattern:
 
 ### 1. Define the Tool
 
@@ -190,11 +190,11 @@ async def my_new_tool(
 
 ### 2. Add Service Logic (if needed)
 
-Create or extend a service in `src/services/`. Keep tool handlers thin — delegate business logic to services.
+Create or extend a service in `youtube_insights_mcp/services/`. Keep tool handlers thin — delegate business logic to services.
 
 ### 3. Add CLI Command (if applicable)
 
-If the tool should be accessible via CLI, add a subcommand in `src/cli.py`:
+If the tool should be accessible via CLI, add a subcommand in `youtube_insights_mcp/cli.py`:
 
 ```python
 # In make_parser()
@@ -203,7 +203,7 @@ my_parser.add_argument("required_param", help="...")
 
 # In run_command()
 elif args.command == "my-command":
-    from src.services.my_service import process
+    from youtube_insights_mcp.services.my_service import process
     return await process(args.required_param)
 ```
 

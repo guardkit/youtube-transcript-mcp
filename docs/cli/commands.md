@@ -3,7 +3,7 @@
 All commands output JSON to stdout and log to stderr. Exit code `0` indicates success; `1` indicates an error (the JSON will contain an `error` object).
 
 ```bash
-python -m src cli <command> [options]
+youtube-insights-mcp cli <command> [options]
 ```
 
 ---
@@ -13,7 +13,7 @@ python -m src cli <command> [options]
 Health check. Verifies that server components are importable.
 
 ```bash
-python -m src cli ping
+youtube-insights-mcp cli ping
 ```
 
 **Arguments:** None
@@ -23,8 +23,8 @@ python -m src cli ping
 ```json
 {
   "status": "healthy",
-  "server": "youtube-transcript-mcp",
-  "version": "0.1.0",
+  "server": "youtube-insights-mcp",
+  "version": "0.1.3",
   "timestamp": "2026-03-10T12:00:00+00:00",
   "mode": "cli"
 }
@@ -37,7 +37,7 @@ python -m src cli ping
 Fetch metadata for a YouTube video.
 
 ```bash
-python -m src cli video-info <video_url>
+youtube-insights-mcp cli video-info <video_url>
 ```
 
 **Arguments:**
@@ -86,7 +86,7 @@ python -m src cli video-info <video_url>
 Fetch the transcript for a YouTube video.
 
 ```bash
-python -m src cli get-transcript <video_url> [--language LANG] [--no-segments]
+youtube-insights-mcp cli get-transcript <video_url> [--language LANG] [--no-segments]
 ```
 
 **Arguments:**
@@ -144,7 +144,7 @@ The `segments` array is omitted, resulting in a smaller response containing only
 List all available transcript languages for a video.
 
 ```bash
-python -m src cli list-transcripts <video_url>
+youtube-insights-mcp cli list-transcripts <video_url>
 ```
 
 **Arguments:**
@@ -187,7 +187,7 @@ python -m src cli list-transcripts <video_url>
 Prepare transcript text for insight extraction. Returns a structured prompt and metadata that Claude can use to extract insights.
 
 ```bash
-python -m src cli extract-insights <transcript> [--focus AREAS] [--video-id ID] [--max-insights N]
+youtube-insights-mcp cli extract-insights <transcript> [--focus AREAS] [--video-id ID] [--max-insights N]
 ```
 
 **Arguments:**
@@ -208,9 +208,9 @@ Multiple focus areas can be combined: `--focus entrepreneurial,investment`
 Pass `-` as the transcript argument to read from stdin. This enables piping:
 
 ```bash
-python -m src cli get-transcript VIDEO_ID | \
+youtube-insights-mcp cli get-transcript VIDEO_ID | \
   jq -r '.full_text' | \
-  python -m src cli extract-insights - --focus technical
+  youtube-insights-mcp cli extract-insights - --focus technical
 ```
 
 **Output:**
@@ -244,7 +244,7 @@ When the transcript exceeds 30,000 characters, it is automatically chunked at pa
 List all available focus area presets and their insight categories.
 
 ```bash
-python -m src cli list-focus-areas
+youtube-insights-mcp cli list-focus-areas
 ```
 
 **Arguments:** None

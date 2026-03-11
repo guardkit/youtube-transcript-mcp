@@ -6,7 +6,7 @@ This page describes the project structure, component architecture, and key desig
 
 ```
 youtube-transcript-mcp/
-├── src/
+├── youtube_insights_mcp/
 │   ├── __init__.py
 │   ├── __main__.py              # Entry point, MCP tool registration
 │   ├── cli.py                   # CLI wrapper for MCP tools
@@ -33,7 +33,7 @@ youtube-transcript-mcp/
 graph TD
     subgraph "Client Layer"
         CD["Claude Desktop / MCP Client"]
-        CLI["CLI (python -m src cli)"]
+        CLI["CLI (youtube-insights-mcp cli)"]
     end
 
     subgraph "Entry Point"
@@ -74,7 +74,7 @@ The server uses [FastMCP](https://github.com/jlowin/fastmcp) — the official hi
 ```python
 from mcp.server.fastmcp import FastMCP
 
-mcp = FastMCP(name="youtube-transcript-mcp")
+mcp = FastMCP(name="youtube-insights-mcp")
 
 @mcp.tool()
 async def get_transcript(video_url: str, language: str = "en") -> dict:
@@ -86,7 +86,7 @@ async def get_transcript(video_url: str, language: str = "en") -> dict:
 
 ### Module-Level Tool Registration
 
-All 4 MCP tools are registered at the top level of `src/__main__.py`. This ensures they are discovered when the MCP client lists available tools. Tools registered inside functions or conditionally will not be discovered.
+All 4 MCP tools are registered at the top level of `youtube_insights_mcp/__main__.py`. This ensures they are discovered when the MCP client lists available tools. Tools registered inside functions or conditionally will not be discovered.
 
 ### stderr-Only Logging
 
@@ -118,7 +118,7 @@ Cancellation is handled correctly — `asyncio.CancelledError` is caught, logged
 
 ### Pydantic Validation
 
-The `src/models/insight.py` module uses Pydantic `BaseModel` for structured data validation:
+The `youtube_insights_mcp/models/insight.py` module uses Pydantic `BaseModel` for structured data validation:
 
 - `Insight` — a single extracted insight with category, title, summary, confidence
 - `KeyQuote` — a notable quote with context
@@ -154,7 +154,7 @@ Error categories: `client_error` (invalid input), `server_error` (internal failu
 
 ### TranscriptClient
 
-**File**: `src/services/transcript_client.py`
+**File**: `youtube_insights_mcp/services/transcript_client.py`
 
 Provides async transcript fetching with a 4-step language fallback strategy:
 
@@ -167,7 +167,7 @@ Returns `TranscriptResult` dataclass with segments, full text, and metadata. Def
 
 ### YouTubeClient
 
-**File**: `src/services/youtube_client.py`
+**File**: `youtube_insights_mcp/services/youtube_client.py`
 
 Parses YouTube URLs into 11-character video IDs. Supports:
 
@@ -179,7 +179,7 @@ Parses YouTube URLs into 11-character video IDs. Supports:
 
 ### InsightExtractor
 
-**File**: `src/services/insight_extractor.py`
+**File**: `youtube_insights_mcp/services/insight_extractor.py`
 
 Prepares transcripts for Claude-assisted insight extraction. Does **not** call an LLM directly — instead returns structured prompts and metadata that the Claude host processes conversationally.
 
@@ -192,15 +192,15 @@ Key functions:
 
 ## CLI Wrapper
 
-**File**: `src/cli.py`
+**File**: `youtube_insights_mcp/cli.py`
 
-Provides command-line access to all MCP tools via `python -m src cli <command>`. Outputs JSON to stdout, logs to stderr. Useful for shell scripts, batch processing, and testing without the MCP transport layer.
+Provides command-line access to all MCP tools via `youtube-insights-mcp cli <command>`. Outputs JSON to stdout, logs to stderr. Useful for shell scripts, batch processing, and testing without the MCP transport layer.
 
 The entry point in `__main__.py` routes between MCP mode and CLI mode based on `sys.argv`:
 
 ```python
 if len(sys.argv) > 1 and sys.argv[1] == "cli":
-    from src.cli import main as cli_main
+    from youtube_insights_mcp.cli import main as cli_main
     sys.exit(cli_main(sys.argv[2:]))
 else:
     mcp.run(transport="stdio")

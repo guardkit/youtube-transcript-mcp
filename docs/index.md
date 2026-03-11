@@ -1,4 +1,4 @@
-# YouTube Transcript MCP
+# YouTube Insights MCP
 
 An MCP server for fetching YouTube transcripts and extracting structured insights, designed for use with Claude Desktop and other MCP-compatible clients.
 

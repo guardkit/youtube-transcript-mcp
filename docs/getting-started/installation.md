@@ -4,7 +4,18 @@
 
 - **Python >= 3.10** (check with `python3 --version`)
 - **pip** (included with Python)
-- **Git** (for installing from source)
+
+## Install from PyPI
+
+```bash
+pip install youtube-insights-mcp
+```
+
+Or with development dependencies:
+
+```bash
+pip install youtube-insights-mcp[dev]
+```
 
 ## Install from Source
 
@@ -37,29 +48,20 @@ pip install -e ".[dev]"
 
 This adds pytest, ruff, mypy, and related packages.
 
-## Install from PyPI
-
-!!! note "Coming soon"
-    PyPI publishing is planned. For now, install from source.
-
-```bash
-pip install youtube-transcript-mcp
-```
-
 ## Verify Installation
 
 Check that the server starts correctly:
 
 ```bash
 # Run the MCP server (will wait for stdin - press Ctrl+C to exit)
-python -m src
+youtube-insights-mcp
 ```
 
 Test the CLI interface:
 
 ```bash
 # Health check
-python -m src cli ping
+youtube-insights-mcp cli ping
 ```
 
 Expected output:
@@ -67,8 +69,8 @@ Expected output:
 ```json
 {
   "status": "healthy",
-  "server": "youtube-transcript-mcp",
-  "version": "0.1.0",
+  "server": "youtube-insights-mcp",
+  "version": "0.1.3",
   "mode": "cli"
 }
 ```
@@ -76,4 +78,4 @@ Expected output:
 ## Next Steps
 
 - [Quick Start](quickstart.md) - Fetch your first transcript in 5 minutes
-- [Configuration](configuration.md) - Set up Claude Desktop integration
+- [Configuration](configuration.md) - Configure Claude Desktop integration

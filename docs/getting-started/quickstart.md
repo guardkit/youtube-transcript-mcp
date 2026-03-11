@@ -5,6 +5,12 @@ Fetch your first YouTube transcript in 5 minutes.
 ## Step 1: Install
 
 ```bash
+pip install youtube-insights-mcp
+```
+
+Or install from source:
+
+```bash
 git clone https://github.com/appmilla/youtube-transcript-mcp.git
 cd youtube-transcript-mcp
 python3 -m venv .venv
@@ -14,14 +20,31 @@ pip install -e .
 
 ## Step 2: Configure Claude Desktop
 
-Create or edit `.mcp.json` in your project root (or `~/.claude/.mcp.json` for global config):
+Add to your Claude Desktop MCP configuration (`claude_desktop_config.json`):
+
+**Using pip install (recommended):**
 
 ```json
 {
   "mcpServers": {
-    "youtube-transcript-mcp": {
-      "command": "/absolute/path/to/youtube-transcript-mcp/.venv/bin/python",
-      "args": ["-m", "src"],
+    "youtube-insights-mcp": {
+      "command": "youtube-insights-mcp",
+      "env": {
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
+```
+
+**Using a local clone:**
+
+```json
+{
+  "mcpServers": {
+    "youtube-insights-mcp": {
+      "command": "/absolute/path/to/.venv/bin/python",
+      "args": ["-m", "youtube_insights_mcp"],
       "cwd": "/absolute/path/to/youtube-transcript-mcp",
       "env": {
         "PYTHONPATH": "/absolute/path/to/youtube-transcript-mcp",
@@ -33,7 +56,7 @@ Create or edit `.mcp.json` in your project root (or `~/.claude/.mcp.json` for gl
 ```
 
 !!! warning "Use absolute paths"
-    All paths in `.mcp.json` **must** be absolute. Relative paths cause server startup failures. Replace `/absolute/path/to/youtube-transcript-mcp` with your actual project directory.
+    All paths in the local clone configuration **must** be absolute. Relative paths cause server startup failures. Replace `/absolute/path/to/` with your actual paths.
 
 **Find your paths:**
 
@@ -45,43 +68,88 @@ pwd
 which python  # (with venv activated)
 ```
 
-## Step 3: Use in Claude
+## Step 3: Start the Server
+
+**With Claude Desktop** — no manual start needed. Claude Desktop automatically launches and manages the server process using the configuration above. Just restart Claude Desktop after adding the config.
+
+**Manual start** (for testing or other MCP clients):
+
+```bash
+# Start the MCP server (stdio transport)
+youtube-insights-mcp
+
+# Or using Python module directly
+python -m youtube_insights_mcp
+```
+
+## Step 4: Use in Claude
 
 Restart Claude Desktop to pick up the new configuration. Then try these prompts:
 
-**Fetch a transcript:**
+### Transcript & Summary
 
-> Get the transcript for https://www.youtube.com/watch?v=dQw4w9WgXcQ
+> Get the transcript for https://www.youtube.com/watch?v=VIDEO_ID and give me a concise summary
 
-**List available languages:**
+> Fetch the transcript for this video and list the 5 most important takeaways: https://youtu.be/VIDEO_ID
 
-> What transcript languages are available for https://www.youtube.com/watch?v=dQw4w9WgXcQ
+### Business & Entrepreneurship
 
-**Extract insights:**
+> Get the transcript for https://www.youtube.com/watch?v=VIDEO_ID and extract entrepreneurial insights - focus on actionable business strategies and growth tactics
 
-> Extract technical insights from this YouTube video: https://www.youtube.com/watch?v=example
+> Analyse this startup pitch and pull out the key business model, revenue strategy, and mistakes to avoid: https://www.youtube.com/watch?v=VIDEO_ID
+
+### Investment Analysis
+
+> Fetch the transcript for this market analysis video and extract investment insights including trends, opportunities, and risks: https://www.youtube.com/watch?v=VIDEO_ID
+
+### Technical Learning
+
+> Get the transcript for this tech talk and extract the key technologies mentioned, best practices, and common pitfalls: https://www.youtube.com/watch?v=VIDEO_ID
+
+> Summarise this programming tutorial and list the tools and frameworks recommended: https://youtu.be/VIDEO_ID
+
+### YouTube Channel Growth
+
+> Analyse this video about growing a YouTube channel and extract content strategy tips, audience growth tactics, and production advice: https://www.youtube.com/watch?v=VIDEO_ID
+
+### AI & Machine Learning
+
+> Fetch the transcript for this AI talk and extract the key concepts, tools mentioned, and practical applications: https://www.youtube.com/watch?v=VIDEO_ID
+
+### Multi-Focus Analysis
+
+> Get the transcript for https://www.youtube.com/watch?v=VIDEO_ID and extract insights across both entrepreneurial and investment categories - I want business strategies AND market opportunities
+
+### Comparing Videos
+
+> Get the transcripts for these two videos and compare their advice on starting a business:
+> - https://www.youtube.com/watch?v=VIDEO_ID_1
+> - https://www.youtube.com/watch?v=VIDEO_ID_2
 
 Claude will automatically use the MCP tools to fetch transcripts and extract insights.
 
-## Step 4: Try the CLI
+## Step 5: Try the CLI
 
 The CLI provides direct terminal access to the same tools without needing MCP:
 
 ```bash
+# Health check
+youtube-insights-mcp cli ping
+
 # Fetch a transcript
-python -m src cli get-transcript "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+youtube-insights-mcp cli get-transcript "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 # List available transcript languages
-python -m src cli list-transcripts "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+youtube-insights-mcp cli list-transcripts "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 
 # Get transcript without timestamp segments (smaller output)
-python -m src cli get-transcript "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --no-segments
+youtube-insights-mcp cli get-transcript "https://www.youtube.com/watch?v=dQw4w9WgXcQ" --no-segments
 
 # List focus area presets
-python -m src cli list-focus-areas
+youtube-insights-mcp cli list-focus-areas
 
 # Pipe transcript to jq for the full text only
-python -m src cli get-transcript "https://www.youtube.com/watch?v=dQw4w9WgXcQ" | jq '.full_text'
+youtube-insights-mcp cli get-transcript "https://www.youtube.com/watch?v=dQw4w9WgXcQ" | jq '.full_text'
 ```
 
 All CLI commands output JSON to stdout, making them easy to pipe and script.
