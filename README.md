@@ -139,6 +139,50 @@ List all available focus area presets and their category definitions.
 
 Use `"all"` to extract across every category, or combine presets: `"entrepreneurial,investment"`.
 
+## Example Prompts for Claude Desktop
+
+Once the MCP server is configured, you can use these prompts directly in Claude Desktop:
+
+### Transcript & Summary
+
+> Get the transcript for https://www.youtube.com/watch?v=VIDEO_ID and give me a concise summary
+
+> Fetch the transcript for this video and list the 5 most important takeaways: https://youtu.be/VIDEO_ID
+
+### Business & Entrepreneurship
+
+> Get the transcript for https://www.youtube.com/watch?v=VIDEO_ID and extract entrepreneurial insights - focus on actionable business strategies and growth tactics
+
+> Analyse this startup pitch and pull out the key business model, revenue strategy, and mistakes to avoid: https://www.youtube.com/watch?v=VIDEO_ID
+
+### Investment Analysis
+
+> Fetch the transcript for this market analysis video and extract investment insights including trends, opportunities, and risks: https://www.youtube.com/watch?v=VIDEO_ID
+
+### Technical Learning
+
+> Get the transcript for this tech talk and extract the key technologies mentioned, best practices, and common pitfalls: https://www.youtube.com/watch?v=VIDEO_ID
+
+> Summarise this programming tutorial and list the tools and frameworks recommended: https://youtu.be/VIDEO_ID
+
+### YouTube Channel Growth
+
+> Analyse this video about growing a YouTube channel and extract content strategy tips, audience growth tactics, and production advice: https://www.youtube.com/watch?v=VIDEO_ID
+
+### AI & Machine Learning
+
+> Fetch the transcript for this AI talk and extract the key concepts, tools mentioned, and practical applications: https://www.youtube.com/watch?v=VIDEO_ID
+
+### Multi-Focus Analysis
+
+> Get the transcript for https://www.youtube.com/watch?v=VIDEO_ID and extract insights across both entrepreneurial and investment categories - I want business strategies AND market opportunities
+
+### Comparing Videos
+
+> Get the transcripts for these two videos and compare their advice on starting a business:
+> - https://www.youtube.com/watch?v=VIDEO_ID_1
+> - https://www.youtube.com/watch?v=VIDEO_ID_2
+
 ## Configuration
 
 ### Proxy Support
