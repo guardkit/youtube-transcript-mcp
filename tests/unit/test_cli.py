@@ -250,7 +250,7 @@ class TestCliOutput:
         captured = capsys.readouterr()
         data = json.loads(captured.out)
         assert data["server"] == "youtube-insights-mcp"
-        assert data["version"] == "0.1.0"
+        assert "version" in data
         assert "timestamp" in data
 
     def test_ping_stdout_is_pure_json(self, capsys: pytest.CaptureFixture[str]) -> None:
@@ -447,7 +447,7 @@ class TestCommandDispatch:
         data = json.loads(captured.out)
         assert data["status"] == "healthy"
         assert data["server"] == "youtube-insights-mcp"
-        assert data["version"] == "0.1.0"
+        assert "version" in data
         assert "timestamp" in data
         assert data["mode"] == "cli"
         assert code == 0

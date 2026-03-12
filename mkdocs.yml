@@ -85,6 +85,7 @@ nav:
     - Installation: getting-started/installation.md
     - Quick Start: getting-started/quickstart.md
     - Configuration: getting-started/configuration.md
+    - Claude Code & Cowork: getting-started/claude-code.md
   - MCP Tools:
     - tools/index.md
     - get_transcript: tools/get-transcript.md

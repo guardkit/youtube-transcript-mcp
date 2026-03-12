@@ -136,6 +136,7 @@ All CLI commands output JSON to stdout, making them easy to pipe and script.
 
 ## What's Next?
 
+- [Claude Code & Cowork](claude-code.md) - Interactive `/yt-insights` skill for Claude Code
 - [Configuration](configuration.md) - Environment variables, transport options
 - [MCP Tools Reference](../tools/index.md) - Detailed documentation for all 4 tools
 - [CLI Guide](../cli/index.md) - Full CLI command reference

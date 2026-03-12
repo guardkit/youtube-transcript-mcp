@@ -13,6 +13,7 @@ An MCP server that fetches YouTube transcripts and extracts structured insights 
 - **6 focus area presets**: general, entrepreneurial, investment, technical, youtube-channel, ai-learning
 - **Multiple URL formats**: youtube.com, youtu.be, embed links, or just a video ID
 - **Dual mode**: MCP server for Claude Desktop + standalone CLI
+- **Claude Code skill**: `/yt-insights` slash command for interactive insight extraction
 - **Smart chunking** for long transcripts with overlap for context continuity
 - **Proxy support** for environments with IP restrictions
 
@@ -48,8 +49,6 @@ pip install youtube-insights-mcp
 ## Quick Start
 
 ### Claude Desktop Configuration
-
-Add to your Claude Desktop MCP configuration (`claude_desktop_config.json`):
 
 After installing, find the absolute path to the command:
 
@@ -205,6 +204,52 @@ Once the MCP server is configured, you can use these prompts directly in Claude 
 > Get the transcripts for these two videos and compare their advice on starting a business:
 > - https://www.youtube.com/watch?v=VIDEO_ID_1
 > - https://www.youtube.com/watch?v=VIDEO_ID_2
+
+## Using with Claude Code & Cowork
+
+The project includes a `/yt-insights` skill for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that provides an interactive workflow for extracting insights from YouTube videos. It works in both Claude Code (terminal) and Claude Cowork (collaborative mode).
+
+### Setup
+
+1. Clone the repository and add the MCP server to your Claude Code config (`.mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "youtube-insights-mcp": {
+      "command": "/absolute/path/to/youtube-mcp-env/bin/youtube-insights-mcp",
+      "env": {
+        "LOG_LEVEL": "INFO"
+      }
+    }
+  }
+}
+```
+
+2. The `/yt-insights` skill is automatically available from the project's `.claude/commands/` directory.
+
+### Usage
+
+Run the skill in Claude Code or Cowork:
+
+```
+/yt-insights https://www.youtube.com/watch?v=VIDEO_ID
+```
+
+Or just `/yt-insights` and it will prompt you for the URL.
+
+The skill will:
+
+1. Ask you to choose focus areas (general, entrepreneurial, investment, technical, youtube-channel, ai-learning, or all)
+2. Fetch the video transcript
+3. Extract structured insights using Claude
+4. Save two markdown files:
+   - **Insights** — structured analysis with key quotes, action items, and categorised insights
+   - **Transcript** — full transcript text for future reference
+
+### Cowork Mode
+
+In Cowork, the skill is automatically converted to a Cowork skill. It uses the MCP tools directly (rather than CLI commands), which means it connects to the youtube-insights-mcp server through the MCP protocol for a seamless experience.
 
 ## Configuration
 

@@ -165,7 +165,7 @@ async def run_command(args: argparse.Namespace) -> dict[str, Any]:
         return {
             "status": "healthy",
             "server": "youtube-insights-mcp",
-            "version": "0.1.5",
+            "version": "0.1.6",
             "timestamp": datetime.now(timezone.utc).isoformat(),
             "mode": "cli",
         }

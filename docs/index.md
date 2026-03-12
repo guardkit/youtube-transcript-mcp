@@ -41,6 +41,7 @@ graph LR
 - :material-download: **[Installation](getting-started/installation.md)** - Install from source or PyPI
 - :material-rocket-launch: **[Quick Start](getting-started/quickstart.md)** - Your first transcript in 5 minutes
 - :material-cog: **[Configuration](getting-started/configuration.md)** - Configure Claude Desktop and environment
+- :material-code-tags: **[Claude Code & Cowork](getting-started/claude-code.md)** - Interactive `/yt-insights` skill
 
 </div>
 
