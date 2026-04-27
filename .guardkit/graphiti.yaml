@@ -2,7 +2,7 @@
 # Project-specific settings for knowledge capture
 
 # Project ID for namespace prefixing
-project_id: youtube-transcript-mcp
+project_id: youtube_transcript_mcp
 
 # Enable Graphiti integration
 enabled: true
